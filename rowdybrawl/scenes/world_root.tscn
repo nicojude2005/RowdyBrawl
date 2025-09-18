@@ -1,3 +1,21 @@
-[gd_scene format=3 uid="uid://v6gwxb55ikb1"]
+[gd_scene load_steps=3 format=3 uid="uid://v6gwxb55ikb1"]
+
+[ext_resource type="PackedScene" uid="uid://dq4ib4x2udnx7" path="res://scenes/basic_platform.tscn" id="1_psreq"]
+[ext_resource type="PackedScene" uid="uid://bnm16edtntj06" path="res://scenes/the_player.tscn" id="2_t21ho"]
 
 [node name="worldRoot" type="Node2D"]
+
+[node name="thePlayer" parent="." instance=ExtResource("2_t21ho")]
+position = Vector2(17, -30)
+
+[node name="basicPlatform" parent="." instance=ExtResource("1_psreq")]
+position = Vector2(1, 71)
+
+[node name="basicPlatform2" parent="." instance=ExtResource("1_psreq")]
+position = Vector2(132, 72)
+
+[node name="basicPlatform3" parent="." instance=ExtResource("1_psreq")]
+position = Vector2(-133, 71)
+
+[node name="basicPlatform4" parent="." instance=ExtResource("1_psreq")]
+position = Vector2(272, 72)

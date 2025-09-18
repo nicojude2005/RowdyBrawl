@@ -1,0 +1,9 @@
+extends Node2D
+class_name cameraManager
+
+@onready var playerReference : player = self.get_parent()
+@onready var camera2d: Camera2D = $Camera2D
+
+func _process(delta: float) -> void:
+	camera2d.position.x = playerReference.playerBody.position.x
+	
