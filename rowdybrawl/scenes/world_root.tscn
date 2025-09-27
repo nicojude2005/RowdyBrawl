@@ -22,5 +22,5 @@ scale = Vector2(26.414063, 6.313281)
 texture = ExtResource("3_ltld7")
 
 [node name="debugProp3" parent="." instance=ExtResource("3_t21ho")]
-position = Vector2(8, 138)
-scale = Vector2(1.1935484, 0.5217391)
+position = Vector2(1, 139)
+scale = Vector2(1, 0.6399994)

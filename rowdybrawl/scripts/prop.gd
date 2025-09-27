@@ -7,13 +7,13 @@ class_name prop
 func _ready() -> void:
 	
 #	sprites track their coordinates from their center, so yOffset makes sure their Z level is related to their Bottom
-	var yOffset : float;
+	#var yOffset : float;
 	
 #	this orders the sprites when they spawn, so you dont have to do it manually
 	for propSprite : Sprite2D in prop_sprites.get_children():
-		yOffset = propSprite.global_position.y + propSprite.texture.get_height()/2.0 
+		#yOffset = propSprite.global_position.y + propSprite.texture.get_height()/2.0 
 		
-		if  yOffset < RenderingServer.CANVAS_ITEM_Z_MAX and yOffset > RenderingServer.CANVAS_ITEM_Z_MIN:
-			propSprite.z_index = int(yOffset)
+		if  self.global_position.y < RenderingServer.CANVAS_ITEM_Z_MAX and self.global_position.y > RenderingServer.CANVAS_ITEM_Z_MIN:
+			propSprite.z_index = int(self.global_position.y)
 		else :
 			print("WARNING THIS BITCH TOO FAR UP OR DOWN. i cant render this bitch's Z index: " + str(propSprite))
