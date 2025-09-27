@@ -1,11 +1,16 @@
-[gd_scene load_steps=5 format=3 uid="uid://bnm16edtntj06"]
+[gd_scene load_steps=7 format=3 uid="uid://bnm16edtntj06"]
 
 [ext_resource type="Texture2D" uid="uid://bwmmq1tewwe2m" path="res://sprites/blockDebug.png" id="1_gwco0"]
 [ext_resource type="Script" uid="uid://d1lb2i55l1d4y" path="res://scripts/the_player.gd" id="1_qsbax"]
 [ext_resource type="PackedScene" uid="uid://b0py0r48mo2wi" path="res://scenes/camera_manager.tscn" id="3_olns3"]
+[ext_resource type="Texture2D" uid="uid://dnadcguif2xdk" path="res://sprites/shadowPixel.png" id="3_opa1r"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qsbax"]
-radius = 13.0
+radius = 3.0
+height = 24.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_opa1r"]
+size = Vector2(24, 24)
 
 [node name="thePlayer" type="Node2D"]
 script = ExtResource("1_qsbax")
@@ -14,11 +19,40 @@ script = ExtResource("1_qsbax")
 unique_name_in_owner = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="playerBody"]
+rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_qsbax")
 
-[node name="Sprite2D" type="Sprite2D" parent="playerBody"]
+[node name="RichTextLabel" type="RichTextLabel" parent="playerBody"]
+z_index = 4096
+offset_left = -31.0
+offset_top = -37.0
+offset_right = 9.0
+offset_bottom = 3.0
+scale = Vector2(1.6090713, 1.3567882)
+theme_override_font_sizes/normal_font_size = 10
+scroll_active = false
+
+[node name="shadow" type="Sprite2D" parent="playerBody"]
+modulate = Color(1, 1, 1, 0.58431375)
+self_modulate = Color(1, 1, 1, 0.78039217)
 texture_filter = 1
-position = Vector2(0, 1)
+position = Vector2(0, -10)
+texture = ExtResource("3_opa1r")
+
+[node name="hitBox" type="Node2D" parent="playerBody"]
+z_as_relative = false
+
+[node name="Area2D" type="Area2D" parent="playerBody/hitBox"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="playerBody/hitBox/Area2D"]
+position = Vector2(0, -12)
+shape = SubResource("RectangleShape2D_opa1r")
+debug_color = Color(0, 0.5930971, 0.73992854, 0.41960785)
+
+[node name="Sprite2D" type="Sprite2D" parent="playerBody/hitBox"]
+z_index = 1
+texture_filter = 1
+position = Vector2(0, -12)
 texture = ExtResource("1_gwco0")
 
 [node name="cameraManager" parent="." instance=ExtResource("3_olns3")]
