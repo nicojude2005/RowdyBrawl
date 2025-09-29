@@ -10,31 +10,41 @@ class_name player   # the tutorial doesnt talk about this(because technically th
 @onready var shadow: Sprite2D = $playerBody/shadow
 @onready var hit_box: Node2D = $playerBody/hitBox
 
+
+
 var maxSpeed = 100
 var accelaration = 20
 var groundFriction = 10      # these set up basic ground movement
 var yReductionPercent = 0.7
 
 var playerZPosition : float = 0.0
-var playerZVelocity : float = 0.0
+var playerZVelocity : float = 0.0 # to handle movement in the (half-fake) Z direction
 
-var grounded = true
-
+var grounded = true                # handles jumping and falling
 var jumpVelocity : float = 300      
-
 var gravity: int = ProjectSettings.get_setting("physics/2d/default_gravity") 
+
+var attackIsBusy = false
 
 func _physics_process(_delta: float) -> void:     # _physics_process runs in fixed(very tiny) intervals, regardless of the framerate
 												 # This makes it good for movement and physics-based code
-												
 	
+	# attacks and stuff
+	
+	if Input.is_action_just_pressed("lightAttack") and !attackIsBusy:
+		lightAttack()
+	elif Input.is_action_just_pressed("heavyAttack") and !attackIsBusy:
+		heavyAttack()
 	
 	
 #	basic movement across the plane
 	if Input.is_action_pressed("left"):
+		flipToDirection(false)
 		if playerBody.velocity.x > -maxSpeed:    # Checks if the player's speed to the left is below the max speed, before accelarating in that direction
 			playerBody.velocity.x -= accelaration
+			
 	elif Input.is_action_pressed("right"):       
+		flipToDirection(true)
 		if playerBody.velocity.x < maxSpeed:     # Checks if the player's speed to the right is below the max speed, before accelarating in that direction
 			playerBody.velocity.x += accelaration
 	else:
@@ -76,7 +86,25 @@ func _physics_process(_delta: float) -> void:     # _physics_process runs in fix
 	
 	playerBody.move_and_slide()  # this function is what actually applies the player's velocity to their position. It also does all the collision checks
 	
-	
+
+func flipToDirection(flipToRight : bool):
+	if flipToRight and playerBody.scale.y < 1:
+		playerBody.rotation_degrees = 0
+		playerBody.scale.y = 1
+	elif !flipToRight and playerBody.scale.y > -1:
+		playerBody.rotation_degrees = 180
+		playerBody.scale.y = -1
+
+func lightAttack():
+	# spawn a hitbox in front of the player, for a Duration equal to the Light Attack Duration time
+	# and it has the size of Light attack Size
+	# and it does Light Attack Damage
+	pass
+
+func heavyAttack():
+	# same thing as light attack but with different numbers
+	pass
+
 func jump():
 	playerZVelocity = jumpVelocity
 	grounded = false

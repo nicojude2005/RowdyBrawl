@@ -55,4 +55,4 @@ texture_filter = 1
 position = Vector2(0, -12)
 texture = ExtResource("1_gwco0")
 
-[node name="cameraManager" parent="." instance=ExtResource("3_olns3")]
+[node name="cameraController" parent="." instance=ExtResource("3_olns3")]
