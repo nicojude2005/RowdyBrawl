@@ -7,7 +7,7 @@
 [node name="worldRoot" type="Node2D"]
 
 [node name="thePlayer" parent="." instance=ExtResource("2_t21ho")]
-position = Vector2(-83, 119)
+position = Vector2(-125, 123)
 
 [node name="debugProp" parent="." instance=ExtResource("3_t21ho")]
 position = Vector2(-62, 27)

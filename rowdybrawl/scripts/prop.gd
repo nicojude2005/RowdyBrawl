@@ -3,6 +3,7 @@ class_name prop
 
 
 @onready var prop_sprites: Node2D = $propSprites
+@onready var zPosition : float = self.global_position.y
 
 func _ready() -> void:
 	
@@ -13,7 +14,7 @@ func _ready() -> void:
 	for propSprite : Sprite2D in prop_sprites.get_children():
 		#yOffset = propSprite.global_position.y + propSprite.texture.get_height()/2.0 
 		
-		if  self.global_position.y < RenderingServer.CANVAS_ITEM_Z_MAX and self.global_position.y > RenderingServer.CANVAS_ITEM_Z_MIN:
-			propSprite.z_index = int(self.global_position.y)
+		if  zPosition < RenderingServer.CANVAS_ITEM_Z_MAX and zPosition > RenderingServer.CANVAS_ITEM_Z_MIN:
+			propSprite.z_index = int(zPosition)
 		else :
 			print("WARNING THIS BITCH TOO FAR UP OR DOWN. i cant render this bitch's Z index: " + str(propSprite))

@@ -10,6 +10,9 @@ class_name player   # the tutorial doesnt talk about this(because technically th
 @onready var shadow: Sprite2D = $playerBody/shadow
 @onready var hit_box: Node2D = $playerBody/hitBox
 
+const LIGHT_ATTACK = preload("uid://cclox11udehj4")
+const HEAVY_ATTACK = preload("uid://df6js1m8i34eb")
+
 
 
 var maxSpeed = 100
@@ -17,23 +20,25 @@ var accelaration = 20
 var groundFriction = 10      # these set up basic ground movement
 var yReductionPercent = 0.7
 
-var playerZPosition : float = 0.0
-var playerZVelocity : float = 0.0 # to handle movement in the (half-fake) Z direction
+var playerYPosition : float = 0.0
+var playerYVelocity : float = 0.0 # to handle movement in the (half-fake) Z direction
 
 var grounded = true                # handles jumping and falling
 var jumpVelocity : float = 300      
 var gravity: int = ProjectSettings.get_setting("physics/2d/default_gravity") 
 
-var attackIsBusy = false
+var attackBusyTimer : float = 0
 
-func _physics_process(_delta: float) -> void:     # _physics_process runs in fixed(very tiny) intervals, regardless of the framerate
+func _physics_process(delta: float) -> void:     # _physics_process runs in fixed(very tiny) intervals, regardless of the framerate
 												 # This makes it good for movement and physics-based code
 	
-	# attacks and stuff
+	if attackBusyTimer > 0:
+		attackBusyTimer -= delta
 	
-	if Input.is_action_just_pressed("lightAttack") and !attackIsBusy:
+	# attacks and stuff
+	if Input.is_action_just_pressed("lightAttack") and attackBusyTimer <= 0:
 		lightAttack()
-	elif Input.is_action_just_pressed("heavyAttack") and !attackIsBusy:
+	elif Input.is_action_just_pressed("heavyAttack") and attackBusyTimer <= 0:
 		heavyAttack()
 	
 	
@@ -66,14 +71,14 @@ func _physics_process(_delta: float) -> void:     # _physics_process runs in fix
 	
 #	z axis logic
 	if !grounded:
-		playerZVelocity -= 9.8
-		playerZPosition += playerZVelocity
+		playerYVelocity -= 9.8
+		playerYPosition += playerYVelocity
 	
-	if playerZPosition <= 0 and !grounded:
+	if playerYPosition <= 0 and !grounded:
 		land()
 	
 #	disables ground collision when high enough in the air
-	if playerZPosition > 2500:
+	if playerYPosition > 2500:
 		playerBody.collision_mask = 2
 	#rich_text_label.text = str(playerBody.collision_mask)
 	
@@ -82,7 +87,7 @@ func _physics_process(_delta: float) -> void:     # _physics_process runs in fix
 		sprite_2d.z_index = int(playerBody.global_position.y)
 		
 	
-	hit_box.position.y = -(playerZPosition / 100)
+	hit_box.position.y = -(playerYPosition / 100)
 	
 	playerBody.move_and_slide()  # this function is what actually applies the player's velocity to their position. It also does all the collision checks
 	
@@ -99,21 +104,34 @@ func lightAttack():
 	# spawn a hitbox in front of the player, for a Duration equal to the Light Attack Duration time
 	# and it has the size of Light attack Size
 	# and it does Light Attack Damage
-	pass
+	var lightAttackHitbox : hitBox = LIGHT_ATTACK.instantiate();
+	lightAttackHitbox.myZIndex = playerBody.position.y
+	hit_box.add_child(lightAttackHitbox)
+	
+	lightAttackHitbox.position = hit_box.position
+	lightAttackHitbox.duration = .15
+	attackBusyTimer = .2
+	
 
 func heavyAttack():
 	# same thing as light attack but with different numbers
-	pass
+	var heavyAttackHitbox : hitBox = HEAVY_ATTACK.instantiate();
+	heavyAttackHitbox.myZIndex = playerBody.position.y
+	hit_box.add_child(heavyAttackHitbox)
+	
+	heavyAttackHitbox.position = hit_box.position
+	heavyAttackHitbox.duration = .4
+	attackBusyTimer = .5
 
 func jump():
-	playerZVelocity = jumpVelocity
+	playerYVelocity = jumpVelocity
 	grounded = false
 	#playerBody.collision_mask = 2
 
 func land():
 	grounded = true
-	playerZVelocity = 0
-	playerZPosition = 0
+	playerYVelocity = 0
+	playerYPosition = 0
 	playerBody.collision_mask = 1
 
 func applyFrictionX():
