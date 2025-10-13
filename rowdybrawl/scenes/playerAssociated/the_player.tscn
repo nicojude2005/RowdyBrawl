@@ -1,10 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://bnm16edtntj06"]
+[gd_scene load_steps=7 format=3 uid="uid://bnm16edtntj06"]
 
 [ext_resource type="Script" uid="uid://d1lb2i55l1d4y" path="res://scripts/the_player.gd" id="1_qsbax"]
-[ext_resource type="PackedScene" uid="uid://b0py0r48mo2wi" path="res://scenes/camera_manager.tscn" id="3_olns3"]
+[ext_resource type="PackedScene" uid="uid://b0py0r48mo2wi" path="res://scenes/playerAssociated/camera_manager.tscn" id="3_olns3"]
 [ext_resource type="Texture2D" uid="uid://dnadcguif2xdk" path="res://sprites/shadowPixel.png" id="3_opa1r"]
 [ext_resource type="Texture2D" uid="uid://ss8hempfs1y8" path="res://sprites/playerBlockOutline64By64.png" id="3_ql0lh"]
-[ext_resource type="Script" uid="uid://dyscpc1wk0tgf" path="res://scripts/camera_controller.gd" id="5_ql0lh"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qsbax"]
 radius = 5.0
@@ -59,4 +58,3 @@ position = Vector2(0, -32)
 texture = ExtResource("3_ql0lh")
 
 [node name="cameraController" parent="." instance=ExtResource("3_olns3")]
-script = ExtResource("5_ql0lh")

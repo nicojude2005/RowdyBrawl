@@ -12,6 +12,8 @@ class_name player   # the tutorial doesnt talk about this(because technically th
 
 const LIGHT_ATTACK = preload("uid://cclox11udehj4")
 const HEAVY_ATTACK = preload("uid://df6js1m8i34eb")
+const AIR_LIGHT_ATTACK = preload("uid://b1mf0xdo3wvpr")
+const AIR_HEAVY_ATTACK = preload("uid://c0ttx055igf8n")
 
 
 
@@ -28,19 +30,33 @@ var jumpVelocity : float = 300
 var gravity: int = ProjectSettings.get_setting("physics/2d/default_gravity") 
 
 var attackBusyTimer : float = 0
+var comboString : String = ""
+var validCombos = ["LLH", "LLL", "LHAS"]
+var comboTimer : float = 0
+const comboChainTime : float = 1
 
 func _physics_process(delta: float) -> void:     # _physics_process runs in fixed(very tiny) intervals, regardless of the framerate
 												 # This makes it good for movement and physics-based code
 	
 	if attackBusyTimer > 0:
 		attackBusyTimer -= delta
+	if comboTimer > 0:
+		comboTimer -= delta
 	
 	# attacks and stuff
 	if Input.is_action_just_pressed("lightAttack") and attackBusyTimer <= 0:
-		lightAttack()
+		if grounded:
+			doAttackCheckCombos("L")
+		else:
+			doAttackCheckCombos("A")
+		print(comboString)
+		
 	elif Input.is_action_just_pressed("heavyAttack") and attackBusyTimer <= 0:
-		heavyAttack()
-	
+		if grounded:
+			doAttackCheckCombos("H")
+		else:
+			doAttackCheckCombos("S")
+		print(comboString)
 	
 #	basic movement across the plane
 	if Input.is_action_pressed("left"):
@@ -92,6 +108,59 @@ func _physics_process(delta: float) -> void:     # _physics_process runs in fixe
 	playerBody.move_and_slide()  # this function is what actually applies the player's velocity to their position. It also does all the collision checks
 	
 
+func doAttackCheckCombos(attack : String):
+#	check for a potential next hit of a combo
+	if comboTimer > 0:
+		comboString += attack
+		comboTimer = comboChainTime
+		match comboString:
+#			flurry of light attacks
+			"LL":
+				spawnAttack(LIGHT_ATTACK, 0.2, 0.1, 10)
+			"LLL":
+				spawnAttack(LIGHT_ATTACK, 0.15, 0.1, 10)
+#			Classic Combo
+			"LLH":
+				spawnAttack(HEAVY_ATTACK, 0.3, 0.4, 20)
+				#STUN ENEMY (TODO)
+#			Slam up then down
+			"LH":
+				spawnAttack(HEAVY_ATTACK, 0.2, 0.4, 20)
+				#KNOCK ENEMY UP (TODO)
+			"LHA":
+				spawnAttack(AIR_LIGHT_ATTACK, 0.2, 0.3, 10)
+			"LHAS":
+				spawnAttack(AIR_HEAVY_ATTACK, 0.6, 0.7, 50)
+				#KNOCK ENEMY DOWN (TODO)
+			_:
+				comboString = attack
+				letterToAttack(attack)
+			
+#	combo timer is zero, just perform a basic light attack
+	else:
+		comboTimer = comboChainTime
+		comboString = attack
+		letterToAttack(attack)
+	
+
+func letterToAttack(attack):
+	match attack:
+		"L":
+			# spawn a hitbox in front of the player, for a Duration equal to the first number
+			# and it has the size and position that is defined in LIGHT_ATTACK
+			# Second number denotes how long the player is stuck in the attack animation
+			# Third number denotes the damage amount
+			spawnAttack(LIGHT_ATTACK, 0.15, 0.2, 10)
+		"H":
+			# same thing as light attack but with different numbers
+			spawnAttack(HEAVY_ATTACK, 0.4, 0.5, 20)
+		"A":
+			spawnAttack(AIR_LIGHT_ATTACK, 0.10, 0.15, 8)
+		"S":
+			spawnAttack(AIR_HEAVY_ATTACK, 0.3, 0.4, 16)
+		_:
+			print("ERROR, UNKNOWN ATTACK REQUESTED")
+
 func flipToDirection(flipToRight : bool):
 	if flipToRight and playerBody.scale.y < 1:
 		playerBody.rotation_degrees = 0
@@ -100,28 +169,14 @@ func flipToDirection(flipToRight : bool):
 		playerBody.rotation_degrees = 180
 		playerBody.scale.y = -1
 
-func lightAttack():
-	# spawn a hitbox in front of the player, for a Duration equal to the Light Attack Duration time
-	# and it has the size of Light attack Size
-	# and it does Light Attack Damage
-	var lightAttackHitbox : hitBox = LIGHT_ATTACK.instantiate();
-	lightAttackHitbox.myZIndex = playerBody.position.y
-	hit_box.add_child(lightAttackHitbox)
+func spawnAttack(hitboxToUse : PackedScene, attackDuration : float, attackEndlag : float, attackDamage: float):
+	var attackHitbox : hitBox = hitboxToUse.instantiate();
+	attackHitbox.myZIndex = playerBody.position.y
+	hit_box.add_child(attackHitbox)
+	attackHitbox.damage = attackDamage
 	
-	lightAttackHitbox.position = hit_box.position
-	lightAttackHitbox.duration = .15
-	attackBusyTimer = .2
-	
-
-func heavyAttack():
-	# same thing as light attack but with different numbers
-	var heavyAttackHitbox : hitBox = HEAVY_ATTACK.instantiate();
-	heavyAttackHitbox.myZIndex = playerBody.position.y
-	hit_box.add_child(heavyAttackHitbox)
-	
-	heavyAttackHitbox.position = hit_box.position
-	heavyAttackHitbox.duration = .4
-	attackBusyTimer = .5
+	attackHitbox.duration = attackDuration
+	attackBusyTimer = attackEndlag
 
 func jump():
 	playerYVelocity = jumpVelocity

@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://v6gwxb55ikb1"]
 
-[ext_resource type="PackedScene" uid="uid://bnm16edtntj06" path="res://scenes/the_player.tscn" id="2_t21ho"]
+[ext_resource type="PackedScene" uid="uid://bnm16edtntj06" path="res://scenes/playerAssociated/the_player.tscn" id="2_t21ho"]
 [ext_resource type="Texture2D" uid="uid://6cwi5lhw3t17" path="res://sprites/icon.svg" id="3_ltld7"]
-[ext_resource type="PackedScene" uid="uid://mou554a5cchi" path="res://scenes/debug_prop.tscn" id="3_t21ho"]
+[ext_resource type="PackedScene" path="res://scenes/debug_prop.tscn" id="3_t21ho"]
 
 [node name="worldRoot" type="Node2D"]
 

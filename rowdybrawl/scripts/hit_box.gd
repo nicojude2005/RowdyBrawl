@@ -3,7 +3,7 @@ class_name hitBox
 
 var myZIndex
 var zReach = 5
-@export var damage : int
+@export var damage : float
 var duration : float = 10000
 var activeAfter : float = 0
 var lifeTimer : float = 0
