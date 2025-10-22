@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://v6gwxb55ikb1"]
+[gd_scene load_steps=5 format=3 uid="uid://v6gwxb55ikb1"]
 
-[ext_resource type="PackedScene" uid="uid://bnm16edtntj06" path="res://scenes/playerAssociated/the_player.tscn" id="2_t21ho"]
+[ext_resource type="PackedScene" uid="uid://bnm16edtntj06" path="res://scenes/playerAssociated/playerAttacks/the_player.tscn" id="2_t21ho"]
 [ext_resource type="Texture2D" uid="uid://6cwi5lhw3t17" path="res://sprites/icon.svg" id="3_ltld7"]
-[ext_resource type="PackedScene" path="res://scenes/debug_prop.tscn" id="3_t21ho"]
+[ext_resource type="PackedScene" uid="uid://mou554a5cchi" path="res://scenes/debug_prop.tscn" id="3_t21ho"]
+[ext_resource type="PackedScene" uid="uid://dkki731l64w6v" path="res://scenes/enemy.tscn" id="4_ltld7"]
 
 [node name="worldRoot" type="Node2D"]
 
@@ -16,6 +17,7 @@ position = Vector2(-62, 27)
 position = Vector2(114, 86)
 
 [node name="floorExample" type="Sprite2D" parent="."]
+visible = false
 z_index = -4096
 position = Vector2(-18, 109)
 scale = Vector2(26.414063, 6.313281)
@@ -24,3 +26,14 @@ texture = ExtResource("3_ltld7")
 [node name="debugProp3" parent="." instance=ExtResource("3_t21ho")]
 position = Vector2(1, 139)
 scale = Vector2(1, 0.6399994)
+
+[node name="enemies" type="Node" parent="."]
+
+[node name="enemy" parent="enemies" instance=ExtResource("4_ltld7")]
+position = Vector2(-254, -21)
+
+[node name="enemy2" parent="enemies" instance=ExtResource("4_ltld7")]
+position = Vector2(-249, 161)
+
+[node name="enemy3" parent="enemies" instance=ExtResource("4_ltld7")]
+position = Vector2(-404, 124)

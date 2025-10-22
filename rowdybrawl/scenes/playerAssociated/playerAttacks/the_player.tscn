@@ -17,6 +17,7 @@ script = ExtResource("1_qsbax")
 
 [node name="playerBody" type="CharacterBody2D" parent="."]
 unique_name_in_owner = true
+collision_layer = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="playerBody"]
 position = Vector2(0, -2)
@@ -45,6 +46,8 @@ texture = ExtResource("3_opa1r")
 z_as_relative = false
 
 [node name="Area2D" type="Area2D" parent="playerBody/hitBox"]
+collision_layer = 3
+collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="playerBody/hitBox/Area2D"]
 position = Vector2(0.5, -30)
@@ -57,4 +60,10 @@ texture_filter = 1
 position = Vector2(0, -32)
 texture = ExtResource("3_ql0lh")
 
+[node name="enemy_attack_cooldown_timer" type="Timer" parent="playerBody"]
+wait_time = 0.5
+
 [node name="cameraController" parent="." instance=ExtResource("3_olns3")]
+
+[connection signal="body_entered" from="playerBody/hitBox/Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="timeout" from="playerBody/enemy_attack_cooldown_timer" to="." method="_on_enemy_attack_cooldown_timer_timeout"]

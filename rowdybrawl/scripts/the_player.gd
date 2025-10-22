@@ -9,12 +9,17 @@ class_name player   # the tutorial doesnt talk about this(because technically th
 @onready var rich_text_label: RichTextLabel = $playerBody/RichTextLabel
 @onready var shadow: Sprite2D = $playerBody/shadow
 @onready var hit_box: Node2D = $playerBody/hitBox
+@onready var enemy_attack_cooldown_timer: Timer = $playerBody/enemy_attack_cooldown_timer
 
 const LIGHT_ATTACK = preload("uid://cclox11udehj4")
 const HEAVY_ATTACK = preload("uid://df6js1m8i34eb")
 const AIR_LIGHT_ATTACK = preload("uid://b1mf0xdo3wvpr")
 const AIR_HEAVY_ATTACK = preload("uid://c0ttx055igf8n")
 
+var enemy_inattack_range = false
+var enemy_attack_cooldown = true
+var health = 100
+var player_alive = true
 
 
 var maxSpeed = 100
@@ -43,20 +48,28 @@ func _physics_process(delta: float) -> void:     # _physics_process runs in fixe
 	if comboTimer > 0:
 		comboTimer -= delta
 	
+	#enemy_attack()
+	
+	if health <= 0:
+		player_alive = false # add end screen or wtv
+		health = 0
+		print("player has been killed")
+		
+	
 	# attacks and stuff
 	if Input.is_action_just_pressed("lightAttack") and attackBusyTimer <= 0:
 		if grounded:
 			doAttackCheckCombos("L")
 		else:
 			doAttackCheckCombos("A")
-		print(comboString)
+		#print(comboString)
 		
 	elif Input.is_action_just_pressed("heavyAttack") and attackBusyTimer <= 0:
 		if grounded:
 			doAttackCheckCombos("H")
 		else:
 			doAttackCheckCombos("S")
-		print(comboString)
+		#print(comboString)
 	
 #	basic movement across the plane
 	if Input.is_action_pressed("left"):
@@ -201,4 +214,24 @@ func applyFrictionY():
 		playerBody.velocity.y -= (playerBody.velocity.y / abs(playerBody.velocity.y)) * groundFriction * yReductionPercent # subtracts friction force opposite of their direction of movement
 	else:
 		playerBody.velocity.y = 0 
+		
+func player():
+	pass #used to check if player enters enemies hitbox
+
+func _on_area_2d_body_entered(body: Node2D) -> void:
+	if body.has_method("enemy"):
+		enemy_inattack_range = true
 	
+func _on_area_2d_body_exited(body: Node2D) -> void:
+	if body.has_method("enemy"):
+		enemy_inattack_range = false
+		
+func enemy_attack():
+	if enemy_inattack_range and enemy_attack_cooldown:
+		health -= 10
+		enemy_attack_cooldown = false
+		enemy_attack_cooldown_timer.start()
+		print(health)
+		
+func _on_enemy_attack_cooldown_timer_timeout() -> void:
+	enemy_attack_cooldown = true
