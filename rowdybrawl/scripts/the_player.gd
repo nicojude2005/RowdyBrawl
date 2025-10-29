@@ -21,7 +21,7 @@ var enemy_attack_cooldown = true
 var health = 100
 var player_alive = true
 
-
+var facingDir = 1
 var maxSpeed = 100
 var accelaration = 20
 var groundFriction = 10      # these set up basic ground movement
@@ -107,8 +107,9 @@ func _physics_process(delta: float) -> void:     # _physics_process runs in fixe
 		land()
 	
 #	disables ground collision when high enough in the air
-	if playerYPosition > 2500:
+	if playerYPosition > 500:
 		playerBody.collision_mask = 2
+		playerBody.collision_layer = 2
 	#rich_text_label.text = str(playerBody.collision_mask)
 	
 #	Z ordering bs to make it LOOK like the player is moving all 3D-like
@@ -175,18 +176,26 @@ func letterToAttack(attack):
 			print("ERROR, UNKNOWN ATTACK REQUESTED")
 
 func flipToDirection(flipToRight : bool):
-	if flipToRight and playerBody.scale.y < 1:
-		playerBody.rotation_degrees = 0
-		playerBody.scale.y = 1
-	elif !flipToRight and playerBody.scale.y > -1:
-		playerBody.rotation_degrees = 180
-		playerBody.scale.y = -1
+	if flipToRight and  sprite_2d.flip_h:
+		#playerBody.rotation_degrees = 0
+		#playerBody.scale.y = 1
+		sprite_2d.flip_h = false
+		facingDir = 1
+	elif !flipToRight and not sprite_2d.flip_h:
+		#playerBody.rotation_degrees = 180
+		#playerBody.scale.y = -1
+		sprite_2d.flip_h = true
+		facingDir = -1
 
 func spawnAttack(hitboxToUse : PackedScene, attackDuration : float, attackEndlag : float, attackDamage: float):
 	var attackHitbox : hitBox = hitboxToUse.instantiate();
-	attackHitbox.myZIndex = playerBody.position.y
+	attackHitbox.myZIndex = playerBody.global_position.y
 	hit_box.add_child(attackHitbox)
 	attackHitbox.damage = attackDamage
+	attackHitbox.dir = facingDir
+	if facingDir == -1:
+		attackHitbox.rotation_degrees = 180
+		attackHitbox.scale.y = -1
 	
 	attackHitbox.duration = attackDuration
 	attackBusyTimer = attackEndlag
@@ -201,6 +210,7 @@ func land():
 	playerYVelocity = 0
 	playerYPosition = 0
 	playerBody.collision_mask = 1
+	playerBody.collision_layer = 1
 
 func applyFrictionX():
 	if abs(playerBody.velocity.x) > groundFriction:   # if the player is moving faster than the friction force

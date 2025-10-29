@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://dkki731l64w6v"]
+[gd_scene load_steps=22 format=3 uid="uid://bto47b1qeehvq"]
 
 [ext_resource type="Texture2D" uid="uid://b3lxef86dfk7y" path="res://sprites/placeholder for enemy sprite.png" id="1_7p1mj"]
 [ext_resource type="Script" uid="uid://lbc87ih2wosb" path="res://scripts/enemy.gd" id="1_md0e3"]
@@ -129,17 +129,19 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_ile5s"]
 radius = 83.09633
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_1x4g4"]
-radius = 12.0
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_md0e3"]
+radius = 3.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_md0e3"]
 radius = 21.095022
 
 [node name="enemy" type="CharacterBody2D"]
+collision_mask = 16
 script = ExtResource("1_md0e3")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
+position = Vector2(0, -13)
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_shcg2")
 animation = &"idle"
@@ -152,13 +154,15 @@ collision_mask = 2
 shape = SubResource("CircleShape2D_ile5s")
 
 [node name="enemyCollision" type="CollisionShape2D" parent="."]
-position = Vector2(0, 2)
-shape = SubResource("CircleShape2D_1x4g4")
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_md0e3")
 
 [node name="enemy_hitbox" type="Area2D" parent="."]
+position = Vector2(-1, -17)
+collision_layer = 4
+collision_mask = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="enemy_hitbox"]
-position = Vector2(0, 3)
 shape = SubResource("CircleShape2D_md0e3")
 
 [connection signal="body_entered" from="detection_area" to="." method="_on_detection_area_body_entered"]

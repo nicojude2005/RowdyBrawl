@@ -6,5 +6,7 @@
 script = ExtResource("1_ido3m")
 
 [node name="hurtArea" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 4
 
-[connection signal="body_shape_entered" from="hurtArea" to="." method="_on_hurt_area_body_shape_entered"]
+[connection signal="area_entered" from="hurtArea" to="." method="_on_hurt_area_area_entered"]
