@@ -9,9 +9,8 @@ radius = 14.0
 
 [node name="LightAttack" instance=ExtResource("1_0xsnh")]
 texture_filter = 1
-damage = 10
 knockbackDir = Vector2(1, 0)
-knockbackStrength = 500
+knockbackStrength = 50
 stunDuration = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="hurtArea" index="0"]

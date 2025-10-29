@@ -10,9 +10,14 @@ var lifeTimer : float = 0
 @export var knockbackDir : Vector2 = Vector2.ZERO
 @export var knockbackStrength = 0
 @export var stunDuration = 0
+
+var hitEnemies : Array
+
+var userKnockbackOnHitDir : Vector2 = Vector2.ZERO
+var userKnockbackOnHitStrength : float = 0.0
 var dir = 1
 
-
+var userRef : Node2D
 
 func zPosCheck(body : Node2D) -> bool:
 	var enemyZIndex = body.global_position.y
@@ -37,12 +42,18 @@ func removeSelf():
 
 func damageEnemy(targetEnemy : Enemy):
 	targetEnemy.take_hit(damage,Vector2(knockbackDir.x * dir,knockbackDir.y), knockbackStrength, stunDuration)
+	if targetEnemy.grounded:
+		knockbackDir = knockbackDir.normalized()
+		targetEnemy.applyKnockback(Vector2(knockbackDir.x * dir,0), knockbackStrength * 10)
 
 
 func _on_hurt_area_area_entered(area: Area2D) -> void:
 	var body : Enemy
 	if area.name == "enemy_hitbox":
 		body = area.get_parent()
-		if zPosCheck(body):
+		if zPosCheck(body) and hitEnemies.find(body) == -1:
 			damageEnemy(body)
+			hitEnemies.append(body)
+			if userKnockbackOnHitDir != Vector2.ZERO and userRef.has_method("applyKnockback"):
+				userRef.applyKnockback(userKnockbackOnHitDir, userKnockbackOnHitStrength)
 		

@@ -75,22 +75,32 @@ func _physics_process(delta: float) -> void:     # _physics_process runs in fixe
 	if Input.is_action_pressed("left"):
 		flipToDirection(false)
 		if playerBody.velocity.x > -maxSpeed:    # Checks if the player's speed to the left is below the max speed, before accelarating in that direction
-			playerBody.velocity.x -= accelaration
+			if !grounded:
+				playerBody.velocity.x -= accelaration * 0.1
+			else:
+				playerBody.velocity.x -= accelaration
 			
 	elif Input.is_action_pressed("right"):       
 		flipToDirection(true)
 		if playerBody.velocity.x < maxSpeed:     # Checks if the player's speed to the right is below the max speed, before accelarating in that direction
-			playerBody.velocity.x += accelaration
-	else:
-		applyFrictionX()  # this is to slow the player to a stop if they are not holding a direction
+			if !grounded:
+				playerBody.velocity.x += accelaration * 0.1
+			else:
+				playerBody.velocity.x += accelaration
+
 	if Input.is_action_pressed("up"):
 		if playerBody.velocity.y > -maxSpeed * yReductionPercent:
-			playerBody.velocity.y -= accelaration * yReductionPercent
+			if !grounded:
+				playerBody.velocity.y -= accelaration * yReductionPercent * 0.1
+			else:
+				playerBody.velocity.y -= accelaration * yReductionPercent
 	elif Input.is_action_pressed("down"):
 		if playerBody.velocity.y < maxSpeed * yReductionPercent:
-			playerBody.velocity.y += accelaration * yReductionPercent
-	else:
-		applyFrictionY()
+			if !grounded:
+				playerBody.velocity.y += accelaration * yReductionPercent * 0.1
+			else:
+				playerBody.velocity.y += accelaration * yReductionPercent
+		
 		
 #	jump shit
 	if Input.is_action_just_pressed("jump"):
@@ -102,6 +112,9 @@ func _physics_process(delta: float) -> void:     # _physics_process runs in fixe
 	if !grounded:
 		playerYVelocity -= 9.8
 		playerYPosition += playerYVelocity
+	else:
+		applyFrictionY()
+		applyFrictionX()  # this is to slow the player to a stop if they are not holding a direction
 	
 	if playerYPosition <= 0 and !grounded:
 		land()
@@ -123,6 +136,7 @@ func _physics_process(delta: float) -> void:     # _physics_process runs in fixe
 	
 
 func doAttackCheckCombos(attack : String):
+	var currentAttack : hitBox
 #	check for a potential next hit of a combo
 	if comboTimer > 0:
 		comboString += attack
@@ -130,21 +144,29 @@ func doAttackCheckCombos(attack : String):
 		match comboString:
 #			flurry of light attacks
 			"LL":
-				spawnAttack(LIGHT_ATTACK, 0.2, 0.1, 10)
+				currentAttack = spawnAttack(LIGHT_ATTACK, 0.2, 0.1, 10)
 			"LLL":
-				spawnAttack(LIGHT_ATTACK, 0.15, 0.1, 10)
+				currentAttack = spawnAttack(LIGHT_ATTACK, 0.15, 0.1, 10)
+				applyKnockback(Vector2(facingDir,0), 100)
 #			Classic Combo
 			"LLH":
-				spawnAttack(HEAVY_ATTACK, 0.3, 0.4, 20)
+				currentAttack = spawnAttack(HEAVY_ATTACK, 0.3, 0.4, 20)
+				applyKnockback(Vector2(facingDir,0), 200)
 				#STUN ENEMY (TODO)
 #			Slam up then down
 			"LH":
-				spawnAttack(HEAVY_ATTACK, 0.2, 0.4, 20)
+				currentAttack = spawnAttack(HEAVY_ATTACK, 0.2, 0.4, 20)
+				currentAttack.knockbackDir = Vector2(0, -1)
+				currentAttack.knockbackStrength = 350
 				#KNOCK ENEMY UP (TODO)
 			"LHA":
-				spawnAttack(AIR_LIGHT_ATTACK, 0.2, 0.3, 10)
+				currentAttack = spawnAttack(AIR_LIGHT_ATTACK, 0.2, 0.3, 10)
 			"LHAS":
-				spawnAttack(AIR_HEAVY_ATTACK, 0.6, 0.7, 50)
+				currentAttack = spawnAttack(AIR_HEAVY_ATTACK, 0.6, 0.7, 50)
+				currentAttack.knockbackDir = Vector2(0,1)
+				currentAttack.knockbackStrength = 300
+				currentAttack.userKnockbackOnHitDir = Vector2(0,1)
+				currentAttack.userKnockbackOnHitStrength = currentAttack.knockbackStrength 
 				#KNOCK ENEMY DOWN (TODO)
 			_:
 				comboString = attack
@@ -158,20 +180,26 @@ func doAttackCheckCombos(attack : String):
 	
 
 func letterToAttack(attack):
+	var currentAttack : hitBox
 	match attack:
 		"L":
 			# spawn a hitbox in front of the player, for a Duration equal to the first number
 			# and it has the size and position that is defined in LIGHT_ATTACK
 			# Second number denotes how long the player is stuck in the attack animation
 			# Third number denotes the damage amount
-			spawnAttack(LIGHT_ATTACK, 0.15, 0.2, 10)
+			currentAttack = spawnAttack(LIGHT_ATTACK, 0.15, 0.2, 10)
 		"H":
 			# same thing as light attack but with different numbers
-			spawnAttack(HEAVY_ATTACK, 0.4, 0.5, 20)
+			currentAttack = spawnAttack(HEAVY_ATTACK, 0.4, 0.5, 20)
+			applyKnockback(Vector2(facingDir,0), 100)
 		"A":
-			spawnAttack(AIR_LIGHT_ATTACK, 0.10, 0.15, 8)
+			currentAttack = spawnAttack(AIR_LIGHT_ATTACK, 0.10, 0.15, 8)
+			currentAttack.userKnockbackOnHitDir = Vector2(0,-1)
+			currentAttack.userKnockbackOnHitStrength = 150
 		"S":
-			spawnAttack(AIR_HEAVY_ATTACK, 0.3, 0.4, 16)
+			currentAttack = spawnAttack(AIR_HEAVY_ATTACK, 0.3, 0.4, 16)
+			currentAttack.userKnockbackOnHitDir = Vector2(0,-1)
+			currentAttack.userKnockbackOnHitStrength = 150
 		_:
 			print("ERROR, UNKNOWN ATTACK REQUESTED")
 
@@ -187,7 +215,7 @@ func flipToDirection(flipToRight : bool):
 		sprite_2d.flip_h = true
 		facingDir = -1
 
-func spawnAttack(hitboxToUse : PackedScene, attackDuration : float, attackEndlag : float, attackDamage: float):
+func spawnAttack(hitboxToUse : PackedScene, attackDuration : float, attackEndlag : float, attackDamage: float) -> hitBox:
 	var attackHitbox : hitBox = hitboxToUse.instantiate();
 	attackHitbox.myZIndex = playerBody.global_position.y
 	hit_box.add_child(attackHitbox)
@@ -196,9 +224,12 @@ func spawnAttack(hitboxToUse : PackedScene, attackDuration : float, attackEndlag
 	if facingDir == -1:
 		attackHitbox.rotation_degrees = 180
 		attackHitbox.scale.y = -1
+	attackHitbox.userRef = self
 	
 	attackHitbox.duration = attackDuration
 	attackBusyTimer = attackEndlag
+	
+	return attackHitbox
 
 func jump():
 	playerYVelocity = jumpVelocity
@@ -224,6 +255,15 @@ func applyFrictionY():
 		playerBody.velocity.y -= (playerBody.velocity.y / abs(playerBody.velocity.y)) * groundFriction * yReductionPercent # subtracts friction force opposite of their direction of movement
 	else:
 		playerBody.velocity.y = 0 
+		
+func applyKnockback(direction : Vector2, strength : float):
+	direction = direction.normalized()
+	if direction.x != 0:
+		playerBody.velocity.x = direction.x * strength
+	if direction.y != 0:
+		playerYVelocity = -direction.y * strength
+	if direction.y < 0:
+		grounded = false
 		
 func player():
 	pass #used to check if player enters enemies hitbox

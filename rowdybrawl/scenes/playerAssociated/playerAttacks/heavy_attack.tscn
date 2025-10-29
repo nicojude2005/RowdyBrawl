@@ -9,9 +9,8 @@ radius = 24.0
 
 [node name="heavyAttack" instance=ExtResource("1_ieak1")]
 texture_filter = 1
-damage = 20
 knockbackDir = Vector2(1, 0)
-knockbackStrength = 1000
+knockbackStrength = 100
 stunDuration = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="hurtArea" index="0"]

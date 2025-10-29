@@ -1,7 +1,8 @@
 extends CharacterBody2D
 class_name Enemy
 
-@onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
+@onready var animated_sprite_2d: AnimatedSprite2D = $enemy_hitbox/AnimatedSprite2D
+@onready var enemy_hitbox: Area2D = $enemy_hitbox
 
 var speed = 45
 var playerRef: Node2D = null
@@ -16,6 +17,14 @@ var friction: float = 300.0
 var stunned: bool = false
 var stun_timer: float = 0.0
 
+var yPosition : float = 0.0
+var yVelocity : float = 0.0 # to handle movement in the (half-fake) Z direction
+
+var jumpTimer : float = 2
+var grounded = true                # handles jumping and falling
+var jumpVelocity : float = 300      
+var gravity: int = ProjectSettings.get_setting("physics/2d/default_gravity") 
+
 func _physics_process(delta: float) -> void:
 	# stun countdown
 	if stunned:
@@ -24,13 +33,21 @@ func _physics_process(delta: float) -> void:
 			stunned = false
 	
 	# friction to knockback velocity
-	applyFrictionX()
-	applyFrictionY()
+	if grounded:
+		applyFrictionX()
+		applyFrictionY()
+	
+	if jumpTimer <= 0:
+		if grounded:
+			jump()
+		jumpTimer = 2;
+	else:
+		jumpTimer -= delta
 	
 	# Only chase if not stunned
-	if chase and playerRef and not stunned:
+	if chase and playerRef and not stunned and enemy_alive:
 		var direction = (playerRef.global_position - global_position).normalized()
-		velocity = direction * speed
+		#velocity = direction * speed
 		animated_sprite_2d.play("walk")
 		animated_sprite_2d.flip_h = global_position.x > playerRef.global_position.x
 	else:
@@ -39,7 +56,25 @@ func _physics_process(delta: float) -> void:
 			animated_sprite_2d.play("idle")
 	
 	# Combine movement and knockback
+	if !grounded:
+		yVelocity -= 9.8
+		yPosition += yVelocity
 	
+	if yPosition <= 0 and !grounded:
+		land()
+	
+#	disables ground collision when high enough in the air
+	if yPosition > 500:
+		set_collision_layer_value(1, false)
+		set_collision_layer_value(2, true)
+		
+		set_collision_layer_value(5, false)
+		set_collision_layer_value(2, true)
+	
+	if (global_position.y < RenderingServer.CANVAS_ITEM_Z_MAX and global_position.y > RenderingServer.CANVAS_ITEM_Z_MIN):
+		animated_sprite_2d.z_index = int(global_position.y)
+	
+	enemy_hitbox.position.y = -(yPosition / 100)
 	
 	move_and_slide()
 
@@ -50,7 +85,7 @@ func take_hit(damage: int, knockback_dir: Vector2, knockback_strength: float, st
 	
 	
 	# Apply knockback and stun
-	velocity = knockback_dir.normalized() * knockback_strength
+	applyKnockback(knockback_dir,knockback_strength)
 	stunned = true
 	stun_timer = stun_duration
 	
@@ -70,6 +105,28 @@ func _on_detection_area_body_entered(body: Node2D) -> void:
 func _on_detection_area_body_exited(body: Node2D) -> void:
 	playerRef= null
 	chase = false
+
+func jump():
+	yVelocity = jumpVelocity
+	grounded = false
+
+func land():
+	grounded = true
+	yVelocity = 0
+	yPosition = 0
+	set_collision_layer_value(1, true)
+	set_collision_layer_value(2, false)
+	set_collision_mask_value(5, true)
+	set_collision_mask_value(1, false)
+	
+func applyKnockback(direction : Vector2, strength : float):
+	direction = direction.normalized()
+	if direction.x != 0:
+		velocity.x = direction.x * strength
+	if direction.y != 0:
+		yVelocity = -direction.y * strength
+	if direction.y < 0:
+		grounded = false
 
 func applyFrictionX():
 	if abs(velocity.x) > friction:   # if the player is moving faster than the friction force
