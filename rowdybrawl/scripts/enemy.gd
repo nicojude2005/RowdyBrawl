@@ -3,12 +3,16 @@ class_name Enemy
 
 @onready var animated_sprite_2d: AnimatedSprite2D = $enemy_hitbox/AnimatedSprite2D
 @onready var enemy_hitbox: Area2D = $enemy_hitbox
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
+@onready var enemy_collision: CollisionShape2D = $enemyCollision
 
 var speed = 45
 var playerRef: Node2D = null
 var chase = false
 var health = 100
 var enemy_alive = true
+
+var facingDir = 1
 
 var yReductionAmount = 0.7
 
@@ -20,10 +24,14 @@ var stun_timer: float = 0.0
 var yPosition : float = 0.0
 var yVelocity : float = 0.0 # to handle movement in the (half-fake) Z direction
 
+var attackBusyTimer : float = 0.0
+
 var jumpTimer : float = 2
 var grounded = true                # handles jumping and falling
 var jumpVelocity : float = 300      
 var gravity: int = ProjectSettings.get_setting("physics/2d/default_gravity") 
+
+var removeTimer := 3.0
 
 func _physics_process(delta: float) -> void:
 	# stun countdown
@@ -32,14 +40,18 @@ func _physics_process(delta: float) -> void:
 		if stun_timer <= 0.0:
 			stunned = false
 	
+	if !enemy_alive:
+		removeTimer -= delta
+		if removeTimer <= 0:
+			removeFromScene()
+	
 	# friction to knockback velocity
 	if grounded:
 		applyFrictionX()
 		applyFrictionY()
 	
 	if jumpTimer <= 0:
-		if grounded:
-			jump()
+		#spawnAttack(LIGHT_ATTACK, 1, 1, 10)
 		jumpTimer = 2;
 	else:
 		jumpTimer -= delta
@@ -80,10 +92,8 @@ func _physics_process(delta: float) -> void:
 
 # Called when the player attacks the enemy
 func take_hit(damage: int, knockback_dir: Vector2, knockback_strength: float, stun_duration: float) -> void:
-	
 	health -= damage
-	
-	
+	animation_player.play("hitFlash")
 	# Apply knockback and stun
 	applyKnockback(knockback_dir,knockback_strength)
 	stunned = true
@@ -96,7 +106,13 @@ func take_hit(damage: int, knockback_dir: Vector2, knockback_strength: float, st
 func die():
 	enemy_alive = false
 	health = 0
-	print("enemy has been killed")
+	applyKnockback(Vector2(.3,-1), 5000)
+	enemy_collision.set_deferred("disabled", true)
+	
+func removeFromScene():
+	print("FONEe")
+	call_deferred("queue_free")
+	
 
 func _on_detection_area_body_entered(body: Node2D) -> void:
 	playerRef= body
@@ -105,6 +121,22 @@ func _on_detection_area_body_entered(body: Node2D) -> void:
 func _on_detection_area_body_exited(body: Node2D) -> void:
 	playerRef= null
 	chase = false
+
+#func spawnAttack(hitboxToUse : PackedScene, attackDuration : float, attackEndlag : float, attackDamage: float) -> hitBox:
+	#var attackHitbox : hitBox = hitboxToUse.instantiate();
+	#attackHitbox.myZIndex = global_position.y
+	#enemy_hitbox.add_child(attackHitbox)
+	#attackHitbox.damage = attackDamage
+	#attackHitbox.dir = facingDir
+	#if facingDir == -1:
+		#attackHitbox.rotation_degrees = 180
+		#attackHitbox.scale.y = -1
+	#attackHitbox.userRef = self
+	#
+	#attackHitbox.duration = attackDuration
+	#attackBusyTimer = attackEndlag
+	
+	#return attackHitbox
 
 func jump():
 	yVelocity = jumpVelocity

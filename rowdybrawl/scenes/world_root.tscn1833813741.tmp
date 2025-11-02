@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://bnm16edtntj06" path="res://scenes/playerAssociated/playerAttacks/the_player.tscn" id="2_t21ho"]
 [ext_resource type="Texture2D" uid="uid://6cwi5lhw3t17" path="res://sprites/icon.svg" id="3_ltld7"]
 [ext_resource type="PackedScene" path="res://scenes/debug_prop.tscn" id="3_t21ho"]
-[ext_resource type="PackedScene" uid="uid://bto47b1qeehvq" path="res://scenes/playerAssociated/enemy.tscn" id="4_ltld7"]
+[ext_resource type="PackedScene" uid="uid://bto47b1qeehvq" path="res://scenes/enemyStuff/enemy.tscn" id="4_ltld7"]
 
 [node name="worldRoot" type="Node2D"]
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://bto47b1qeehvq"]
+[gd_scene load_steps=25 format=3 uid="uid://bto47b1qeehvq"]
 
 [ext_resource type="Texture2D" uid="uid://b3lxef86dfk7y" path="res://sprites/placeholder for enemy sprite.png" id="1_7p1mj"]
 [ext_resource type="Script" uid="uid://lbc87ih2wosb" path="res://scripts/enemy.gd" id="1_md0e3"]
@@ -135,6 +135,43 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="Animation" id="Animation_4ra3w"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("enemy_hitbox/AnimatedSprite2D:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_md0e3"]
+resource_name = "hitFlash"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("enemy_hitbox/AnimatedSprite2D:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.06365051, 0.2),
+"transitions": PackedFloat32Array(1, 0.39229208, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(4.415934, 4.415934, 4.415934, 1), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_5uy6h"]
+_data = {
+&"RESET": SubResource("Animation_4ra3w"),
+&"hitFlash": SubResource("Animation_md0e3")
+}
+
 [node name="enemy" type="CharacterBody2D"]
 collision_mask = 16
 script = ExtResource("1_md0e3")
@@ -164,6 +201,11 @@ position = Vector2(0, -14)
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_shcg2")
 animation = &"idle"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_5uy6h")
+}
 
 [connection signal="body_entered" from="detection_area" to="." method="_on_detection_area_body_entered"]
 [connection signal="body_exited" from="detection_area" to="." method="_on_detection_area_body_exited"]
