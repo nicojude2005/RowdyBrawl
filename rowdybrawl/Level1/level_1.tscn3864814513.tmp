@@ -1,0 +1,74 @@
+[gd_scene load_steps=6 format=3 uid="uid://cqq8uovueylvg"]
+
+[ext_resource type="PackedScene" uid="uid://b5c8708romg66" path="res://scenes/playerAssociated/the_player.tscn" id="1_dgsmt"]
+[ext_resource type="Texture2D" uid="uid://byohiugj7t85y" path="res://Level1/levelSprites/level1Screen1Larger.png" id="2_im851"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_im851"]
+size = Vector2(867, 85)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5mv53"]
+size = Vector2(298.92273, 65.93646)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_e0h6v"]
+size = Vector2(355, 85)
+
+[node name="Level1" type="Node2D"]
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="."]
+offset_left = 54.0
+offset_top = -251.0
+offset_right = 350.0
+offset_bottom = -211.0
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+text = "Could make this a prop so it can be 3D
+"
+fit_content = true
+autowrap_mode = 0
+
+[node name="thePlayer" parent="." instance=ExtResource("1_dgsmt")]
+position = Vector2(-21, 131)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = -4096
+position = Vector2(2187, 5)
+texture = ExtResource("2_im851")
+
+[node name="level1TallCollision" type="StaticBody2D" parent="Sprite2D"]
+position = Vector2(-2, 1)
+collision_layer = 3
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite2D/level1TallCollision"]
+position = Vector2(-2239.5, -37.5)
+shape = SubResource("RectangleShape2D_im851")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Sprite2D/level1TallCollision"]
+position = Vector2(-1718.9949, -125.74324)
+rotation = -0.7752242
+shape = SubResource("RectangleShape2D_5mv53")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="Sprite2D/level1TallCollision"]
+position = Vector2(-2504, 360)
+shape = SubResource("RectangleShape2D_e0h6v")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+offset_left = -461.0
+offset_top = 277.0
+offset_right = -165.0
+offset_bottom = 317.0
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+text = "Could make this a prop so it can be 3D
+"
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="."]
+offset_left = 944.0
+offset_top = 107.0
+offset_right = 1240.0
+offset_bottom = 147.0
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+text = "Can perhaps add cars? could be silly
+"
+fit_content = true
+autowrap_mode = 0

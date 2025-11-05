@@ -9,7 +9,6 @@ class_name player   # the tutorial doesnt talk about this(because technically th
 @onready var rich_text_label: RichTextLabel = $playerBody/RichTextLabel
 @onready var shadow: Sprite2D = $playerBody/shadow
 @onready var hit_box: Node2D = $playerBody/hitBox
-@onready var enemy_attack_cooldown_timer: Timer = $playerBody/enemy_attack_cooldown_timer
 
 const LIGHT_ATTACK = preload("uid://cclox11udehj4")
 const HEAVY_ATTACK = preload("uid://df6js1m8i34eb")
@@ -22,16 +21,16 @@ var health = 100
 var player_alive = true
 
 var facingDir = 1
-var maxSpeed = 100
+var maxSpeed = 200
 var accelaration = 20
-var groundFriction = 10      # these set up basic ground movement
+var groundFriction = 15   # these set up basic ground movement
 var yReductionPercent = 0.7
 
 var playerYPosition : float = 0.0
 var playerYVelocity : float = 0.0 # to handle movement in the (half-fake) Z direction
 
 var grounded = true                # handles jumping and falling
-var jumpVelocity : float = 300      
+var jumpVelocity : float = 400      
 var gravity: int = ProjectSettings.get_setting("physics/2d/default_gravity") 
 
 var stun_timer := 0.0
@@ -91,7 +90,7 @@ func _physics_process(delta: float) -> void:     # _physics_process runs in fixe
 				playerBody.velocity.x += accelaration
 
 	if Input.is_action_pressed("up"):
-		if playerBody.velocity.y > -maxSpeed * yReductionPercent:
+		if playerBody.velocity.y > (-maxSpeed * yReductionPercent):
 			if !grounded:
 				playerBody.velocity.y -= accelaration * yReductionPercent * 0.1
 			else:
@@ -143,6 +142,7 @@ func doAttackCheckCombos(attack : String):
 	if comboTimer > 0:
 		comboString += attack
 		comboTimer = comboChainTime
+		print(comboString)
 		match comboString:
 #			flurry of light attacks
 			"LL":
@@ -150,6 +150,15 @@ func doAttackCheckCombos(attack : String):
 			"LLL":
 				currentAttack = spawnAttack(LIGHT_ATTACK, 0.15, 0.1, 10)
 				applyKnockback(Vector2(facingDir,0), 100)
+				
+#			special debug combo to fly forward
+			"LLLL":
+				currentAttack = spawnAttack(LIGHT_ATTACK, 0, 0,0)
+			"LLLLL":
+				currentAttack = spawnAttack(LIGHT_ATTACK, 0, 0,0)
+			"LLLLLS":
+				currentAttack = spawnAttack(AIR_HEAVY_ATTACK, 0, 0,0)
+				applyKnockback(Vector2(facingDir,.2), 1000)
 #			Classic Combo
 			"LLH":
 				currentAttack = spawnAttack(HEAVY_ATTACK, 0.3, 0.4, 20)
@@ -253,7 +262,7 @@ func applyFrictionX():
 	
 
 func applyFrictionY():
-	if abs(playerBody.velocity.y) > groundFriction:   # if the player is moving faster than the friction force
+	if abs(playerBody.velocity.y) > groundFriction * yReductionPercent:   # if the player is moving faster than the friction force
 		playerBody.velocity.y -= (playerBody.velocity.y / abs(playerBody.velocity.y)) * groundFriction * yReductionPercent # subtracts friction force opposite of their direction of movement
 	else:
 		playerBody.velocity.y = 0 

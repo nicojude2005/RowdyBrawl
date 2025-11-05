@@ -55,23 +55,23 @@ func _physics_process(delta: float) -> void:
 		applyFrictionX()
 		applyFrictionY()
 	
-	if hitTimer <= 0 and stun_timer <= 0:
-		spawnAttack(ENEMY_EXAMPLE_ATTACK, .2, 1, 10)
-		hitTimer = 2;
-	elif stun_timer <= 0:
-		hitTimer -= delta
+	#if hitTimer <= 0 and stun_timer <= 0:
+		#spawnAttack(ENEMY_EXAMPLE_ATTACK, .2, 1, 10)
+		#hitTimer = 2;
+	#elif stun_timer <= 0:
+		#hitTimer -= delta
 	
 	# Only chase if not stunned
-	if chase and playerRef and stun_timer <= 0 and enemy_alive:
-		var direction = (playerRef.global_position - global_position).normalized()
-
-		#velocity = direction * speed
-		animated_sprite_2d.play("walk")
-		animated_sprite_2d.flip_h = global_position.x > playerRef.global_position.x
-	else:
-		if  stun_timer > 0:
-			#velocity = Vector2.ZERO
-			animated_sprite_2d.play("idle")
+	#if chase and playerRef and stun_timer <= 0 and enemy_alive:
+		#var direction = (playerRef.global_position - global_position).normalized()
+#
+		##velocity = direction * speed
+		#animated_sprite_2d.play("walk")
+		#animated_sprite_2d.flip_h = global_position.x > playerRef.global_position.x
+	#else:
+		#if  stun_timer > 0:
+			##velocity = Vector2.ZERO
+			#animated_sprite_2d.play("idle")
 	
 	# Combine movement and knockback
 	if !grounded:

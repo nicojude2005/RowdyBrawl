@@ -1,0 +1,114 @@
+[gd_scene load_steps=11 format=3 uid="uid://cqq8uovueylvg"]
+
+[ext_resource type="PackedScene" uid="uid://b5c8708romg66" path="res://scenes/playerAssociated/the_player.tscn" id="1_dgsmt"]
+[ext_resource type="Texture2D" uid="uid://byohiugj7t85y" path="res://Level1/levelSprites/level1Screen1Larger.png" id="2_im851"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_im851"]
+size = Vector2(867, 85)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5mv53"]
+size = Vector2(402.09744, 65.93646)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_e0h6v"]
+size = Vector2(355, 85)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qtbmi"]
+size = Vector2(321, 78)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_opkmy"]
+size = Vector2(253, 74)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2h3pg"]
+size = Vector2(86, 331)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_i80g2"]
+size = Vector2(4324, 72)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jvwuh"]
+size = Vector2(777.48883, 278.24)
+
+[node name="Level1" type="Node2D"]
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="."]
+offset_left = 54.0
+offset_top = -251.0
+offset_right = 350.0
+offset_bottom = -211.0
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+text = "Could make this a prop so it can be 3D
+"
+fit_content = true
+autowrap_mode = 0
+
+[node name="thePlayer" parent="." instance=ExtResource("1_dgsmt")]
+position = Vector2(89, 91)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = -4096
+position = Vector2(2187, 5)
+texture = ExtResource("2_im851")
+
+[node name="level1TallCollision" type="StaticBody2D" parent="Sprite2D"]
+position = Vector2(-2, 1)
+collision_layer = 3
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite2D/level1TallCollision"]
+position = Vector2(-2239.5, -37.5)
+shape = SubResource("RectangleShape2D_im851")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Sprite2D/level1TallCollision"]
+position = Vector2(-1700, -168.00002)
+rotation = -0.85400605
+shape = SubResource("RectangleShape2D_5mv53")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="Sprite2D/level1TallCollision"]
+position = Vector2(-2504, 360)
+shape = SubResource("RectangleShape2D_e0h6v")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="Sprite2D/level1TallCollision"]
+position = Vector2(-1956.5, 363)
+shape = SubResource("RectangleShape2D_qtbmi")
+
+[node name="CollisionShape2D5" type="CollisionShape2D" parent="Sprite2D/level1TallCollision"]
+position = Vector2(-1486, 369)
+shape = SubResource("RectangleShape2D_opkmy")
+
+[node name="CollisionShape2D6" type="CollisionShape2D" parent="Sprite2D/level1TallCollision"]
+position = Vector2(-2714, 155)
+shape = SubResource("RectangleShape2D_2h3pg")
+
+[node name="CollisionShape2D7" type="CollisionShape2D" parent="Sprite2D/level1TallCollision"]
+position = Vector2(10, -325)
+shape = SubResource("RectangleShape2D_i80g2")
+
+[node name="CollisionShape2D8" type="CollisionShape2D" parent="Sprite2D/level1TallCollision"]
+position = Vector2(-503, 411)
+shape = SubResource("RectangleShape2D_i80g2")
+
+[node name="CollisionShape2D9" type="CollisionShape2D" parent="Sprite2D/level1TallCollision"]
+position = Vector2(1774, -17.000015)
+rotation = 1.1259674
+shape = SubResource("RectangleShape2D_jvwuh")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+offset_left = -461.0
+offset_top = 277.0
+offset_right = -165.0
+offset_bottom = 317.0
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+text = "Could make this a prop so it can be 3D
+"
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="."]
+offset_left = 944.0
+offset_top = 107.0
+offset_right = 1240.0
+offset_bottom = 147.0
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+text = "Can perhaps add cars? could be silly
+"
+fit_content = true
+autowrap_mode = 0

@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="RowdyBrawl"
-run/main_scene="uid://v6gwxb55ikb1"
+run/main_scene="uid://cqq8uovueylvg"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://sprites/icon.svg"
 
