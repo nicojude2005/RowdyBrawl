@@ -1,9 +1,9 @@
 [gd_scene load_steps=7 format=3 uid="uid://b5c8708romg66"]
 
 [ext_resource type="Script" uid="uid://d1lb2i55l1d4y" path="res://scripts/the_player.gd" id="1_qsbax"]
+[ext_resource type="Texture2D" uid="uid://dsry6kd4ww052" path="res://sprites/Sprite-0001.png" id="3_cbej2"]
 [ext_resource type="PackedScene" uid="uid://b0py0r48mo2wi" path="res://scenes/playerAssociated/camera_manager.tscn" id="3_olns3"]
 [ext_resource type="Texture2D" uid="uid://dnadcguif2xdk" path="res://sprites/shadowPixel.png" id="3_opa1r"]
-[ext_resource type="Texture2D" uid="uid://ss8hempfs1y8" path="res://sprites/playerBlockOutline64By64.png" id="3_ql0lh"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qsbax"]
 radius = 5.0
@@ -57,6 +57,6 @@ debug_color = Color(0, 0.5930971, 0.73992854, 0.41960785)
 z_index = 1
 texture_filter = 1
 position = Vector2(0, -32)
-texture = ExtResource("3_ql0lh")
+texture = ExtResource("3_cbej2")
 
 [node name="cameraController" parent="." instance=ExtResource("3_olns3")]
