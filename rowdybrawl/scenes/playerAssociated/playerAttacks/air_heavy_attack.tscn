@@ -5,5 +5,8 @@
 [node name="airHeavyAttack" instance=ExtResource("1_7t2lw")]
 knockbackDir = Vector2(0.15, 1)
 
+[node name="CollisionShape2D" parent="hurtArea" index="0"]
+position = Vector2(38, -16)
+
 [node name="Sprite2D" parent="hurtArea/CollisionShape2D" index="0"]
 modulate = Color(1, 0, 0.09411765, 1)

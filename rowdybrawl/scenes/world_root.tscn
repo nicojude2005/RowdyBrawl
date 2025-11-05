@@ -29,6 +29,9 @@ scale = Vector2(1, 0.6399994)
 
 [node name="enemies" type="Node" parent="."]
 
+[node name="enemy6" parent="enemies" instance=ExtResource("4_ltld7")]
+position = Vector2(-542, 410)
+
 [node name="enemy" parent="enemies" instance=ExtResource("4_ltld7")]
 position = Vector2(-236, 272)
 
@@ -37,3 +40,57 @@ position = Vector2(-618, 253)
 
 [node name="enemy3" parent="enemies" instance=ExtResource("4_ltld7")]
 position = Vector2(-409, 282)
+
+[node name="enemy4" parent="enemies" instance=ExtResource("4_ltld7")]
+position = Vector2(-706, 446)
+
+[node name="enemy5" parent="enemies" instance=ExtResource("4_ltld7")]
+position = Vector2(-472, 544)
+
+[node name="enemy7" parent="enemies" instance=ExtResource("4_ltld7")]
+position = Vector2(143, 417)
+
+[node name="enemy8" parent="enemies" instance=ExtResource("4_ltld7")]
+position = Vector2(449, 279)
+
+[node name="enemy9" parent="enemies" instance=ExtResource("4_ltld7")]
+position = Vector2(67, 260)
+
+[node name="enemy10" parent="enemies" instance=ExtResource("4_ltld7")]
+position = Vector2(276, 289)
+
+[node name="enemy11" parent="enemies" instance=ExtResource("4_ltld7")]
+position = Vector2(-21, 453)
+
+[node name="enemy12" parent="enemies" instance=ExtResource("4_ltld7")]
+position = Vector2(-563, 863)
+
+[node name="enemy13" parent="enemies" instance=ExtResource("4_ltld7")]
+position = Vector2(-257, 725)
+
+[node name="enemy14" parent="enemies" instance=ExtResource("4_ltld7")]
+position = Vector2(-639, 706)
+
+[node name="enemy15" parent="enemies" instance=ExtResource("4_ltld7")]
+position = Vector2(-430, 735)
+
+[node name="enemy16" parent="enemies" instance=ExtResource("4_ltld7")]
+position = Vector2(-727, 899)
+
+[node name="enemy17" parent="enemies" instance=ExtResource("4_ltld7")]
+position = Vector2(-493, 997)
+
+[node name="enemy18" parent="enemies" instance=ExtResource("4_ltld7")]
+position = Vector2(122, 870)
+
+[node name="enemy19" parent="enemies" instance=ExtResource("4_ltld7")]
+position = Vector2(428, 732)
+
+[node name="enemy20" parent="enemies" instance=ExtResource("4_ltld7")]
+position = Vector2(46, 713)
+
+[node name="enemy21" parent="enemies" instance=ExtResource("4_ltld7")]
+position = Vector2(255, 742)
+
+[node name="enemy22" parent="enemies" instance=ExtResource("4_ltld7")]
+position = Vector2(-42, 906)

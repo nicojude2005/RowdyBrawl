@@ -8,7 +8,7 @@ knockbackStrength = 0.0
 stunDuration = 0.0
 
 [node name="CollisionShape2D" parent="hurtArea" index="0"]
-position = Vector2(33, -31)
+position = Vector2(39, -19)
 
 [node name="Sprite2D" parent="hurtArea/CollisionShape2D" index="0"]
 modulate = Color(0.12156863, 0.58431375, 1, 1)

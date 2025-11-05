@@ -1,11 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://cclox11udehj4"]
+[gd_scene load_steps=4 format=3 uid="uid://cclox11udehj4"]
 
 [ext_resource type="PackedScene" uid="uid://b0v72xws7qv7b" path="res://scenes/playerAssociated/playerAttacks/hit_box.tscn" id="1_0xsnh"]
 [ext_resource type="Texture2D" uid="uid://6cwi5lhw3t17" path="res://sprites/icon.svg" id="2_uwm0m"]
-[ext_resource type="Texture2D" uid="uid://ss8hempfs1y8" path="res://sprites/playerBlockOutline64By64.png" id="3_4m2gq"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_uwm0m"]
-radius = 14.0
+radius = 16.0
 
 [node name="LightAttack" instance=ExtResource("1_0xsnh")]
 texture_filter = 1
@@ -14,14 +13,9 @@ knockbackStrength = 50
 stunDuration = 0.1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="hurtArea" index="0"]
-position = Vector2(47, -31)
+position = Vector2(31, -31)
 shape = SubResource("CircleShape2D_uwm0m")
 
 [node name="Sprite2D" type="Sprite2D" parent="hurtArea/CollisionShape2D" index="0"]
 scale = Vector2(0.1, 0.1)
 texture = ExtResource("2_uwm0m")
-
-[node name="Sprite2D" type="Sprite2D" parent="." index="1"]
-show_behind_parent = true
-position = Vector2(0, -32)
-texture = ExtResource("3_4m2gq")
