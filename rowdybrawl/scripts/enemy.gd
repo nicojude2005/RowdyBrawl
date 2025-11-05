@@ -5,6 +5,11 @@ class_name Enemy
 @onready var enemy_hitbox: Area2D = $enemy_hitbox
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var enemy_collision: CollisionShape2D = $enemyCollision
+@onready var stun_indicator: Sprite2D = $stunIndicator
+
+@onready var ENEMY_EXAMPLE_ATTACK = load("uid://d3g686l1tme5q")
+
+
 
 var speed = 45
 var playerRef: Node2D = null
@@ -18,7 +23,6 @@ var yReductionAmount = 0.7
 
 var knockback_velocity: Vector2 = Vector2.ZERO
 var friction: float = 300.0
-var stunned: bool = false
 var stun_timer: float = 0.0
 
 var yPosition : float = 0.0
@@ -26,7 +30,7 @@ var yVelocity : float = 0.0 # to handle movement in the (half-fake) Z direction
 
 var attackBusyTimer : float = 0.0
 
-var jumpTimer : float = 2
+var hitTimer : float = 2
 var grounded = true                # handles jumping and falling
 var jumpVelocity : float = 300      
 var gravity: int = ProjectSettings.get_setting("physics/2d/default_gravity") 
@@ -35,10 +39,11 @@ var removeTimer := 3.0
 
 func _physics_process(delta: float) -> void:
 	# stun countdown
-	if stunned:
+	if stun_timer > 0:
 		stun_timer -= delta
-		if stun_timer <= 0.0:
-			stunned = false
+		stun_indicator.visible = true
+	elif stun_timer <= 0 and stun_indicator.visible:
+		stun_indicator.visible = false
 	
 	if !enemy_alive:
 		removeTimer -= delta
@@ -50,20 +55,21 @@ func _physics_process(delta: float) -> void:
 		applyFrictionX()
 		applyFrictionY()
 	
-	if jumpTimer <= 0:
-		#spawnAttack(LIGHT_ATTACK, 1, 1, 10)
-		jumpTimer = 2;
-	else:
-		jumpTimer -= delta
+	if hitTimer <= 0 and stun_timer <= 0:
+		spawnAttack(ENEMY_EXAMPLE_ATTACK, .2, 1, 10)
+		hitTimer = 2;
+	elif stun_timer <= 0:
+		hitTimer -= delta
 	
 	# Only chase if not stunned
-	if chase and playerRef and not stunned and enemy_alive:
+	if chase and playerRef and stun_timer <= 0 and enemy_alive:
 		var direction = (playerRef.global_position - global_position).normalized()
+
 		#velocity = direction * speed
 		animated_sprite_2d.play("walk")
 		animated_sprite_2d.flip_h = global_position.x > playerRef.global_position.x
 	else:
-		if not stunned:
+		if  stun_timer > 0:
 			#velocity = Vector2.ZERO
 			animated_sprite_2d.play("idle")
 	
@@ -96,7 +102,6 @@ func take_hit(damage: int, knockback_dir: Vector2, knockback_strength: float, st
 	animation_player.play("hitFlash")
 	# Apply knockback and stun
 	applyKnockback(knockback_dir,knockback_strength)
-	stunned = true
 	stun_timer = stun_duration
 	
 	if health <= 0:
@@ -110,33 +115,24 @@ func die():
 	enemy_collision.set_deferred("disabled", true)
 	
 func removeFromScene():
-	print("FONEe")
 	call_deferred("queue_free")
 	
 
-func _on_detection_area_body_entered(body: Node2D) -> void:
-	playerRef= body
-	chase = true
-
-func _on_detection_area_body_exited(body: Node2D) -> void:
-	playerRef= null
-	chase = false
-
-#func spawnAttack(hitboxToUse : PackedScene, attackDuration : float, attackEndlag : float, attackDamage: float) -> hitBox:
-	#var attackHitbox : hitBox = hitboxToUse.instantiate();
-	#attackHitbox.myZIndex = global_position.y
-	#enemy_hitbox.add_child(attackHitbox)
-	#attackHitbox.damage = attackDamage
-	#attackHitbox.dir = facingDir
-	#if facingDir == -1:
-		#attackHitbox.rotation_degrees = 180
-		#attackHitbox.scale.y = -1
-	#attackHitbox.userRef = self
-	#
-	#attackHitbox.duration = attackDuration
-	#attackBusyTimer = attackEndlag
+func spawnAttack(hitboxToUse : PackedScene, attackDuration : float, attackEndlag : float, attackDamage: float) -> hitBox:
+	var attackHitbox : hitBox = hitboxToUse.instantiate();
+	attackHitbox.myZIndex = self.global_position.y
+	enemy_hitbox.add_child(attackHitbox)
+	attackHitbox.damage = attackDamage
+	attackHitbox.dir = facingDir
+	if facingDir == -1:
+		attackHitbox.rotation_degrees = 180
+		attackHitbox.scale.y = -1
+	attackHitbox.userRef = self
 	
-	#return attackHitbox
+	attackHitbox.duration = attackDuration
+	attackBusyTimer = attackEndlag
+	
+	return attackHitbox
 
 func jump():
 	yVelocity = jumpVelocity

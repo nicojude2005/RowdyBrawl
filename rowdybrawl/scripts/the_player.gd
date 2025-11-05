@@ -34,6 +34,8 @@ var grounded = true                # handles jumping and falling
 var jumpVelocity : float = 300      
 var gravity: int = ProjectSettings.get_setting("physics/2d/default_gravity") 
 
+var stun_timer := 0.0
+
 var attackBusyTimer : float = 0
 var comboString : String = ""
 var validCombos = ["LLH", "LLL", "LHAS"]
@@ -152,7 +154,7 @@ func doAttackCheckCombos(attack : String):
 			"LLH":
 				currentAttack = spawnAttack(HEAVY_ATTACK, 0.3, 0.4, 20)
 				applyKnockback(Vector2(facingDir,0), 200)
-				#STUN ENEMY (TODO)
+				currentAttack.stunDuration = 1
 #			Slam up then down
 			"LH":
 				currentAttack = spawnAttack(HEAVY_ATTACK, 0.2, 0.4, 20)
@@ -276,12 +278,19 @@ func _on_area_2d_body_exited(body: Node2D) -> void:
 	if body.has_method("enemy"):
 		enemy_inattack_range = false
 		
-func enemy_attack():
-	if enemy_inattack_range and enemy_attack_cooldown:
-		health -= 10
-		enemy_attack_cooldown = false
-		enemy_attack_cooldown_timer.start()
-		print(health)
+		
+func take_hit(damage: int, knockback_dir: Vector2, knockback_strength: float, stun_duration: float) -> void:
+	health -= damage
+	#animation_player.play("hitFlash")
+	# Apply knockback and stun
+	applyKnockback(knockback_dir,knockback_strength)
+	stun_timer = stun_duration
+	
+	if health <= 0:
+		die()
+
+func die():
+	pass
 		
 func _on_enemy_attack_cooldown_timer_timeout() -> void:
 	enemy_attack_cooldown = true

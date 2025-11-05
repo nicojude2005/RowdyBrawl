@@ -44,11 +44,11 @@ texture = ExtResource("3_opa1r")
 [node name="hitBox" type="Node2D" parent="playerBody"]
 z_as_relative = false
 
-[node name="Area2D" type="Area2D" parent="playerBody/hitBox"]
+[node name="playerHitbox" type="Area2D" parent="playerBody/hitBox"]
 collision_layer = 4
 collision_mask = 4
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="playerBody/hitBox/Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="playerBody/hitBox/playerHitbox"]
 position = Vector2(0.5, -30)
 shape = SubResource("RectangleShape2D_opa1r")
 debug_color = Color(0, 0.5930971, 0.73992854, 0.41960785)

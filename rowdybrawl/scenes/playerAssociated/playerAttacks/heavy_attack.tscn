@@ -11,7 +11,7 @@ radius = 24.0
 texture_filter = 1
 knockbackDir = Vector2(1, 0)
 knockbackStrength = 100
-stunDuration = 2
+stunDuration = 0.2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="hurtArea" index="0"]
 position = Vector2(57, -32)

@@ -2,13 +2,13 @@
 
 [ext_resource type="PackedScene" uid="uid://bnm16edtntj06" path="res://scenes/playerAssociated/playerAttacks/the_player.tscn" id="2_t21ho"]
 [ext_resource type="Texture2D" uid="uid://6cwi5lhw3t17" path="res://sprites/icon.svg" id="3_ltld7"]
-[ext_resource type="PackedScene" path="res://scenes/debug_prop.tscn" id="3_t21ho"]
-[ext_resource type="PackedScene" uid="uid://bto47b1qeehvq" path="res://scenes/playerAssociated/enemy.tscn" id="4_ltld7"]
+[ext_resource type="PackedScene" uid="uid://mou554a5cchi" path="res://scenes/debug_prop.tscn" id="3_t21ho"]
+[ext_resource type="PackedScene" uid="uid://bto47b1qeehvq" path="res://scenes/enemyStuff/enemy.tscn" id="4_ltld7"]
 
 [node name="worldRoot" type="Node2D"]
 
 [node name="thePlayer" parent="." instance=ExtResource("2_t21ho")]
-position = Vector2(-125, 123)
+position = Vector2(-113, 279)
 
 [node name="debugProp" parent="." instance=ExtResource("3_t21ho")]
 position = Vector2(-62, 27)
@@ -30,10 +30,10 @@ scale = Vector2(1, 0.6399994)
 [node name="enemies" type="Node" parent="."]
 
 [node name="enemy" parent="enemies" instance=ExtResource("4_ltld7")]
-position = Vector2(-254, -21)
+position = Vector2(-236, 272)
 
 [node name="enemy2" parent="enemies" instance=ExtResource("4_ltld7")]
-position = Vector2(-249, 161)
+position = Vector2(-618, 253)
 
 [node name="enemy3" parent="enemies" instance=ExtResource("4_ltld7")]
-position = Vector2(-404, 124)
+position = Vector2(-409, 282)
