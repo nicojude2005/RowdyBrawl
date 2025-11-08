@@ -9,7 +9,8 @@ class_name player   # the tutorial doesnt talk about this(because technically th
 @onready var rich_text_label: RichTextLabel = $playerBody/RichTextLabel
 @onready var shadow: Sprite2D = $playerBody/shadow
 @onready var hit_box: Node2D = $playerBody/hitBox
-@onready var sound_player: AudioStreamPlayer2D = $playerBody/soundPlayer
+@onready var sound_track_1: AudioStreamPlayer2D = $playerBody/soundTrack1
+@onready var sound_track_2: AudioStreamPlayer2D = $playerBody/soundTrack2
 
 const LIGHT_ATTACK = preload("uid://cclox11udehj4")
 const HEAVY_ATTACK = preload("uid://df6js1m8i34eb")
@@ -19,7 +20,7 @@ const AIR_HEAVY_ATTACK = preload("uid://c0ttx055igf8n")
 const JUMP_SOUND_EFFECT = preload("uid://bb12b2muxp4yl")
 const LIGHT_PUNCH_SOUND = preload("uid://01vr24exuxb1")
 const HEAVY_PUNCH_SOUND = preload("uid://c81u1r42jntpc")
-
+const LAND_SOUND_EFFECT = preload("uid://c0fokvn508fgs")
 
 var enemy_inattack_range = false
 var enemy_attack_cooldown = true
@@ -153,55 +154,47 @@ func doAttackCheckCombos(attack : String):
 #			flurry of light attacks
 			"LL":
 				currentAttack = spawnAttack(LIGHT_ATTACK, 0.2, 0.1, 10)
-				sound_player.pitch_scale = 1.3
+				sound_track_1.pitch_scale = 1.3
 				playSound(LIGHT_PUNCH_SOUND)
 			"LLL":
 				currentAttack = spawnAttack(LIGHT_ATTACK, 0.15, 0.1, 10)
 				applyKnockback(Vector2(facingDir,0), 100)
-				sound_player.pitch_scale = 1.7
-				playSound(LIGHT_PUNCH_SOUND)
+				playSound(LIGHT_PUNCH_SOUND, 1.7)
 				
 #			special debug combo to fly forward
 			"LLLL":
 				currentAttack = spawnAttack(LIGHT_ATTACK, 0, 0,0)
-				sound_player.pitch_scale = 2
-				playSound(LIGHT_PUNCH_SOUND)
+				playSound(LIGHT_PUNCH_SOUND, 2)
 			"LLLLL":
 				currentAttack = spawnAttack(LIGHT_ATTACK, 0, 0,0)
-				sound_player.pitch_scale = 2.3
-				playSound(LIGHT_PUNCH_SOUND)
+				playSound(LIGHT_PUNCH_SOUND, 2.3)
 			"LLLLLS":
 				currentAttack = spawnAttack(AIR_HEAVY_ATTACK, 0, 0,0)
 				applyKnockback(Vector2(facingDir,.2), 1000)
-				sound_player.pitch_scale = 3
-				playSound(LIGHT_PUNCH_SOUND)
+				playSound(LIGHT_PUNCH_SOUND, 3)
 #			Classic Combo
 			"LLH":
 				currentAttack = spawnAttack(HEAVY_ATTACK, 0.3, 0.4, 20)
 				applyKnockback(Vector2(facingDir,0), 200)
 				currentAttack.stunDuration = 1
-				sound_player.pitch_scale = .7
-				playSound(HEAVY_PUNCH_SOUND)
+				playSound(HEAVY_PUNCH_SOUND, 0.7)
 #			Slam up then down
 			"LH":
 				currentAttack = spawnAttack(HEAVY_ATTACK, 0.2, 0.4, 20)
 				currentAttack.knockbackDir = Vector2(0, -1)
 				currentAttack.knockbackStrength = 350
-				sound_player.pitch_scale = .85
-				playSound(HEAVY_PUNCH_SOUND)
+				playSound(HEAVY_PUNCH_SOUND, 0.85)
 				#KNOCK ENEMY UP (TODO)
 			"LHA":
 				currentAttack = spawnAttack(AIR_LIGHT_ATTACK, 0.2, 0.3, 10)
-				sound_player.pitch_scale = .8
-				playSound(LIGHT_PUNCH_SOUND)
+				playSound(LIGHT_PUNCH_SOUND, 0.8)
 			"LHAS":
 				currentAttack = spawnAttack(AIR_HEAVY_ATTACK, 0.6, 0.7, 50)
 				currentAttack.knockbackDir = Vector2(0,1)
 				currentAttack.knockbackStrength = 300
 				currentAttack.userKnockbackOnHitDir = Vector2(0,1)
 				currentAttack.userKnockbackOnHitStrength = currentAttack.knockbackStrength 
-				sound_player.pitch_scale = .5
-				playSound(HEAVY_PUNCH_SOUND)
+				playSound(HEAVY_PUNCH_SOUND, 0.5)
 				#KNOCK ENEMY DOWN (TODO)
 			_:
 				comboString = attack
@@ -228,7 +221,6 @@ func letterToAttack(attack):
 			# same thing as light attack but with different numbers
 			currentAttack = spawnAttack(HEAVY_ATTACK, 0.4, 0.5, 20)
 			applyKnockback(Vector2(facingDir,0), 100)
-			sound_player.pitch_scale = 1
 			playSound(HEAVY_PUNCH_SOUND)
 		"A":
 			currentAttack = spawnAttack(AIR_LIGHT_ATTACK, 0.10, 0.15, 8)
@@ -273,12 +265,21 @@ func spawnAttack(hitboxToUse : PackedScene, attackDuration : float, attackEndlag
 	
 	return attackHitbox
 
-func playSound(sound : AudioStream):
-	sound_player.stream = sound
-	sound_player.play()
+func playSound(sound : AudioStream, pitch : float = 1.0, volumedB : float = 0):
+	
+	if sound_track_1.playing:
+		sound_track_2.stream = sound
+		sound_track_2.pitch_scale = pitch
+		sound_track_2.volume_db = volumedB
+		sound_track_2.play()
+	else:
+		sound_track_1.stream = sound
+		sound_track_1.pitch_scale = pitch
+		sound_track_1.volume_db = volumedB
+		sound_track_1.play()
 
 func jump():
-	playSound(JUMP_SOUND_EFFECT)
+	playSound(JUMP_SOUND_EFFECT, (randf() * 0.4) + 1, -5)
 	playerYVelocity = jumpVelocity
 	grounded = false
 	#playerBody.collision_mask = 2
@@ -289,10 +290,11 @@ func land():
 	playerYPosition = 0
 	playerBody.collision_mask = 1
 	playerBody.collision_layer = 1
+	playSound(LAND_SOUND_EFFECT, (randf() * 0.4) + 1, -15)
 
 func resetSoundPlayer():
-	sound_player.volume_db = 0.0
-	sound_player.pitch_scale = 1.0
+	sound_track_1.volume_db = 0.0
+	sound_track_1.pitch_scale = 1.0
 
 func applyFrictionX():
 	if abs(playerBody.velocity.x) > groundFriction:   # if the player is moving faster than the friction force
