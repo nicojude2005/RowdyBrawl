@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://b5c8708romg66"]
+[gd_scene load_steps=8 format=3 uid="uid://b5c8708romg66"]
 
 [ext_resource type="Script" uid="uid://d1lb2i55l1d4y" path="res://scripts/the_player.gd" id="1_qsbax"]
 [ext_resource type="Texture2D" uid="uid://dsry6kd4ww052" path="res://sprites/Sprite-0001.png" id="3_cbej2"]
@@ -11,6 +11,9 @@ height = 62.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_opa1r"]
 size = Vector2(51, 60)
+
+[sub_resource type="AudioStreamPlaylist" id="AudioStreamPlaylist_hs8xr"]
+loop = false
 
 [node name="thePlayer" type="Node2D"]
 script = ExtResource("1_qsbax")
@@ -59,4 +62,9 @@ texture_filter = 1
 position = Vector2(0, -32)
 texture = ExtResource("3_cbej2")
 
+[node name="soundPlayer" type="AudioStreamPlayer2D" parent="playerBody"]
+stream = SubResource("AudioStreamPlaylist_hs8xr")
+
 [node name="cameraController" parent="." instance=ExtResource("3_olns3")]
+
+[connection signal="finished" from="playerBody/soundPlayer" to="." method="_on_sound_player_finished"]
