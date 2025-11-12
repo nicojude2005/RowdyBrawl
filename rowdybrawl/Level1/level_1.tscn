@@ -1,8 +1,8 @@
 [gd_scene load_steps=12 format=3 uid="uid://cqq8uovueylvg"]
 
-[ext_resource type="PackedScene" uid="uid://b5c8708romg66" path="res://scenes/playerAssociated/the_player.tscn" id="1_dgsmt"]
+[ext_resource type="PackedScene" uid="uid://b5c8708romg66" path="res://playerFolder/the_player.tscn" id="1_dgsmt"]
 [ext_resource type="Texture2D" uid="uid://byohiugj7t85y" path="res://Level1/levelSprites/level1Screen1Larger.png" id="2_im851"]
-[ext_resource type="PackedScene" uid="uid://c6sx1igpnncyc" path="res://Level1/camera_stop_point.tscn" id="3_5mv53"]
+[ext_resource type="PackedScene" uid="uid://c80ia60x3xwwn" path="res://Level1/level1Enemies/enemyJobApplication/job_application.tscn" id="3_5mv53"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_im851"]
 size = Vector2(867, 85)
@@ -114,9 +114,5 @@ text = "Can perhaps add cars? could be silly
 fit_content = true
 autowrap_mode = 0
 
-[node name="CameraStopPoint" parent="." instance=ExtResource("3_5mv53")]
-position = Vector2(774.99994, 150.00002)
-scale = Vector2(10.417853, 18.667759)
-
-[node name="CameraStopPoint2" parent="." instance=ExtResource("3_5mv53")]
-position = Vector2(1111, 98)
+[node name="jobApplication" parent="." instance=ExtResource("3_5mv53")]
+position = Vector2(1017, 125)

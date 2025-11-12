@@ -1,13 +1,13 @@
-[gd_scene load_steps=7 format=3 uid="uid://7sq0hm0gwqnr"]
+[gd_scene load_steps=7 format=3 uid="uid://b5c8708romg66"]
 
-[ext_resource type="Script" uid="uid://d1lb2i55l1d4y" path="res://scripts/the_player.gd" id="1_qsbax"]
-[ext_resource type="PackedScene" uid="uid://b0py0r48mo2wi" path="res://scenes/playerAssociated/camera_manager.tscn" id="3_olns3"]
-[ext_resource type="Texture2D" uid="uid://dnadcguif2xdk" path="res://sprites/shadowPixel.png" id="3_opa1r"]
-[ext_resource type="Texture2D" uid="uid://ss8hempfs1y8" path="res://sprites/playerBlockOutline64By64.png" id="3_ql0lh"]
+[ext_resource type="Script" uid="uid://d1lb2i55l1d4y" path="res://playerFolder/playerScripts/the_player.gd" id="1_qsbax"]
+[ext_resource type="Texture2D" uid="uid://dsry6kd4ww052" path="res://playerFolder/playerSprites/Sprite-0001.png" id="3_cbej2"]
+[ext_resource type="PackedScene" uid="uid://b0py0r48mo2wi" path="res://playerFolder/camera_manager.tscn" id="3_olns3"]
+[ext_resource type="Texture2D" uid="uid://dnadcguif2xdk" path="res://playerFolder/playerSprites/shadowPixel.png" id="3_opa1r"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qsbax"]
 radius = 5.0
-height = 62.0
+height = 32.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_opa1r"]
 size = Vector2(51, 60)
@@ -17,7 +17,6 @@ script = ExtResource("1_qsbax")
 
 [node name="playerBody" type="CharacterBody2D" parent="."]
 unique_name_in_owner = true
-collision_layer = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="playerBody"]
 position = Vector2(0, -2)
@@ -45,11 +44,11 @@ texture = ExtResource("3_opa1r")
 [node name="hitBox" type="Node2D" parent="playerBody"]
 z_as_relative = false
 
-[node name="Area2D" type="Area2D" parent="playerBody/hitBox"]
-collision_layer = 3
-collision_mask = 3
+[node name="playerHitbox" type="Area2D" parent="playerBody/hitBox"]
+collision_layer = 4
+collision_mask = 4
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="playerBody/hitBox/Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="playerBody/hitBox/playerHitbox"]
 position = Vector2(0.5, -30)
 shape = SubResource("RectangleShape2D_opa1r")
 debug_color = Color(0, 0.5930971, 0.73992854, 0.41960785)
@@ -58,12 +57,13 @@ debug_color = Color(0, 0.5930971, 0.73992854, 0.41960785)
 z_index = 1
 texture_filter = 1
 position = Vector2(0, -32)
-texture = ExtResource("3_ql0lh")
+texture = ExtResource("3_cbej2")
 
-[node name="enemy_attack_cooldown_timer" type="Timer" parent="playerBody"]
-wait_time = 0.5
+[node name="soundTrack1" type="AudioStreamPlayer2D" parent="playerBody"]
+bus = &"playerBus"
+
+[node name="soundTrack2" type="AudioStreamPlayer2D" parent="playerBody"]
 
 [node name="cameraController" parent="." instance=ExtResource("3_olns3")]
 
-[connection signal="body_entered" from="playerBody/hitBox/Area2D" to="." method="_on_area_2d_body_entered"]
-[connection signal="timeout" from="playerBody/enemy_attack_cooldown_timer" to="." method="_on_enemy_attack_cooldown_timer_timeout"]
+[connection signal="finished" from="playerBody/soundTrack1" to="." method="_on_sound_player_finished"]
