@@ -11,6 +11,9 @@ var bottomLimit := 20.0
 var topOfStage := -167.0
 var bottomOfStage := 300.0
 
+var leftOfStage := 100.0
+var rightOfStage := 3700.0
+
 var leftSideStop := 100.0
 var rightSideStop := 3700.0
 
@@ -19,7 +22,7 @@ var trackPos : Vector2
 func _process(_delta: float) -> void:
 	trackPos = playerReference.hit_box.global_position
 	 
-	if trackPos.x > leftSideStop and trackPos.y < rightSideStop:
+	if trackPos.x > leftSideStop and trackPos.x < rightSideStop:
 		camera2d.position.x = trackPos.x
 	
 	if trackPos.y > topOfStage and trackPos.y < bottomOfStage:

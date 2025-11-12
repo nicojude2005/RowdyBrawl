@@ -9,6 +9,8 @@ class_name player   # the tutorial doesnt talk about this(because technically th
 @onready var rich_text_label: RichTextLabel = $playerBody/RichTextLabel
 @onready var shadow: Sprite2D = $playerBody/shadow
 @onready var hit_box: Node2D = $playerBody/hitBox
+@onready var camera_controller: cameraController = $cameraController
+
 
 const LIGHT_ATTACK = preload("uid://cclox11udehj4")
 const HEAVY_ATTACK = preload("uid://df6js1m8i34eb")

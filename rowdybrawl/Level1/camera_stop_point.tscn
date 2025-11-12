@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://c6sx1igpnncyc"]
+
+[ext_resource type="Script" uid="uid://coybivmnfvpq7" path="res://camera_stop_point.gd" id="1_u31tp"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hp80d"]
+
+[node name="CameraStopPoint" type="Node2D"]
+script = ExtResource("1_u31tp")
+
+[node name="playerDetector" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="playerDetector"]
+shape = SubResource("RectangleShape2D_hp80d")
+
+[node name="rightSideLock" type="Node2D" parent="."]
+position = Vector2(10, 0)
+
+[node name="leftSideLock" type="Node2D" parent="."]
+position = Vector2(-10, 0)
+
+[connection signal="body_entered" from="playerDetector" to="." method="_on_player_detector_body_entered"]
