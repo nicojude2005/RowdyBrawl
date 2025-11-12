@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://c81u1r42jntpc"
-path="res://.godot/imported/heavyPunchSound.wav-1c5f980ba90e2231e340dbedd0979022.sample"
+path="res://.godot/imported/heavyPunchSound.wav-7a250d3ce0ed52e7290082f87c740a78.sample"
 
 [deps]
 
-source_file="res://sounds/heavyPunchSound.wav"
-dest_files=["res://.godot/imported/heavyPunchSound.wav-1c5f980ba90e2231e340dbedd0979022.sample"]
+source_file="res://playerFolder/playerSounds/heavyPunchSound.wav"
+dest_files=["res://.godot/imported/heavyPunchSound.wav-7a250d3ce0ed52e7290082f87c740a78.sample"]
 
 [params]
 

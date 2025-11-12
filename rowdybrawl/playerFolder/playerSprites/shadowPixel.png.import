@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b1u0h7urdlk83"
-path="res://.godot/imported/playerDevCube.png-19f0130fd21b7472f94bb38c3ae0bd3d.ctex"
+uid="uid://dnadcguif2xdk"
+path="res://.godot/imported/shadowPixel.png-50b076b99e3ac51e182d47a675be4df5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/playerDevCube.png"
-dest_files=["res://.godot/imported/playerDevCube.png-19f0130fd21b7472f94bb38c3ae0bd3d.ctex"]
+source_file="res://playerFolder/playerSprites/shadowPixel.png"
+dest_files=["res://.godot/imported/shadowPixel.png-50b076b99e3ac51e182d47a675be4df5.ctex"]
 
 [params]
 

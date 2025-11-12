@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://b1mf0xdo3wvpr"]
 
-[ext_resource type="PackedScene" uid="uid://df6js1m8i34eb" path="res://scenes/playerAssociated/playerAttacks/heavy_attack.tscn" id="1_p14tb"]
+[ext_resource type="PackedScene" uid="uid://df6js1m8i34eb" path="res://playerFolder/playerAttacks/heavy_attack.tscn" id="1_p14tb"]
 
 [node name="airLightAttack" instance=ExtResource("1_p14tb")]
 knockbackDir = Vector2(0.2, -1)

@@ -1,13 +1,13 @@
 [gd_scene load_steps=7 format=3 uid="uid://b5c8708romg66"]
 
-[ext_resource type="Script" uid="uid://d1lb2i55l1d4y" path="res://scripts/the_player.gd" id="1_qsbax"]
-[ext_resource type="Texture2D" uid="uid://dsry6kd4ww052" path="res://sprites/Sprite-0001.png" id="3_cbej2"]
-[ext_resource type="PackedScene" uid="uid://b0py0r48mo2wi" path="res://scenes/playerAssociated/camera_manager.tscn" id="3_olns3"]
-[ext_resource type="Texture2D" uid="uid://dnadcguif2xdk" path="res://sprites/shadowPixel.png" id="3_opa1r"]
+[ext_resource type="Script" uid="uid://d1lb2i55l1d4y" path="res://playerFolder/playerScripts/the_player.gd" id="1_qsbax"]
+[ext_resource type="Texture2D" uid="uid://dsry6kd4ww052" path="res://playerFolder/playerSprites/Sprite-0001.png" id="3_cbej2"]
+[ext_resource type="PackedScene" uid="uid://b0py0r48mo2wi" path="res://playerFolder/camera_manager.tscn" id="3_olns3"]
+[ext_resource type="Texture2D" uid="uid://dnadcguif2xdk" path="res://playerFolder/playerSprites/shadowPixel.png" id="3_opa1r"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qsbax"]
 radius = 5.0
-height = 62.0
+height = 32.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_opa1r"]
 size = Vector2(51, 60)

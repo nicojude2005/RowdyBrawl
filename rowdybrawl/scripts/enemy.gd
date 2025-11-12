@@ -6,13 +6,13 @@ class_name Enemy
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var enemy_collision: CollisionShape2D = $enemyCollision
 @onready var stun_indicator: Sprite2D = $stunIndicator
+@onready var sound_track_1: AudioStreamPlayer2D = $soundTrack1
 
 @onready var ENEMY_EXAMPLE_ATTACK = load("uid://d3g686l1tme5q")
-
-
+@onready var ENEMY_DIE_SOUND_EFFECT_DEFAULT = load("uid://bksdr80lhktaq")
 
 var speed = 45
-var playerRef: Node2D = null
+var playerRef: player = null
 var chase = false
 var health = 100
 var enemy_alive = true
@@ -22,7 +22,7 @@ var facingDir = 1
 var yReductionAmount = 0.7
 
 var knockback_velocity: Vector2 = Vector2.ZERO
-var friction: float = 300.0
+var friction: float = 10.0
 var stun_timer: float = 0.0
 
 var yPosition : float = 0.0
@@ -36,6 +36,10 @@ var jumpVelocity : float = 300
 var gravity: int = ProjectSettings.get_setting("physics/2d/default_gravity") 
 
 var removeTimer := 3.0
+
+var moveDirection : Vector2
+@export var maxSpeed : float = 100
+@export var accelaration : float = 2
 
 func _physics_process(delta: float) -> void:
 	# stun countdown
@@ -65,7 +69,7 @@ func _physics_process(delta: float) -> void:
 	#if chase and playerRef and stun_timer <= 0 and enemy_alive:
 		#var direction = (playerRef.global_position - global_position).normalized()
 #
-		##velocity = direction * speed
+		#velocity = direwction * speed
 		#animated_sprite_2d.play("walk")
 		#animated_sprite_2d.flip_h = global_position.x > playerRef.global_position.x
 	#else:
@@ -112,11 +116,22 @@ func die():
 	enemy_alive = false
 	health = 0
 	applyKnockback(Vector2(.3,-1), 5000)
+	playSound(ENEMY_DIE_SOUND_EFFECT_DEFAULT, 0.3, 1)
 	enemy_collision.set_deferred("disabled", true)
 	
 func removeFromScene():
 	call_deferred("queue_free")
 	
+	
+func playSound(sound : AudioStream, pitch : float = 1.0, volumedB : float = 0):
+	sound_track_1.stream = sound
+	sound_track_1.pitch_scale = pitch
+	sound_track_1.volume_db = volumedB
+	sound_track_1.play()
+	
+func resetSoundTrack():
+	sound_track_1.volume_db = 0.0
+	sound_track_1.pitch_scale = 1.0
 
 func spawnAttack(hitboxToUse : PackedScene, attackDuration : float, attackEndlag : float, attackDamage: float) -> hitBox:
 	var attackHitbox : hitBox = hitboxToUse.instantiate();
@@ -163,9 +178,18 @@ func applyFrictionX():
 		velocity.x = 0 
 	
 func applyFrictionY():
-	if abs(velocity.y) > friction:   # if the player is moving faster than the friction force
+	if abs(velocity.y) > friction * yReductionAmount:   # if the player is moving faster than the friction force
 		velocity.y -= (velocity.y / abs(velocity.y)) * friction * yReductionAmount# subtracts friction force opposite of their direction of movement
 	else:
 		velocity.y = 0 
 func enemy():
 	pass # used for player hitbox checks
+
+
+func _on_sound_track_1_finished() -> void:
+	resetSoundTrack()
+
+
+func _on_detection_area_body_entered(body: Node2D) -> void:
+	if body.get_parent() is player:
+		playerRef = body.get_parent()

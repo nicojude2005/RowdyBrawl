@@ -17,7 +17,7 @@ const HEAVY_ATTACK = preload("uid://df6js1m8i34eb")
 const AIR_LIGHT_ATTACK = preload("uid://b1mf0xdo3wvpr")
 const AIR_HEAVY_ATTACK = preload("uid://c0ttx055igf8n")
 
-const JUMP_SOUND_EFFECT = preload("uid://bb12b2muxp4yl")
+const JUMP_SOUND_EFFECT = preload("uid://bdhakvk1lh7cu")
 const LIGHT_PUNCH_SOUND = preload("uid://01vr24exuxb1")
 const HEAVY_PUNCH_SOUND = preload("uid://c81u1r42jntpc")
 const LAND_SOUND_EFFECT = preload("uid://c0fokvn508fgs")
@@ -149,7 +149,6 @@ func doAttackCheckCombos(attack : String):
 	if comboTimer > 0:
 		comboString += attack
 		comboTimer = comboChainTime
-		print(comboString)
 		match comboString:
 #			flurry of light attacks
 			"LL":
@@ -320,16 +319,7 @@ func applyKnockback(direction : Vector2, strength : float):
 		
 func player():
 	pass #used to check if player enters enemies hitbox
-
-func _on_area_2d_body_entered(body: Node2D) -> void:
-	if body.has_method("enemy"):
-		enemy_inattack_range = true
 	
-func _on_area_2d_body_exited(body: Node2D) -> void:
-	if body.has_method("enemy"):
-		enemy_inattack_range = false
-		
-		
 func take_hit(damage: int, knockback_dir: Vector2, knockback_strength: float, stun_duration: float) -> void:
 	health -= damage
 	#animation_player.play("hitFlash")
@@ -342,10 +332,6 @@ func take_hit(damage: int, knockback_dir: Vector2, knockback_strength: float, st
 
 func die():
 	pass
-		
-func _on_enemy_attack_cooldown_timer_timeout() -> void:
-	enemy_attack_cooldown = true
-
 
 func _on_sound_player_finished() -> void:
 	resetSoundPlayer()

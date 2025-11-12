@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://01vr24exuxb1"
-path="res://.godot/imported/lightPunchSound.wav-ba2080ae8b02782d5931cd1ae76b9d9d.sample"
+path="res://.godot/imported/lightPunchSound.wav-8519f4a45c4389ce0583193ed623f25c.sample"
 
 [deps]
 
-source_file="res://sounds/lightPunchSound.wav"
-dest_files=["res://.godot/imported/lightPunchSound.wav-ba2080ae8b02782d5931cd1ae76b9d9d.sample"]
+source_file="res://playerFolder/playerSounds/lightPunchSound.wav"
+dest_files=["res://.godot/imported/lightPunchSound.wav-8519f4a45c4389ce0583193ed623f25c.sample"]
 
 [params]
 
