@@ -193,3 +193,4 @@ func _on_sound_track_1_finished() -> void:
 func _on_detection_area_body_entered(body: Node2D) -> void:
 	if body.get_parent() is player:
 		playerRef = body.get_parent()
+		chase = true

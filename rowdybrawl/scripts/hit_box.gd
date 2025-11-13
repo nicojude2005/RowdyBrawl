@@ -53,6 +53,11 @@ func _on_hurt_area_area_entered(area: Area2D) -> void:
 	var body : Node2D
 	if area.name == "enemy_hitbox":
 		body = area.get_parent()
+		#check for parry
+		if body.has_method("can_parry_attack"):
+			if body.can_parry_attack(self):
+				queue_free()
+				return
 		if zPosCheck(body) and hitEnemies.find(body) == -1:
 			damageEnemy(body)
 			hitEnemies.append(body)

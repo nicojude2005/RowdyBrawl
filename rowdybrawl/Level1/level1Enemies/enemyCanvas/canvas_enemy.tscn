@@ -1,0 +1,25 @@
+[gd_scene load_steps=4 format=3 uid="uid://b21lbpxenujyp"]
+
+[ext_resource type="PackedScene" uid="uid://bto47b1qeehvq" path="res://scenes/enemyStuff/enemy.tscn" id="1_qekfq"]
+[ext_resource type="Texture2D" uid="uid://6gbrl3f8p3k7" path="res://Level1/level1Enemies/enemyCanvas/canvas.png" id="2_r52p2"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_smvkj"]
+size = Vector2(56, 56)
+
+[node name="Canvas_Enemy" instance=ExtResource("1_qekfq")]
+
+[node name="CollisionShape2D" parent="enemy_hitbox" index="0"]
+position = Vector2(0.125, -29)
+shape = SubResource("RectangleShape2D_smvkj")
+
+[node name="AnimatedSprite2D" parent="enemy_hitbox" index="1"]
+animation = &"death"
+
+[node name="Sprite2D" type="Sprite2D" parent="enemy_hitbox" index="2"]
+position = Vector2(0.125, -29)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("2_r52p2")
+
+[node name="stunIndicator" parent="." index="4"]
+visible = true
+position = Vector2(0, -67)
