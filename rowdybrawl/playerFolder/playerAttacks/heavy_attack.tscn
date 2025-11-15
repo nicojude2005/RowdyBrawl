@@ -4,18 +4,17 @@
 [ext_resource type="Texture2D" uid="uid://6cwi5lhw3t17" path="res://sprites/icon.svg" id="2_ri28e"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_uwotb"]
-radius = 24.0
+radius = 13.038404
 
 [node name="heavyAttack" instance=ExtResource("1_ieak1")]
 texture_filter = 1
 knockbackDir = Vector2(1, 0)
-knockbackStrength = 100
-stunDuration = 0.2
+knockbackStrength = 10.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="hurtArea" index="0"]
-position = Vector2(41, -29)
+position = Vector2(27, -30)
 shape = SubResource("CircleShape2D_uwotb")
 
 [node name="Sprite2D" type="Sprite2D" parent="hurtArea/CollisionShape2D" index="0"]
-scale = Vector2(0.25, 0.25)
+scale = Vector2(0.15, 0.15)
 texture = ExtResource("2_ri28e")

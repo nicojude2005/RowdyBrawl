@@ -25,10 +25,10 @@ shape = SubResource("CapsuleShape2D_qsbax")
 
 [node name="RichTextLabel" type="RichTextLabel" parent="playerBody"]
 z_index = 4096
-offset_left = -31.0
-offset_top = -37.0
-offset_right = 9.0
-offset_bottom = 3.0
+offset_left = -24.0
+offset_top = -88.0
+offset_right = 16.0
+offset_bottom = -48.0
 scale = Vector2(1.6090713, 1.3567882)
 theme_override_font_sizes/normal_font_size = 10
 scroll_active = false

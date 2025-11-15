@@ -9,17 +9,20 @@ radius = 20.0
 [node name="enemyExampleAttack" instance=ExtResource("1_dnu1l")]
 damage = 10.0
 knockbackDir = Vector2(1, 0)
-knockbackStrength = 100.0
-stunDuration = 0.2
+knockbackStrength = 10.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="hurtArea" index="0"]
 position = Vector2(34, -30)
 shape = SubResource("CircleShape2D_tw2mt")
 
 [node name="Sprite2D" type="Sprite2D" parent="." index="1"]
+visible = false
 texture_filter = 1
 position = Vector2(0, -10)
 scale = Vector2(2, 2)
 texture = ExtResource("2_p52im")
 region_enabled = true
 region_rect = Rect2(8.046428, 11.920366, 16.00291, 12.215193)
+
+[node name="playerExample" parent="." index="2"]
+visible = false

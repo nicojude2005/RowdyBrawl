@@ -4,16 +4,15 @@
 [ext_resource type="Texture2D" uid="uid://6cwi5lhw3t17" path="res://sprites/icon.svg" id="2_uwm0m"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_uwm0m"]
-radius = 16.0
+radius = 9.055386
 
 [node name="LightAttack" instance=ExtResource("1_0xsnh")]
 texture_filter = 1
 knockbackDir = Vector2(1, 0)
-knockbackStrength = 50
-stunDuration = 0.1
+knockbackStrength = 5.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="hurtArea" index="0"]
-position = Vector2(31, -31)
+position = Vector2(25, -32)
 shape = SubResource("CircleShape2D_uwm0m")
 
 [node name="Sprite2D" type="Sprite2D" parent="hurtArea/CollisionShape2D" index="0"]

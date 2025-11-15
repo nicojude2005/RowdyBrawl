@@ -3,10 +3,11 @@
 [ext_resource type="PackedScene" uid="uid://df6js1m8i34eb" path="res://playerFolder/playerAttacks/heavy_attack.tscn" id="1_7t2lw"]
 
 [node name="airHeavyAttack" instance=ExtResource("1_7t2lw")]
-knockbackDir = Vector2(0.15, 1)
+knockbackDir = Vector2(0.1, 1)
+knockbackStrength = 200.0
 
 [node name="CollisionShape2D" parent="hurtArea" index="0"]
-position = Vector2(38, -16)
+position = Vector2(34, -18)
 
 [node name="Sprite2D" parent="hurtArea/CollisionShape2D" index="0"]
 modulate = Color(1, 0, 0.09411765, 1)

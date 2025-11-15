@@ -1,15 +1,17 @@
 extends Node2D
 class_name hitBox
 
+@onready var hurt_area: Area2D = $hurtArea
+
 var myZIndex
-var zReach = 12
+var zReach = 18
 @export var damage : float
 var duration : float = 10000
 var activeAfter : float = 0
 var lifeTimer : float = 0
 @export var knockbackDir : Vector2 = Vector2.ZERO
 @export var knockbackStrength := 0.0
-@export var stunDuration := 0.0
+@export var stunDuration := 0.5
 
 var hitEnemies : Array
 
@@ -29,6 +31,10 @@ func zPosCheck(body : Node2D) -> bool:
 func _process(delta: float) -> void:
 	lifeTimer += delta
 	
+	if lifeTimer >= activeAfter:
+		for hurtBox in hurt_area.get_overlapping_areas():
+			attemptToDamageBodyFromArea(hurtBox)
+	
 	if duration <= 0:
 		removeSelf()
 	else:
@@ -47,17 +53,16 @@ func damagePlayer(targetPlayer : player):
 	targetPlayer.take_hit(damage, Vector2(knockbackDir.x * dir,knockbackDir.y), knockbackStrength, stunDuration)
 	if targetPlayer.grounded:
 		knockbackDir = knockbackDir.normalized()
-		targetPlayer.applyKnockback(Vector2(knockbackDir.x * dir,0), knockbackStrength * 5)
+		targetPlayer.applyKnockback(Vector2(knockbackDir.x * dir,0), knockbackStrength * 10)
 
 func _on_hurt_area_area_entered(area: Area2D) -> void:
+	#attemptToDamageBodyFromArea(area)
+	pass
+				
+func attemptToDamageBodyFromArea(area : Area2D):
 	var body : Node2D
 	if area.name == "enemy_hitbox":
 		body = area.get_parent()
-		#check for parry
-		if body.has_method("can_parry_attack"):
-			if body.can_parry_attack(self):
-				queue_free()
-				return
 		if zPosCheck(body) and hitEnemies.find(body) == -1:
 			damageEnemy(body)
 			hitEnemies.append(body)
@@ -67,6 +72,6 @@ func _on_hurt_area_area_entered(area: Area2D) -> void:
 		body = area.get_parent().get_parent().get_parent()
 		if zPosCheck(body.playerBody) and hitEnemies.find(body.playerBody) == -1:
 			damagePlayer(body)
-			hitEnemies.append(body)
+			hitEnemies.append(body.playerBody)
 			if userKnockbackOnHitDir != Vector2.ZERO and userRef.has_method("applyKnockback"):
 				userRef.applyKnockback(userKnockbackOnHitDir, userKnockbackOnHitStrength)

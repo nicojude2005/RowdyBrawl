@@ -3,12 +3,12 @@
 [ext_resource type="PackedScene" uid="uid://df6js1m8i34eb" path="res://playerFolder/playerAttacks/heavy_attack.tscn" id="1_p14tb"]
 
 [node name="airLightAttack" instance=ExtResource("1_p14tb")]
-knockbackDir = Vector2(0.2, -1)
-knockbackStrength = 0.0
-stunDuration = 0.0
+knockbackDir = Vector2(0.3, -1)
+knockbackStrength = 300.0
 
 [node name="CollisionShape2D" parent="hurtArea" index="0"]
-position = Vector2(39, -19)
+position = Vector2(34, -38)
 
 [node name="Sprite2D" parent="hurtArea/CollisionShape2D" index="0"]
 modulate = Color(0.12156863, 0.58431375, 1, 1)
+scale = Vector2(0.1, 0.1)

@@ -52,8 +52,8 @@ texture = ExtResource("2_im851")
 
 [node name="level1TallCollision" type="StaticBody2D" parent="Sprite2D"]
 position = Vector2(-2, 1)
-collision_layer = 3
-collision_mask = 3
+collision_layer = 31
+collision_mask = 31
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite2D/level1TallCollision"]
 position = Vector2(-2239.5, -37.5)
@@ -119,4 +119,13 @@ autowrap_mode = 0
 position = Vector2(1017, 125)
 
 [node name="Canvas_Enemy" parent="." instance=ExtResource("4_e0h6v")]
-position = Vector2(622, -47)
+position = Vector2(596, -22)
+
+[node name="Canvas_Enemy2" parent="." instance=ExtResource("4_e0h6v")]
+position = Vector2(724, 292)
+
+[node name="jobApplication2" parent="." instance=ExtResource("3_5mv53")]
+position = Vector2(995, -94)
+
+[node name="jobApplication3" parent="." instance=ExtResource("3_5mv53")]
+position = Vector2(1379, 141)
