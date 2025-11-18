@@ -11,7 +11,6 @@ func _ready() -> void:
 	
 	health = 200
 	#maxSpeed = base_speed
-	print("CanvasEnemy initialized with ", health, " HP and damage: ", damage)
 
 func _physics_process(delta: float) -> void:
 	## Update target position based on player

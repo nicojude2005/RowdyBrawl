@@ -48,7 +48,7 @@ var removeTimer := 3.0
 
 # attacking
 var attackBusyTimer : float = 0.0
-var hitRate : float = 0.3
+var hitRate : float = .45
 var hitTimer : float = hitRate
 
 func _physics_process(delta: float) -> void:
@@ -163,11 +163,12 @@ func aiAttackFunction(delta :float):
 		if playerRef.playerYPosition > yPosition:
 			jump()
 		if canAttack():
-			spawnAttack(ENEMY_EXAMPLE_ATTACK, 10, 0.2, 0.5, 0.67)
+			spawnAttack(ENEMY_EXAMPLE_ATTACK, 10, 0.2, 0.5, 1)
 			hitTimer = hitRate
 			ai = aiStates.CHASE
-	if (playerRef.playerBody.global_position - global_position).length() > 15:
+	if (playerRef.playerBody.global_position - global_position).length() > 300:
 		ai = aiStates.CHASE
+		hitTimer = hitRate
 
 func die():
 	enemy_alive = false
@@ -269,12 +270,8 @@ func applyFrictionY():
 		velocity.y = 0 
 func enemy():
 	pass # used for player hitbox checks
-
-
 func _on_sound_track_1_finished() -> void:
 	resetSoundTrack()
-
-
 func _on_detection_area_body_entered(body: Node2D) -> void:
 	if body.get_parent() is player:
 		playerRef = body.get_parent()

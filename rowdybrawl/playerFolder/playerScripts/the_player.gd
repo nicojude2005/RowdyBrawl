@@ -52,7 +52,7 @@ const comboChainTime : float = 1
 
 func _physics_process(delta: float) -> void:     # _physics_process runs in fixed(very tiny) intervals, regardless of the framerate
 												 # This makes it good for movement and physics-based code
-	rich_text_label.text = str(health)
+	rich_text_label.text = str(health) # temporary 
 	
 	if attackBusyTimer > 0:
 		attackBusyTimer -= delta
@@ -142,7 +142,6 @@ func _physics_process(delta: float) -> void:     # _physics_process runs in fixe
 	
 	playerBody.move_and_slide()  # this function is what actually applies the player's velocity to their position. It also does all the collision checks
 	
-
 func doAttackCheckCombos(attack : String):
 	var currentAttack : hitBox
 #	check for a potential next hit of a combo
@@ -318,8 +317,6 @@ func applyFrictionX():
 		playerBody.velocity.x -= (playerBody.velocity.x / abs(playerBody.velocity.x)) * groundFriction # subtracts friction force opposite of their direction of movement
 	else:
 		playerBody.velocity.x = 0 
-	
-
 func applyFrictionY():
 	if abs(playerBody.velocity.y) > groundFriction * yReductionPercent:   # if the player is moving faster than the friction force
 		playerBody.velocity.y -= (playerBody.velocity.y / abs(playerBody.velocity.y)) * groundFriction * yReductionPercent # subtracts friction force opposite of their direction of movement
@@ -334,7 +331,6 @@ func applyKnockback(direction : Vector2, strength : float):
 		playerYVelocity = -direction.y * strength
 	if direction.y < 0:
 		grounded = false
-		
 func player():
 	pass #used to check if player enters enemies hitbox
 	

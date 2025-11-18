@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://b5c8708romg66"]
+[gd_scene load_steps=8 format=3 uid="uid://b5c8708romg66"]
 
 [ext_resource type="Script" uid="uid://d1lb2i55l1d4y" path="res://playerFolder/playerScripts/the_player.gd" id="1_qsbax"]
 [ext_resource type="Texture2D" uid="uid://dsry6kd4ww052" path="res://playerFolder/playerSprites/Sprite-0001.png" id="3_cbej2"]
 [ext_resource type="PackedScene" uid="uid://b0py0r48mo2wi" path="res://playerFolder/camera_manager.tscn" id="3_olns3"]
 [ext_resource type="Texture2D" uid="uid://dnadcguif2xdk" path="res://playerFolder/playerSprites/shadowPixel.png" id="3_opa1r"]
+[ext_resource type="PackedScene" uid="uid://chgbc048ycjqu" path="res://Level1/level1Soundtrack/music_manager.tscn" id="5_6sxll"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qsbax"]
 radius = 5.0
@@ -63,6 +64,8 @@ texture = ExtResource("3_cbej2")
 bus = &"playerBus"
 
 [node name="soundTrack2" type="AudioStreamPlayer2D" parent="playerBody"]
+
+[node name="musicManager" parent="playerBody" instance=ExtResource("5_6sxll")]
 
 [node name="cameraController" parent="." instance=ExtResource("3_olns3")]
 
