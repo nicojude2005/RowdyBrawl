@@ -51,7 +51,8 @@ func setCombatTrack(toCombat: bool):
 		swapSongs()
 
 func _on_calm_track_finished() -> void:
-	loopSongs()
-
+	if trackTime >= 1:
+		loopSongs()
 func _on_heavy_track_finished() -> void:
-	loopSongs()
+	if trackTime >= 1:
+		loopSongs()

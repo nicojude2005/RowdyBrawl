@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://5e4q3284mm0e"]
+
+[ext_resource type="PackedScene" uid="uid://b0v72xws7qv7b" path="res://playerFolder/playerAttacks/hit_box.tscn" id="1_0q1j5"]
+[ext_resource type="Texture2D" uid="uid://db4sudamdniem" path="res://Level1/level1Enemies/enemyJobApplication/jobApplication.png" id="2_gx8b5"]
+
+[node name="jobApplicationSlam" instance=ExtResource("1_0q1j5")]
+knockbackDir = Vector2(1, 0.25)
+knockbackStrength = 55.0
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="hurtArea" index="0"]
+position = Vector2(10, -1)
+polygon = PackedVector2Array(-3, 1, -1, -64, 23, -64, 22, 1)
+
+[node name="playerExample" parent="." index="1"]
+scale = Vector2(0.02, 0.02)
+texture = ExtResource("2_gx8b5")
