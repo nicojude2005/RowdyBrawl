@@ -51,6 +51,9 @@ var attackBusyTimer : float = 0.0
 var hitRate : float = .45
 var hitTimer : float = hitRate
 
+func _ready() -> void:
+	sound_track_1.play()
+
 func _physics_process(delta: float) -> void:
 	# stun countdown
 	if stun_timer > 0 and grounded:
@@ -121,7 +124,7 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 # Called when the player attacks the enemy
-func take_hit(damage: int, knockback_dir: Vector2, knockback_strength: float, stun_duration: float) -> void:
+func take_hit(damage: int, knockback_dir: Vector2, knockback_strength: float, stun_duration: float, attacker : Node2D = null) -> void:
 	health -= damage
 	#animation_player.play("hitFlash")
 	# Apply knockback and stun
@@ -163,7 +166,7 @@ func aiAttackFunction(delta :float):
 		if playerRef.playerYPosition > yPosition:
 			jump()
 		if canAttack():
-			spawnAttack(ENEMY_EXAMPLE_ATTACK, 10, 0.2, 0.5, 1)
+			spawnAttack(ENEMY_EXAMPLE_ATTACK, 10, 0.4, 0.5, 1.2)
 			hitTimer = hitRate
 			ai = aiStates.CHASE
 	if (playerRef.playerBody.global_position - global_position).length() > 300:
@@ -189,10 +192,9 @@ func isCloseToTarget(range : float = 15) -> bool:
 		return false
 	
 func playSound(sound : AudioStream, pitch : float = 1.0, volumedB : float = 0):
-	sound_track_1.stream = sound
-	sound_track_1.pitch_scale = pitch
-	sound_track_1.volume_db = volumedB
-	sound_track_1.play()
+	var playback : AudioStreamPlaybackPolyphonic = sound_track_1.get_stream_playback()
+	playback.play_stream(sound, 0, volumedB,pitch)
+	
 	
 func resetSoundTrack():
 	sound_track_1.volume_db = 0.0
@@ -202,6 +204,7 @@ func spawnAttack(hitboxToUse : PackedScene, attackDamage : float, attackStartup 
 	var attackHitbox : hitBox = hitboxToUse.instantiate();
 	attackHitbox.myZIndex = self.global_position.y
 	enemy_hitbox.add_child(attackHitbox)
+	attackHitbox.activeAfter = attackStartup
 	attackHitbox.damage = attackDamage
 	attackHitbox.dir = facingDir
 	if facingDir == -1:
@@ -273,6 +276,8 @@ func enemy():
 func _on_sound_track_1_finished() -> void:
 	resetSoundTrack()
 func _on_detection_area_body_entered(body: Node2D) -> void:
+	sound_track_1.play()
 	if body.get_parent() is player:
 		playerRef = body.get_parent()
+		playerRef.enterCombat()
 		ai = aiStates.CHASE

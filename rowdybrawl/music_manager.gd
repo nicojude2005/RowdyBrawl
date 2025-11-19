@@ -1,4 +1,5 @@
 extends Node2D
+class_name musicManager
 
 const level1HeavyTheme = preload("uid://dlo8imfn8cbid")
 const level1CalmTheme = preload("uid://cjkjw7akh2n8l")
@@ -13,6 +14,9 @@ var inCombat : bool = false
 func _ready() -> void:
 	calm_track.stream = level1CalmTheme
 	heavy_track.stream = level1HeavyTheme
+	calm_track.volume_db = -6
+	calm_track.pitch_scale = .9
+	calm_track.play()
 
 func _process(delta: float) -> void:
 	if inCombat:
@@ -40,6 +44,11 @@ func loopSongs():
 	else:
 		calm_track.play(0)
 
+func setCombatTrack(toCombat: bool):
+	if !inCombat and toCombat:
+		swapSongs()
+	elif inCombat and !toCombat:
+		swapSongs()
 
 func _on_calm_track_finished() -> void:
 	loopSongs()

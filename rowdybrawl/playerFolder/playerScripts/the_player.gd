@@ -10,7 +10,8 @@ class_name player   # the tutorial doesnt talk about this(because technically th
 @onready var shadow: Sprite2D = $playerBody/shadow
 @onready var hit_box: Node2D = $playerBody/hitBox
 @onready var sound_track_1: AudioStreamPlayer2D = $playerBody/soundTrack1
-@onready var sound_track_2: AudioStreamPlayer2D = $playerBody/soundTrack2
+@onready var player_sprite_color_animation: AnimationPlayer = $playerSpriteColorAnimation
+@onready var music_manager: musicManager = $playerBody/musicManager
 
 # load up the player attack hitboxes
 const LIGHT_ATTACK = preload("uid://cclox11udehj4")
@@ -28,6 +29,7 @@ var enemy_inattack_range = false
 var enemy_attack_cooldown = true
 var health = 100
 var player_alive = true
+var stun_timer := 0.0
 
 var facingDir = 1
 var maxSpeed = 200
@@ -43,12 +45,18 @@ var grounded = true                # handles jumping and falling
 var jumpVelocity : float = 400      
 var gravity: int = 9.8
 
-var stun_timer := 0.0
-
 var attackBusyTimer : float = 0
 var comboString : String = ""
 var comboTimer : float = 0
 const comboChainTime : float = 1
+
+var parryTimer := 0.0
+const parryWindow := 0.5
+var parryCooldownTimer := 0.0
+const parryCooldownAmount := parryWindow + 1.0  # you have to add parryWindow, because parry cooldown starts the moment you parry
+
+func _ready() -> void:
+	sound_track_1.play()
 
 func _physics_process(delta: float) -> void:     # _physics_process runs in fixed(very tiny) intervals, regardless of the framerate
 												 # This makes it good for movement and physics-based code
@@ -60,6 +68,10 @@ func _physics_process(delta: float) -> void:     # _physics_process runs in fixe
 		comboTimer -= delta
 	if stun_timer > 0:
 		stun_timer -= delta
+	if parryTimer > 0:
+		parryTimer -= delta
+	if parryCooldownTimer > 0:
+		parryCooldownTimer -= delta
 	
 	if health <= 0:
 		player_alive = false # add end screen or wtv
@@ -114,7 +126,9 @@ func _physics_process(delta: float) -> void:     # _physics_process runs in fixe
 	if Input.is_action_just_pressed("jump") and canMove():
 		if grounded:
 			jump()
-		
+	if Input.is_action_just_pressed("parry") and canAttack():
+		parry()
+	
 	
 #	z axis logic
 	if !grounded:
@@ -155,18 +169,18 @@ func doAttackCheckCombos(attack : String):
 				sound_track_1.pitch_scale = 1.3
 				playSound(LIGHT_PUNCH_SOUND)
 			"LLL":
-				currentAttack = spawnAttack(LIGHT_ATTACK, 5, 0.15, 0.2, 0.05)
+				currentAttack = spawnAttack(LIGHT_ATTACK, 5, 0.15, 0.1, -0.1)
 				applyKnockback(Vector2(facingDir,0), 100)
 				playSound(LIGHT_PUNCH_SOUND, 1.7)
 				
 #			special debug combo to fly forward
-			"LLLL":
+			"LLLA":
 				currentAttack = spawnAttack(LIGHT_ATTACK, 0, 0,0)
 				playSound(LIGHT_PUNCH_SOUND, 2)
-			"LLLLL":
+			"LLLAA":
 				currentAttack = spawnAttack(LIGHT_ATTACK, 0, 0,0)
 				playSound(LIGHT_PUNCH_SOUND, 2.3)
-			"LLLLLS":
+			"LLLAAS":
 				currentAttack = spawnAttack(AIR_HEAVY_ATTACK, 0, 0,0)
 				applyKnockback(Vector2(facingDir,.2), 1000)
 				playSound(LIGHT_PUNCH_SOUND, 3)
@@ -204,7 +218,6 @@ func doAttackCheckCombos(attack : String):
 		comboString = attack
 		letterToAttack(attack)
 	
-
 func letterToAttack(attack):
 	var currentAttack : hitBox
 	match attack:
@@ -213,12 +226,12 @@ func letterToAttack(attack):
 			# the wind up for the attack is the second number
 			# the duration of the hitbox is the third number
 			# and the endlag in which the player can not attack after the attack has finished is the last one
-			currentAttack = spawnAttack(LIGHT_ATTACK, 3, 0.1, 0.3, 0.1)
+			currentAttack = spawnAttack(LIGHT_ATTACK, 3, 0.1, 0.1, -0.05)
 			currentAttack.stunDuration = .8
 			playSound(LIGHT_PUNCH_SOUND)
 		"H":
 			# same thing as light attack but with different numbers
-			currentAttack = spawnAttack(HEAVY_ATTACK, 8, 0.2, 0.1, 0.1)
+			currentAttack = spawnAttack(HEAVY_ATTACK, 8, 0.35, 0.1, 0.1)
 			currentAttack.stunDuration = 1
 			currentAttack.zReach = 25
 			applyKnockback(Vector2(facingDir,0), 100)
@@ -270,17 +283,8 @@ func spawnAttack(hitboxToUse : PackedScene, attackDamage : float, attackStartup 
 	return attackHitbox
 
 func playSound(sound : AudioStream, pitch : float = 1.0, volumedB : float = 0):
-	
-	if sound_track_1.playing:
-		sound_track_2.stream = sound
-		sound_track_2.pitch_scale = pitch
-		sound_track_2.volume_db = volumedB
-		sound_track_2.play()
-	else:
-		sound_track_1.stream = sound
-		sound_track_1.pitch_scale = pitch
-		sound_track_1.volume_db = volumedB
-		sound_track_1.play()
+	var playback : AudioStreamPlaybackPolyphonic = sound_track_1.get_stream_playback()
+	playback.play_stream(sound, 0, volumedB,pitch)
 
 func canMove() -> bool:
 	if stun_timer <= 0 and attackBusyTimer <= 0:
@@ -324,6 +328,8 @@ func applyFrictionY():
 		playerBody.velocity.y = 0 
 		
 func applyKnockback(direction : Vector2, strength : float):
+	if parryTimer >= 0:
+		return
 	direction = direction.normalized()
 	if direction.x != 0:
 		playerBody.velocity.x = direction.x * strength
@@ -331,15 +337,33 @@ func applyKnockback(direction : Vector2, strength : float):
 		playerYVelocity = -direction.y * strength
 	if direction.y < 0:
 		grounded = false
-func player():
-	pass #used to check if player enters enemies hitbox
+
+func parry():
+	if parryCooldownTimer <= 0:
+		parryTimer = parryWindow
+		player_sprite_color_animation.play("parry")
+		parryCooldownTimer = parryCooldownAmount
+
+func enterCombat(enemyInitiated : Enemy = null):
+	music_manager.setCombatTrack(true)
+
+func take_hit(damage: int, knockback_dir: Vector2, knockback_strength: float, stun_duration: float, attacker : Enemy = null) -> void:
+	if attacker != null and parryTimer >= 0:
+		parryCooldownTimer = 0
+		var normalToAttacker = (attacker.global_position - playerBody.global_position).normalized()
+		if attacker.grounded:
+			attacker.take_hit(10,Vector2(normalToAttacker.x,0),500, 1, self)
+		else:
+			attacker.take_hit(10,Vector2(normalToAttacker.x,0),50 , 1, self)
+		return
 	
-func take_hit(damage: int, knockback_dir: Vector2, knockback_strength: float, stun_duration: float) -> void:
 	health -= damage
 	#animation_player.play("hitFlash")
 	# Apply knockback and stun
 	applyKnockback(knockback_dir,knockback_strength)
 	stun_timer = stun_duration
+	
+	
 	
 	if health <= 0:
 		die()
