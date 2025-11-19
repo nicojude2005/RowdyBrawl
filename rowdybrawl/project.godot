@@ -13,7 +13,7 @@ config_version=5
 config/name="RowdyBrawl"
 run/main_scene="uid://cqq8uovueylvg"
 config/features=PackedStringArray("4.5", "Forward Plus")
-config/icon="res://sprites/icon.svg"
+config/icon="res://Level1/level1Enemies/parentEnemy/icon.svg"
 
 [audio]
 

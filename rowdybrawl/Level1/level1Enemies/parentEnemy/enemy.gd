@@ -11,6 +11,7 @@ class_name Enemy
 
 # load some hitboxes for use
 @onready var ENEMY_EXAMPLE_ATTACK = load("uid://d3g686l1tme5q")
+# load sounds
 @onready var ENEMY_DIE_SOUND_EFFECT_DEFAULT = load("uid://bksdr80lhktaq")
 
 
@@ -28,7 +29,7 @@ var grounded = true                # handles jumping and falling
 var jumpVelocity : float = 300      
 var gravity: float = 9.8
 
-var airTimer := 0.0  # to make it hard to permanantly air lock enemies
+var airTimer := 0.0  # to make it harder to permanantly air lock enemies
 var weightIncrease := 0.0
 
 # movement for chasing
@@ -123,7 +124,24 @@ func _physics_process(delta: float) -> void:
 	
 	move_and_slide()
 
-# Called when the player attacks the enemy
+
+# Combat attacking stuff
+func spawnAttack(hitboxToUse : PackedScene, attackDamage : float, attackStartup : float, attackDuration: float, attackEndlag : float = 0.0) -> hitBox:
+	var attackHitbox : hitBox = hitboxToUse.instantiate();
+	attackHitbox.myZIndex = self.global_position.y
+	enemy_hitbox.add_child(attackHitbox)
+	attackHitbox.activeAfter = attackStartup
+	attackHitbox.damage = attackDamage
+	attackHitbox.dir = facingDir
+	if facingDir == -1:
+		attackHitbox.rotation_degrees = 180
+		attackHitbox.scale.y = -1
+	attackHitbox.userRef = self
+	
+	attackHitbox.duration = attackDuration + attackStartup
+	attackBusyTimer = attackStartup + attackDuration + attackEndlag
+	
+	return attackHitbox
 func take_hit(damage: int, knockback_dir: Vector2, knockback_strength: float, stun_duration: float, attacker : Node2D = null) -> void:
 	health -= damage
 	#animation_player.play("hitFlash")
@@ -137,7 +155,67 @@ func take_hit(damage: int, knockback_dir: Vector2, knockback_strength: float, st
 	
 	if health <= 0:
 		die()
+func applyKnockback(direction : Vector2, strength : float):
+	direction = direction.normalized()
+	if direction.x != 0:
+		velocity.x = direction.x * strength
+	if direction.y != 0:
+		yVelocity = -direction.y * strength
+	if direction.y < 0:
+		grounded = false
+func die():
+	enemy_alive = false
+	health = 0
+	applyKnockback(Vector2(.3,-1), 5000)
+	playSound(ENEMY_DIE_SOUND_EFFECT_DEFAULT, 0.3, 1)
+	enemy_collision.set_deferred("disabled", true)		
+func removeFromScene():
+	call_deferred("queue_free")
 
+# movement stuff
+func applyFrictionX():
+	if abs(velocity.x) > friction:   # if the player is moving faster than the friction force
+		velocity.x -= (velocity.x / abs(velocity.x)) * friction # subtracts friction force opposite of their direction of movement
+	else:
+		velocity.x = 0 
+func applyFrictionY():
+	if abs(velocity.y) > friction * yReductionAmount:   # if the player is moving faster than the friction force
+		velocity.y -= (velocity.y / abs(velocity.y)) * friction * yReductionAmount# subtracts friction force opposite of their direction of movement
+	else:
+		velocity.y = 0 
+
+func jump():
+	if grounded:
+		yVelocity = jumpVelocity
+		grounded = false
+func land():
+	
+	if yVelocity < -180 and stun_timer > 0:
+		grounded = false
+		yVelocity = -yVelocity * 0.7
+		
+	else:
+		grounded = true
+		yVelocity = 0
+		airTimer = 0
+		weightIncrease = 0
+	yPosition = 0
+	set_collision_layer_value(1, true)
+	set_collision_layer_value(2, false)
+	set_collision_mask_value(5, true)
+	set_collision_mask_value(1, false)
+
+func canAttack() -> bool:
+	if stun_timer <= 0 and attackBusyTimer <= 0:
+		return true
+	else:
+		return false
+func canMove() -> bool:
+	if stun_timer <= 0:
+		return true
+	else:
+		return false
+# ai brain stuff
 func accelarateInDirection():
 	if abs((moveDirection.x * (accelaration + friction)) + velocity.x) <= maxSpeed:
 		velocity.x += moveDirection.x * (accelaration + friction)
@@ -173,16 +251,6 @@ func aiAttackFunction(delta :float):
 		ai = aiStates.CHASE
 		hitTimer = hitRate
 
-func die():
-	enemy_alive = false
-	health = 0
-	applyKnockback(Vector2(.3,-1), 5000)
-	playSound(ENEMY_DIE_SOUND_EFFECT_DEFAULT, 0.3, 1)
-	enemy_collision.set_deferred("disabled", true)
-	
-func removeFromScene():
-	call_deferred("queue_free")
-	
 func isCloseToTarget(range : float = 15) -> bool:
 	var dist : float = (targetPos - global_position).length()
 	
@@ -190,89 +258,17 @@ func isCloseToTarget(range : float = 15) -> bool:
 		return true
 	else:
 		return false
-	
+
+
+# misc
 func playSound(sound : AudioStream, pitch : float = 1.0, volumedB : float = 0):
 	var playback : AudioStreamPlaybackPolyphonic = sound_track_1.get_stream_playback()
 	playback.play_stream(sound, 0, volumedB,pitch)
-	
-	
 func resetSoundTrack():
 	sound_track_1.volume_db = 0.0
 	sound_track_1.pitch_scale = 1.0
 
-func spawnAttack(hitboxToUse : PackedScene, attackDamage : float, attackStartup : float, attackDuration: float, attackEndlag : float = 0.0) -> hitBox:
-	var attackHitbox : hitBox = hitboxToUse.instantiate();
-	attackHitbox.myZIndex = self.global_position.y
-	enemy_hitbox.add_child(attackHitbox)
-	attackHitbox.activeAfter = attackStartup
-	attackHitbox.damage = attackDamage
-	attackHitbox.dir = facingDir
-	if facingDir == -1:
-		attackHitbox.rotation_degrees = 180
-		attackHitbox.scale.y = -1
-	attackHitbox.userRef = self
-	
-	attackHitbox.duration = attackDuration + attackStartup
-	attackBusyTimer = attackStartup + attackDuration + attackEndlag
-	
-	return attackHitbox
-
-func jump():
-	if grounded:
-		yVelocity = jumpVelocity
-		grounded = false
-
-func land():
-	
-	if yVelocity < -180 and stun_timer > 0:
-		grounded = false
-		yVelocity = -yVelocity * 0.7
-		
-	else:
-		grounded = true
-		yVelocity = 0
-		airTimer = 0
-		weightIncrease = 0
-	yPosition = 0
-	set_collision_layer_value(1, true)
-	set_collision_layer_value(2, false)
-	set_collision_mask_value(5, true)
-	set_collision_mask_value(1, false)
-	
-func canAttack() -> bool:
-	if stun_timer <= 0 and attackBusyTimer <= 0:
-		return true
-	else:
-		return false
-
-func canMove() -> bool:
-	if stun_timer <= 0:
-		return true
-	else:
-		return false
-
-func applyKnockback(direction : Vector2, strength : float):
-	direction = direction.normalized()
-	if direction.x != 0:
-		velocity.x = direction.x * strength
-	if direction.y != 0:
-		yVelocity = -direction.y * strength
-	if direction.y < 0:
-		grounded = false
-
-func applyFrictionX():
-	if abs(velocity.x) > friction:   # if the player is moving faster than the friction force
-		velocity.x -= (velocity.x / abs(velocity.x)) * friction # subtracts friction force opposite of their direction of movement
-	else:
-		velocity.x = 0 
-	
-func applyFrictionY():
-	if abs(velocity.y) > friction * yReductionAmount:   # if the player is moving faster than the friction force
-		velocity.y -= (velocity.y / abs(velocity.y)) * friction * yReductionAmount# subtracts friction force opposite of their direction of movement
-	else:
-		velocity.y = 0 
-func enemy():
-	pass # used for player hitbox checks
+# node triggered things
 func _on_sound_track_1_finished() -> void:
 	resetSoundTrack()
 func _on_detection_area_body_entered(body: Node2D) -> void:

@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://chgbc048ycjqu"]
 
-[ext_resource type="Script" uid="uid://cyt65mk1csxsu" path="res://music_manager.gd" id="1_slthk"]
+[ext_resource type="Script" uid="uid://cyt65mk1csxsu" path="res://Level1/level1Soundtrack/music_manager.gd" id="1_slthk"]
 
 [sub_resource type="AudioStream" id="AudioStream_slthk"]
 

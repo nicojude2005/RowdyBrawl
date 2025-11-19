@@ -56,7 +56,7 @@ var parryCooldownTimer := 0.0
 const parryCooldownAmount := parryWindow + 1.0  # you have to add parryWindow, because parry cooldown starts the moment you parry
 
 func _ready() -> void:
-	sound_track_1.play()
+	sound_track_1.play() # this is so we can use Playback (in the play sound function) to utilize polyphony
 
 func _physics_process(delta: float) -> void:     # _physics_process runs in fixed(very tiny) intervals, regardless of the framerate
 												 # This makes it good for movement and physics-based code
@@ -155,7 +155,58 @@ func _physics_process(delta: float) -> void:     # _physics_process runs in fixe
 	hit_box.position.y = -(playerYPosition / 100)
 	
 	playerBody.move_and_slide()  # this function is what actually applies the player's velocity to their position. It also does all the collision checks
+
+# attack stuff
+func spawnAttack(hitboxToUse : PackedScene, attackDamage : float, attackStartup : float, attackDuration: float, attackEndlag : float = 0.0) -> hitBox:
+	var attackHitbox : hitBox = hitboxToUse.instantiate();
+	attackHitbox.myZIndex = playerBody.global_position.y
+	hit_box.add_child(attackHitbox)
+	attackHitbox.activeAfter = attackStartup
+	attackHitbox.damage = attackDamage
+	attackHitbox.dir = facingDir
+	if facingDir == -1:
+		attackHitbox.rotation_degrees = 180
+		attackHitbox.scale.y = -1
+	attackHitbox.userRef = self
 	
+	attackHitbox.duration = attackDuration + attackStartup
+	attackBusyTimer = attackStartup + attackDuration + attackEndlag
+	
+	
+	
+	return attackHitbox
+func letterToAttack(attack):
+	var currentAttack : hitBox
+	match attack:
+		"L":
+			# spawn a hitbox in front of the player, with Damage equal to the first number
+			# the wind up for the attack is the second number
+			# the duration of the hitbox is the third number
+			# and the endlag in which the player can not attack after the attack has finished is the last one
+			currentAttack = spawnAttack(LIGHT_ATTACK, 3, 0.1, 0.1, -0.05)
+			currentAttack.stunDuration = .8
+			playSound(LIGHT_PUNCH_SOUND)
+		"H":
+			# same thing as light attack but with different numbers
+			currentAttack = spawnAttack(HEAVY_ATTACK, 8, 0.35, 0.1, 0.1)
+			currentAttack.stunDuration = 1
+			currentAttack.zReach = 25
+			applyKnockback(Vector2(facingDir,0), 100)
+			playSound(HEAVY_PUNCH_SOUND)
+		"A":
+			currentAttack = spawnAttack(AIR_LIGHT_ATTACK, 2, 0.05, 0.25, 0.05)
+			currentAttack.userKnockbackOnHitDir = Vector2(0,-1)
+			currentAttack.userKnockbackOnHitStrength = 150
+			playSound(LIGHT_PUNCH_SOUND)
+		"S":
+			currentAttack = spawnAttack(AIR_HEAVY_ATTACK, 6, 0.05, 0.3, 0.35)
+			currentAttack.knockbackStrength = 200
+			currentAttack.knockbackDir = Vector2(0, 1)
+			currentAttack.userKnockbackOnHitDir = Vector2(0,-1)
+			currentAttack.userKnockbackOnHitStrength = 150
+			playSound(HEAVY_PUNCH_SOUND)
+		_:
+			print("ERROR, UNKNOWN ATTACK REQUESTED")
 func doAttackCheckCombos(attack : String):
 	var currentAttack : hitBox
 #	check for a potential next hit of a combo
@@ -217,136 +268,7 @@ func doAttackCheckCombos(attack : String):
 		comboTimer = comboChainTime
 		comboString = attack
 		letterToAttack(attack)
-	
-func letterToAttack(attack):
-	var currentAttack : hitBox
-	match attack:
-		"L":
-			# spawn a hitbox in front of the player, with Damage equal to the first number
-			# the wind up for the attack is the second number
-			# the duration of the hitbox is the third number
-			# and the endlag in which the player can not attack after the attack has finished is the last one
-			currentAttack = spawnAttack(LIGHT_ATTACK, 3, 0.1, 0.1, -0.05)
-			currentAttack.stunDuration = .8
-			playSound(LIGHT_PUNCH_SOUND)
-		"H":
-			# same thing as light attack but with different numbers
-			currentAttack = spawnAttack(HEAVY_ATTACK, 8, 0.35, 0.1, 0.1)
-			currentAttack.stunDuration = 1
-			currentAttack.zReach = 25
-			applyKnockback(Vector2(facingDir,0), 100)
-			playSound(HEAVY_PUNCH_SOUND)
-		"A":
-			currentAttack = spawnAttack(AIR_LIGHT_ATTACK, 2, 0.05, 0.25, 0.05)
-			currentAttack.userKnockbackOnHitDir = Vector2(0,-1)
-			currentAttack.userKnockbackOnHitStrength = 150
-			playSound(LIGHT_PUNCH_SOUND)
-		"S":
-			currentAttack = spawnAttack(AIR_HEAVY_ATTACK, 6, 0.05, 0.3, 0.35)
-			currentAttack.knockbackStrength = 200
-			currentAttack.knockbackDir = Vector2(0, 1)
-			currentAttack.userKnockbackOnHitDir = Vector2(0,-1)
-			currentAttack.userKnockbackOnHitStrength = 150
-			playSound(HEAVY_PUNCH_SOUND)
-		_:
-			print("ERROR, UNKNOWN ATTACK REQUESTED")
-
-func flipToDirection(flipToRight : bool):
-	if flipToRight and  sprite_2d.flip_h:
-		#playerBody.rotation_degrees = 0
-		#playerBody.scale.y = 1
-		sprite_2d.flip_h = false
-		facingDir = 1
-	elif !flipToRight and not sprite_2d.flip_h:
-		#playerBody.rotation_degrees = 180
-		#playerBody.scale.y = -1
-		sprite_2d.flip_h = true
-		facingDir = -1
-
-func spawnAttack(hitboxToUse : PackedScene, attackDamage : float, attackStartup : float, attackDuration: float, attackEndlag : float = 0.0) -> hitBox:
-	var attackHitbox : hitBox = hitboxToUse.instantiate();
-	attackHitbox.myZIndex = playerBody.global_position.y
-	hit_box.add_child(attackHitbox)
-	attackHitbox.activeAfter = attackStartup
-	attackHitbox.damage = attackDamage
-	attackHitbox.dir = facingDir
-	if facingDir == -1:
-		attackHitbox.rotation_degrees = 180
-		attackHitbox.scale.y = -1
-	attackHitbox.userRef = self
-	
-	attackHitbox.duration = attackDuration + attackStartup
-	attackBusyTimer = attackStartup + attackDuration + attackEndlag
-	
-	
-	
-	return attackHitbox
-
-func playSound(sound : AudioStream, pitch : float = 1.0, volumedB : float = 0):
-	var playback : AudioStreamPlaybackPolyphonic = sound_track_1.get_stream_playback()
-	playback.play_stream(sound, 0, volumedB,pitch)
-
-func canMove() -> bool:
-	if stun_timer <= 0 and attackBusyTimer <= 0:
-		return true
-	else:
-		return false
-		
-func canAttack() -> bool:
-	if stun_timer <= 0 and attackBusyTimer <= 0:
-		return true
-	else:
-		return false
-
-func jump():
-	playSound(JUMP_SOUND_EFFECT, (randf() * 0.4) + 1, -5)
-	playerYVelocity = jumpVelocity
-	grounded = false
-	#playerBody.collision_mask = 2
-
-func land():
-	grounded = true
-	playerYVelocity = 0
-	playerYPosition = 0
-	playerBody.collision_mask = 1
-	playerBody.collision_layer = 1
-	playSound(LAND_SOUND_EFFECT, (randf() * 0.4) + 1, -15)
-
-func resetSoundPlayer():
-	sound_track_1.volume_db = 0.0
-	sound_track_1.pitch_scale = 1.0
-
-func applyFrictionX():
-	if abs(playerBody.velocity.x) > groundFriction:   # if the player is moving faster than the friction force
-		playerBody.velocity.x -= (playerBody.velocity.x / abs(playerBody.velocity.x)) * groundFriction # subtracts friction force opposite of their direction of movement
-	else:
-		playerBody.velocity.x = 0 
-func applyFrictionY():
-	if abs(playerBody.velocity.y) > groundFriction * yReductionPercent:   # if the player is moving faster than the friction force
-		playerBody.velocity.y -= (playerBody.velocity.y / abs(playerBody.velocity.y)) * groundFriction * yReductionPercent # subtracts friction force opposite of their direction of movement
-	else:
-		playerBody.velocity.y = 0 
-		
-func applyKnockback(direction : Vector2, strength : float):
-	if parryTimer >= 0:
-		return
-	direction = direction.normalized()
-	if direction.x != 0:
-		playerBody.velocity.x = direction.x * strength
-	if direction.y != 0:
-		playerYVelocity = -direction.y * strength
-	if direction.y < 0:
-		grounded = false
-
-func parry():
-	if parryCooldownTimer <= 0:
-		parryTimer = parryWindow
-		player_sprite_color_animation.play("parry")
-		parryCooldownTimer = parryCooldownAmount
-
-func enterCombat(enemyInitiated : Enemy = null):
-	music_manager.setCombatTrack(true)
-
+# combat stuff in general
 func take_hit(damage: int, knockback_dir: Vector2, knockback_strength: float, stun_duration: float, attacker : Enemy = null) -> void:
 	if attacker != null and parryTimer >= 0:
 		parryCooldownTimer = 0
@@ -363,13 +285,83 @@ func take_hit(damage: int, knockback_dir: Vector2, knockback_strength: float, st
 	applyKnockback(knockback_dir,knockback_strength)
 	stun_timer = stun_duration
 	
-	
-	
 	if health <= 0:
 		die()
-
+func applyKnockback(direction : Vector2, strength : float):
+	if parryTimer >= 0:
+		return
+	direction = direction.normalized()
+	if direction.x != 0:
+		playerBody.velocity.x = direction.x * strength
+	if direction.y != 0:
+		playerYVelocity = -direction.y * strength
+	if direction.y < 0:
+		grounded = false
+func enterCombat(enemyInitiated : Enemy = null):
+	music_manager.setCombatTrack(true)
+func parry():
+	if parryCooldownTimer <= 0:
+		parryTimer = parryWindow
+		player_sprite_color_animation.play("parry")
+		parryCooldownTimer = parryCooldownAmount
 func die():
 	pass
+
+#movement stuff
+func applyFrictionX():
+	if abs(playerBody.velocity.x) > groundFriction:   # if the player is moving faster than the friction force
+		playerBody.velocity.x -= (playerBody.velocity.x / abs(playerBody.velocity.x)) * groundFriction # subtracts friction force opposite of their direction of movement
+	else:
+		playerBody.velocity.x = 0 
+func applyFrictionY():
+	if abs(playerBody.velocity.y) > groundFriction * yReductionPercent:   # if the player is moving faster than the friction force
+		playerBody.velocity.y -= (playerBody.velocity.y / abs(playerBody.velocity.y)) * groundFriction * yReductionPercent # subtracts friction force opposite of their direction of movement
+	else:
+		playerBody.velocity.y = 0 
+func flipToDirection(flipToRight : bool):
+	if flipToRight and  sprite_2d.flip_h:
+		#playerBody.rotation_degrees = 0
+		#playerBody.scale.y = 1
+		sprite_2d.flip_h = false
+		facingDir = 1
+	elif !flipToRight and not sprite_2d.flip_h:
+		#playerBody.rotation_degrees = 180
+		#playerBody.scale.y = -1
+		sprite_2d.flip_h = true
+		facingDir = -1
+func jump():
+	playSound(JUMP_SOUND_EFFECT, (randf() * 0.4) + 1, -5)
+	playerYVelocity = jumpVelocity
+	grounded = false
+	#playerBody.collision_mask = 2
+func land():
+	grounded = true
+	playerYVelocity = 0
+	playerYPosition = 0
+	playerBody.collision_mask = 1
+	playerBody.collision_layer = 1
+	playSound(LAND_SOUND_EFFECT, (randf() * 0.4) + 1, -15)
+
+func canMove() -> bool:
+	if stun_timer <= 0 and attackBusyTimer <= 0:
+		return true
+	else:
+		return false
+func canAttack() -> bool:
+	if stun_timer <= 0 and attackBusyTimer <= 0:
+		return true
+	else:
+		return false
+
+# misc
+func playSound(sound : AudioStream, pitch : float = 1.0, volumedB : float = 0):
+	var playback : AudioStreamPlaybackPolyphonic = sound_track_1.get_stream_playback()
+	playback.play_stream(sound, 0, volumedB,pitch)
+func resetSoundPlayer():
+	sound_track_1.volume_db = 0.0
+	sound_track_1.pitch_scale = 1.0
+
+
 
 func _on_sound_player_finished() -> void:
 	resetSoundPlayer()

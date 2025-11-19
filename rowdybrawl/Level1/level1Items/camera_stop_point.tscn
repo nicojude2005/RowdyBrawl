@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://c6sx1igpnncyc"]
 
-[ext_resource type="Script" uid="uid://coybivmnfvpq7" path="res://camera_stop_point.gd" id="1_u31tp"]
+[ext_resource type="Script" uid="uid://coybivmnfvpq7" path="res://Level1/level1Items/camera_stop_point.gd" id="1_u31tp"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hp80d"]
 

@@ -26,7 +26,7 @@ tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "handle_modes": PackedInt32Array(0, 2, 2, 2),
-"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 1.0870764, -0.003547174, -0.014512737, 0, 0, 0.95468724, -0.065179326, 0.022064866, 0, 0, 1, -0.014606839, -0.007552127, 0, 0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 0, -0.003547174, -0.014512737, 0, 0, 0.35, -0.065179326, 0.022064866, 0, 0, 1, -0.014606839, -0.007552127, 0, 0),
 "times": PackedFloat32Array(0, 0.021283044, 0.41235897, 0.5)
 }
 tracks/1/type = "bezier"
@@ -37,7 +37,7 @@ tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "handle_modes": PackedInt32Array(0, 2, 2, 2),
-"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 1.1377786, -0.003547174, -0.022963107, 0, 0, 1, -0.065179326, 0.022963107, 0, 0, 1, -0.014606839, 0, 0, 0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 0.5, -0.003547174, -0.022963107, 0, 0, 0.8, -0.065179326, 0.022963107, 0, 0, 1, -0.014606839, 0, 0, 0),
 "times": PackedFloat32Array(0, 0.021283044, 0.41235897, 0.5)
 }
 tracks/2/type = "bezier"
@@ -47,9 +47,9 @@ tracks/2/path = NodePath("playerBody/hitBox/Sprite2D:self_modulate:b")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"handle_modes": PackedInt32Array(0, 2, 2, 2),
-"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 0, -0.003547174, 0.16666666, 0, 0, 0.5189479, -0.065179326, -0.08649132, 0, 0, 1, -0.014606839, -0.080175355, 0, 0),
-"times": PackedFloat32Array(0, 0.021283044, 0.41235897, 0.5)
+"handle_modes": PackedInt32Array(0, 0, 2, 2),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 1, -0.003547174, 0.16666666, 0, 0, 1, -0.065179326, -0.08649132, 0, 0, 1, -0.014606839, -0.080175355, 0, 0),
+"times": PackedFloat32Array(0, 0.033333335, 0.41235897, 0.5)
 }
 tracks/3/type = "bezier"
 tracks/3/imported = false
