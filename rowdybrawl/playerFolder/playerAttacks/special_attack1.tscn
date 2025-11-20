@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://bkiexs3do8yr0"]
+
+[ext_resource type="PackedScene" uid="uid://b0v72xws7qv7b" path="res://playerFolder/playerAttacks/hit_box.tscn" id="1_bweoo"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wxbol"]
+size = Vector2(338, 83)
+
+[node name="specialAttack1" instance=ExtResource("1_bweoo")]
+damage = 8.0
+knockbackDir = Vector2(1, 0)
+knockbackStrength = 30.0
+stunDuration = 1.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hurtArea" index="0"]
+position = Vector2(179, -42.5)
+shape = SubResource("RectangleShape2D_wxbol")

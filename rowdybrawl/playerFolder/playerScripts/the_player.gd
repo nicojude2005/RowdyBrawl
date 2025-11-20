@@ -10,7 +10,7 @@ class_name player   # the tutorial doesnt talk about this(because technically th
 @onready var shadow: Sprite2D = $playerBody/shadow
 @onready var hit_box: Node2D = $playerBody/hitBox
 @onready var sound_track_1: AudioStreamPlayer2D = $playerBody/soundTrack1
-@onready var player_sprite_color_animation: AnimationPlayer = $playerSpriteColorAnimation
+@onready var player_sprite_color_animation: AnimationPlayer = $playerBody/playerSpriteColorAnimation
 @onready var music_manager: musicManager = $playerBody/musicManager
 
 # load up the player attack hitboxes
@@ -18,6 +18,8 @@ const LIGHT_ATTACK = preload("uid://cclox11udehj4")
 const HEAVY_ATTACK = preload("uid://df6js1m8i34eb")
 const AIR_LIGHT_ATTACK = preload("uid://b1mf0xdo3wvpr")
 const AIR_HEAVY_ATTACK = preload("uid://c0ttx055igf8n")
+
+const SPECIAL_ATTACK_1 = preload("uid://bkiexs3do8yr0")
 
 # load up the sounds
 const JUMP_SOUND_EFFECT = preload("uid://bdhakvk1lh7cu")
@@ -55,13 +57,15 @@ const parryWindow := 0.5
 var parryCooldownTimer := 0.0
 const parryCooldownAmount := parryWindow + 1.0  # you have to add parryWindow, because parry cooldown starts the moment you parry
 
+var specialMeter := 1.0
+
 func _ready() -> void:
 	sound_track_1.play() # this is so we can use Playback (in the play sound function) to utilize polyphony
 
 func _physics_process(delta: float) -> void:     # _physics_process runs in fixed(very tiny) intervals, regardless of the framerate
 												 # This makes it good for movement and physics-based code
 	rich_text_label.text = str(health) # temporary 
-	
+	specialMeter += delta
 	if attackBusyTimer > 0:
 		attackBusyTimer -= delta
 	if comboTimer > 0:
@@ -77,6 +81,9 @@ func _physics_process(delta: float) -> void:     # _physics_process runs in fixe
 		player_alive = false # add end screen or wtv
 		health = 0
 		print("player has been killed")
+		
+	if Input.is_action_just_pressed("debug"):
+		player_sprite_color_animation.play("moveTest")
 		
 	# attacks and stuff
 	if Input.is_action_just_pressed("lightAttack") and canAttack():
@@ -128,6 +135,9 @@ func _physics_process(delta: float) -> void:     # _physics_process runs in fixe
 			jump()
 	if Input.is_action_just_pressed("parry") and canAttack():
 		parry()
+		
+	if Input.is_action_just_pressed("special") and specialMeter >= 1.0:
+		specialAttack()
 	
 	
 #	z axis logic
@@ -268,6 +278,19 @@ func doAttackCheckCombos(attack : String):
 		comboTimer = comboChainTime
 		comboString = attack
 		letterToAttack(attack)
+func specialAttack():
+	spawnAttack(SPECIAL_ATTACK_1, 10, 0.5,0.15, 0)
+	flipToDirection(!facingDir)
+	spawnAttack(SPECIAL_ATTACK_1, 10, 0.5 + 0.15 ,0.15, 0)
+	flipToDirection(!facingDir)
+	spawnAttack(SPECIAL_ATTACK_1, 10, 0.5 + 0.3 ,0.15, 0)
+	flipToDirection(!facingDir)
+	spawnAttack(SPECIAL_ATTACK_1, 10, 0.5 + 0.45 ,0.15, 0)
+	flipToDirection(!facingDir)
+	spawnAttack(SPECIAL_ATTACK_1, 10, 0.5 + 0.6 ,0.15, 0)
+	flipToDirection(!facingDir)
+	
+	specialMeter = 0
 # combat stuff in general
 func take_hit(damage: int, knockback_dir: Vector2, knockback_strength: float, stun_duration: float, attacker : Enemy = null) -> void:
 	if attacker != null and parryTimer >= 0:

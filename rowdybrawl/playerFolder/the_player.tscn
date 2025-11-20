@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://b5c8708romg66"]
+[gd_scene load_steps=13 format=3 uid="uid://b5c8708romg66"]
 
 [ext_resource type="Script" uid="uid://d1lb2i55l1d4y" path="res://playerFolder/playerScripts/the_player.gd" id="1_qsbax"]
 [ext_resource type="Texture2D" uid="uid://dsry6kd4ww052" path="res://playerFolder/playerSprites/Sprite-0001.png" id="3_cbej2"]
@@ -14,6 +14,53 @@ height = 32.0
 size = Vector2(51, 60)
 
 [sub_resource type="AudioStreamPolyphonic" id="AudioStreamPolyphonic_6sxll"]
+
+[sub_resource type="Animation" id="Animation_cbnsr"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("playerBody/hitBox/Sprite2D:self_modulate:r")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("playerBody/hitBox/Sprite2D:self_modulate:g")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("playerBody/hitBox/Sprite2D:self_modulate:b")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/3/type = "bezier"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("playerBody/hitBox/Sprite2D:self_modulate:a")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
 
 [sub_resource type="Animation" id="Animation_6sxll"]
 resource_name = "parry"
@@ -63,56 +110,13 @@ tracks/3/keys = {
 "times": PackedFloat32Array(0, 0.021283044, 0.41235897, 0.5)
 }
 
-[sub_resource type="Animation" id="Animation_cbnsr"]
-length = 0.001
-tracks/0/type = "bezier"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("playerBody/hitBox/Sprite2D:self_modulate:r")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/1/type = "bezier"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("playerBody/hitBox/Sprite2D:self_modulate:g")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/2/type = "bezier"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("playerBody/hitBox/Sprite2D:self_modulate:b")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/3/type = "bezier"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("playerBody/hitBox/Sprite2D:self_modulate:a")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
+[sub_resource type="Animation" id="Animation_y3gru"]
+resource_name = "moveTest"
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_y3gru"]
 _data = {
 &"RESET": SubResource("Animation_cbnsr"),
+&"moveTest": SubResource("Animation_y3gru"),
 &"parry": SubResource("Animation_6sxll")
 }
 
@@ -170,11 +174,12 @@ bus = &"playerBus"
 
 [node name="musicManager" parent="playerBody" instance=ExtResource("5_6sxll")]
 
-[node name="cameraController" parent="." instance=ExtResource("3_olns3")]
-
-[node name="playerSpriteColorAnimation" type="AnimationPlayer" parent="."]
+[node name="playerSpriteColorAnimation" type="AnimationPlayer" parent="playerBody"]
+root_node = NodePath("../..")
 libraries = {
 &"": SubResource("AnimationLibrary_y3gru")
 }
+
+[node name="cameraController" parent="." instance=ExtResource("3_olns3")]
 
 [connection signal="finished" from="playerBody/soundTrack1" to="." method="_on_sound_player_finished"]

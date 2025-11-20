@@ -6,7 +6,8 @@ var JOB_APPLICATION_SLAM = load("uid://5e4q3284mm0e")
 
 
 func _ready() -> void:
-	hitTimer = 1
+	hitRate = 1
+	health = 100
 
 #func _process(delta: float) -> void:
 	#pass
@@ -30,6 +31,3 @@ func aiAttackFunction(delta :float):
 				job_application_animator.play("jobApplicationSlamLeft")
 			hitTimer = hitRate
 			ai = aiStates.CHASE
-	if (playerRef.playerBody.global_position - global_position).length() > 300:
-		ai = aiStates.CHASE
-		hitTimer = hitRate

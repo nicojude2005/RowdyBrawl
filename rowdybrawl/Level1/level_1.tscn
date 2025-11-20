@@ -122,3 +122,13 @@ position = Vector2(995, -94)
 
 [node name="jobApplication3" parent="." instance=ExtResource("3_5mv53")]
 position = Vector2(1379, 141)
+
+[node name="RichTextLabel4" type="RichTextLabel" parent="."]
+offset_left = -281.0
+offset_top = 83.0
+offset_right = 66.0
+offset_bottom = 330.0
+text = "MOVE : WASD or Arrows
+ATTACK: J light attack/ K heavy attack
+PARRY: i (i)
+SPECIAL ATTACK: U"
