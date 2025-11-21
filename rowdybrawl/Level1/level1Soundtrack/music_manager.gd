@@ -1,8 +1,10 @@
 extends Node2D
 class_name musicManager
 
-const level1HeavyTheme = preload("uid://dlo8imfn8cbid")
-const level1CalmTheme = preload("uid://cjkjw7akh2n8l")
+@export var level1HeavyTheme = preload("uid://c6cqa3s400iv3")
+@export var level1CalmTheme =  preload("uid://cmmdbtwmwvq7x")
+
+@export var isMenu = false #THIS IS A WORKAROUND, KINDA SLOPPY BUT IT WORKS
 
 @onready var calm_track: AudioStreamPlayer2D = $calmTrack
 @onready var heavy_track: AudioStreamPlayer2D = $HeavyTrack
@@ -14,8 +16,13 @@ var inCombat : bool = false
 func _ready() -> void:
 	calm_track.stream = level1CalmTheme
 	heavy_track.stream = level1HeavyTheme
-	calm_track.volume_db = -6
-	calm_track.pitch_scale = .9
+	
+	if !isMenu:
+		calm_track.volume_db = -6
+		calm_track.pitch_scale = .9
+	else:
+		calm_track.volume_db = 0
+		calm_track.pitch_scale = 1
 	calm_track.play()
 
 func _process(delta: float) -> void:

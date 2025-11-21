@@ -19,8 +19,14 @@ var rightSideStop := 3700.0
 
 var trackPos : Vector2
 
+var stop = false
+
 func _process(_delta: float) -> void:
-	trackPos = playerReference.hit_box.global_position
+	
+	if stop:
+		trackPos
+	else:
+		trackPos = playerReference.hit_box.global_position
 	 
 	if trackPos.x > leftSideStop and trackPos.x < rightSideStop:
 		camera2d.position.x = trackPos.x

@@ -1,0 +1,61 @@
+[gd_scene load_steps=7 format=3 uid="uid://bcti40hb4yo1n"]
+
+[ext_resource type="Script" uid="uid://bleb0ug6ax6p8" path="res://mainMenu/main_menu.gd" id="1_kpht7"]
+[ext_resource type="Texture2D" uid="uid://3kcv6ktd1ks0" path="res://mainMenu/rowdyBrawlPlayButtonNonSelected.png" id="2_0o04g"]
+[ext_resource type="PackedScene" uid="uid://chgbc048ycjqu" path="res://Level1/level1Soundtrack/music_manager.tscn" id="2_6ay73"]
+[ext_resource type="Texture2D" uid="uid://cctml1qqkt11b" path="res://mainMenu/rowdyBrawlPlayButtonHighlight.png" id="3_1dglg"]
+[ext_resource type="AudioStream" uid="uid://b1am57kn1nric" path="res://mainMenu/RowdyBrawlMainMenuGenny.wav" id="3_b4frg"]
+[ext_resource type="Texture2D" uid="uid://bmgrhc3yosuum" path="res://mainMenu/rowdyBrawlPlayButtonClicked.png" id="3_lgs6n"]
+
+[node name="MainMenu" type="Node2D"]
+script = ExtResource("1_kpht7")
+
+[node name="buttonManager" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+
+[node name="start" type="TextureButton" parent="buttonManager"]
+layout_mode = 0
+offset_left = 64.0
+offset_top = 32.0
+offset_right = 108.0
+offset_bottom = 63.0
+scale = Vector2(3.6931458, 2.1331055)
+texture_normal = ExtResource("2_0o04g")
+texture_pressed = ExtResource("3_lgs6n")
+texture_hover = ExtResource("3_1dglg")
+
+[node name="options" type="Button" parent="buttonManager"]
+layout_mode = 0
+offset_left = 240.0
+offset_top = 198.0
+offset_right = 311.0
+offset_bottom = 229.0
+scale = Vector2(1.4682018, 1.1595958)
+text = "options "
+
+[node name="quit" type="Button" parent="buttonManager"]
+layout_mode = 0
+offset_left = 254.0
+offset_top = 244.0
+offset_right = 291.0
+offset_bottom = 275.0
+scale = Vector2(2.0270813, 1.0312957)
+text = "exit
+"
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(288, 163)
+zoom = Vector2(2, 2)
+
+[node name="musicManager" parent="." instance=ExtResource("2_6ay73")]
+level1CalmTheme = ExtResource("3_b4frg")
+isMenu = true
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.61
+
+[connection signal="pressed" from="buttonManager/start" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="buttonManager/options" to="." method="_on_options_pressed"]
+[connection signal="pressed" from="buttonManager/quit" to="." method="_on_quit_pressed"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

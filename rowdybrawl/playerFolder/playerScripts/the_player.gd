@@ -10,8 +10,9 @@ class_name player   # the tutorial doesnt talk about this(because technically th
 @onready var shadow: Sprite2D = $playerBody/shadow
 @onready var hit_box: Node2D = $playerBody/hitBox
 @onready var sound_track_1: AudioStreamPlayer2D = $playerBody/soundTrack1
-@onready var player_sprite_color_animation: AnimationPlayer = $playerBody/playerSpriteColorAnimation
+@onready var player_action_animator: AnimationPlayer = $playerBody/playerActionAnimator
 @onready var music_manager: musicManager = $playerBody/musicManager
+@onready var camera_controller: cameraController = $cameraController
 
 # load up the player attack hitboxes
 const LIGHT_ATTACK = preload("uid://cclox11udehj4")
@@ -57,15 +58,14 @@ const parryWindow := 0.5
 var parryCooldownTimer := 0.0
 const parryCooldownAmount := parryWindow + 1.0  # you have to add parryWindow, because parry cooldown starts the moment you parry
 
-var specialMeter := 1.0
+var specialMeter := 0.0
 
 func _ready() -> void:
 	sound_track_1.play() # this is so we can use Playback (in the play sound function) to utilize polyphony
 
 func _physics_process(delta: float) -> void:     # _physics_process runs in fixed(very tiny) intervals, regardless of the framerate
 												 # This makes it good for movement and physics-based code
-	rich_text_label.text = str(health) # temporary 
-	specialMeter += delta
+	rich_text_label.text =  "Health:" + str(health) + "\nMeter: " + str(specialMeter)# temporary 
 	if attackBusyTimer > 0:
 		attackBusyTimer -= delta
 	if comboTimer > 0:
@@ -76,14 +76,9 @@ func _physics_process(delta: float) -> void:     # _physics_process runs in fixe
 		parryTimer -= delta
 	if parryCooldownTimer > 0:
 		parryCooldownTimer -= delta
-	
-	if health <= 0:
-		player_alive = false # add end screen or wtv
-		health = 0
-		print("player has been killed")
 		
 	if Input.is_action_just_pressed("debug"):
-		player_sprite_color_animation.play("moveTest")
+		pass
 		
 	# attacks and stuff
 	if Input.is_action_just_pressed("lightAttack") and canAttack():
@@ -136,7 +131,7 @@ func _physics_process(delta: float) -> void:     # _physics_process runs in fixe
 	if Input.is_action_just_pressed("parry") and canAttack():
 		parry()
 		
-	if Input.is_action_just_pressed("special") and specialMeter >= 1.0:
+	if Input.is_action_just_pressed("special") and specialMeter >= .99 and player_action_animator.current_animation != "specialAttack":
 		specialAttack()
 	
 	
@@ -279,21 +274,20 @@ func doAttackCheckCombos(attack : String):
 		comboString = attack
 		letterToAttack(attack)
 func specialAttack():
-	spawnAttack(SPECIAL_ATTACK_1, 10, 0.5,0.15, 0)
-	flipToDirection(!facingDir)
-	spawnAttack(SPECIAL_ATTACK_1, 10, 0.5 + 0.15 ,0.15, 0)
-	flipToDirection(!facingDir)
-	spawnAttack(SPECIAL_ATTACK_1, 10, 0.5 + 0.3 ,0.15, 0)
-	flipToDirection(!facingDir)
-	spawnAttack(SPECIAL_ATTACK_1, 10, 0.5 + 0.45 ,0.15, 0)
-	flipToDirection(!facingDir)
-	spawnAttack(SPECIAL_ATTACK_1, 10, 0.5 + 0.6 ,0.15, 0)
-	flipToDirection(!facingDir)
-	
+	player_action_animator.play("specialAttack")
+	stun_timer = 0.4
 	specialMeter = 0
+	camera_controller.stop = true
+	camera_controller.trackPos.x += facingDir * 175
+func specialAttackTP():
+	playerBody.global_position += Vector2(facingDir * 350,0)
+	if abs(camera_controller.trackPos.x - playerBody.global_position.x) > 300:
+		camera_controller.trackPos.x = playerBody.global_position.x
+func specialAttackDone():
+	camera_controller.stop = false
 # combat stuff in general
 func take_hit(damage: int, knockback_dir: Vector2, knockback_strength: float, stun_duration: float, attacker : Enemy = null) -> void:
-	if attacker != null and parryTimer >= 0:
+	if attacker != null and parryTimer > 0:
 		parryCooldownTimer = 0
 		var normalToAttacker = (attacker.global_position - playerBody.global_position).normalized()
 		if attacker.grounded:
@@ -311,7 +305,7 @@ func take_hit(damage: int, knockback_dir: Vector2, knockback_strength: float, st
 	if health <= 0:
 		die()
 func applyKnockback(direction : Vector2, strength : float):
-	if parryTimer >= 0:
+	if parryTimer > 0:
 		return
 	direction = direction.normalized()
 	if direction.x != 0:
@@ -325,10 +319,10 @@ func enterCombat(enemyInitiated : Enemy = null):
 func parry():
 	if parryCooldownTimer <= 0:
 		parryTimer = parryWindow
-		player_sprite_color_animation.play("parry")
+		player_action_animator.play("parry")
 		parryCooldownTimer = parryCooldownAmount
 func die():
-	pass
+	player_action_animator.play("deathAnimation")
 
 #movement stuff
 func applyFrictionX():
@@ -352,6 +346,17 @@ func flipToDirection(flipToRight : bool):
 		#playerBody.scale.y = -1
 		sprite_2d.flip_h = true
 		facingDir = -1
+func flipDirection():
+	if Input.is_action_pressed("left") or Input.is_action_pressed("right"):
+		return
+	
+	if facingDir == 1:
+		sprite_2d.flip_h = true
+		facingDir = -1
+	else:
+		sprite_2d.flip_h = false
+		facingDir = 1
+
 func jump():
 	playSound(JUMP_SOUND_EFFECT, (randf() * 0.4) + 1, -5)
 	playerYVelocity = jumpVelocity
@@ -376,6 +381,9 @@ func canAttack() -> bool:
 	else:
 		return false
 
+func enemyWasHit():
+	specialMeter += 0.1
+
 # misc
 func playSound(sound : AudioStream, pitch : float = 1.0, volumedB : float = 0):
 	var playback : AudioStreamPlaybackPolyphonic = sound_track_1.get_stream_playback()
@@ -388,3 +396,8 @@ func resetSoundPlayer():
 
 func _on_sound_player_finished() -> void:
 	resetSoundPlayer()
+
+func _on_player_action_animator_animation_finished(anim_name: StringName) -> void:
+	match anim_name:
+		"deathAnimation":
+			get_tree().change_scene_to_file("res://Level1/level_1.tscn")

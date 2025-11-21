@@ -24,7 +24,7 @@ func aiAttackFunction(delta :float):
 			jump()
 		if canAttack():
 			var currentAttack = spawnAttack(JOB_APPLICATION_SLAM, 10, 1, 0.35, 0.65)
-			currentAttack.zReach = 10
+			currentAttack.zReach = 20
 			if facingDir == 1:
 				job_application_animator.play("jobApplicationSlam")
 			else:
