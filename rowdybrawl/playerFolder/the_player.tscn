@@ -1,9 +1,9 @@
-[gd_scene load_steps=15 format=3 uid="uid://b5c8708romg66"]
+[gd_scene load_steps=22 format=3 uid="uid://b5c8708romg66"]
 
 [ext_resource type="Script" uid="uid://d1lb2i55l1d4y" path="res://playerFolder/playerScripts/the_player.gd" id="1_qsbax"]
-[ext_resource type="Texture2D" uid="uid://dsry6kd4ww052" path="res://playerFolder/playerSprites/Sprite-0001.png" id="3_cbej2"]
 [ext_resource type="PackedScene" uid="uid://b0py0r48mo2wi" path="res://playerFolder/camera_manager.tscn" id="3_olns3"]
 [ext_resource type="Texture2D" uid="uid://dnadcguif2xdk" path="res://playerFolder/playerSprites/shadowPixel.png" id="3_opa1r"]
+[ext_resource type="Texture2D" uid="uid://vn6tav3ndfqw" path="res://playerFolder/playerSprites/Sprite-0001-Sheet.png" id="4_y3gru"]
 [ext_resource type="PackedScene" uid="uid://chgbc048ycjqu" path="res://Level1/level1Soundtrack/music_manager.tscn" id="5_6sxll"]
 [ext_resource type="PackedScene" uid="uid://bkiexs3do8yr0" path="res://playerFolder/playerAttacks/special_attack1.tscn" id="5_cbnsr"]
 
@@ -14,6 +14,61 @@ height = 32.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_opa1r"]
 size = Vector2(51, 60)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_w4nnb"]
+atlas = ExtResource("4_y3gru")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a8wlk"]
+atlas = ExtResource("4_y3gru")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sxhot"]
+atlas = ExtResource("4_y3gru")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8l8vr"]
+atlas = ExtResource("4_y3gru")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hneyv"]
+atlas = ExtResource("4_y3gru")
+region = Rect2(256, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n2vfy"]
+atlas = ExtResource("4_y3gru")
+region = Rect2(320, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_qyj71"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w4nnb")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a8wlk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sxhot")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8l8vr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hneyv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n2vfy")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]
+
 [sub_resource type="AudioStreamPolyphonic" id="AudioStreamPolyphonic_6sxll"]
 
 [sub_resource type="Animation" id="Animation_cbnsr"]
@@ -21,7 +76,7 @@ length = 0.001
 tracks/0/type = "bezier"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("playerBody/hitBox/Sprite2D:self_modulate:r")
+tracks/0/path = NodePath("playerBody/hitBox/playerSprite:self_modulate:r")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -32,7 +87,7 @@ tracks/0/keys = {
 tracks/1/type = "bezier"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("playerBody/hitBox/Sprite2D:self_modulate:g")
+tracks/1/path = NodePath("playerBody/hitBox/playerSprite:self_modulate:g")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -43,7 +98,7 @@ tracks/1/keys = {
 tracks/2/type = "bezier"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("playerBody/hitBox/Sprite2D:self_modulate:b")
+tracks/2/path = NodePath("playerBody/hitBox/playerSprite:self_modulate:b")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -54,7 +109,7 @@ tracks/2/keys = {
 tracks/3/type = "bezier"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("playerBody/hitBox/Sprite2D:self_modulate:a")
+tracks/3/path = NodePath("playerBody/hitBox/playerSprite:self_modulate:a")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -62,6 +117,9 @@ tracks/3/keys = {
 "points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
 "times": PackedFloat32Array(0)
 }
+
+[sub_resource type="Animation" id="Animation_w4nnb"]
+resource_name = "deathAnimation"
 
 [sub_resource type="Animation" id="Animation_6sxll"]
 resource_name = "parry"
@@ -69,50 +127,47 @@ length = 0.5
 tracks/0/type = "bezier"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("playerBody/hitBox/Sprite2D:self_modulate:r")
+tracks/0/path = NodePath("playerBody/hitBox/playerSprite:self_modulate:r")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"handle_modes": PackedInt32Array(0, 2, 2, 2),
-"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 0, -0.003547174, -0.014512737, 0, 0, 0.35, -0.065179326, 0.022064866, 0, 0, 1, -0.014606839, -0.007552127, 0, 0),
-"times": PackedFloat32Array(0, 0.021283044, 0.41235897, 0.5)
+"handle_modes": PackedInt32Array(0, 0, 0, 0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 0.35, -0.065179326, 0.022064866, 0, 0, 0.35, -0.065179326, 0.022064866, 0, 0, 1, -0.014606839, -0.007552127, 0, 0),
+"times": PackedFloat32Array(0, 0.05, 0.4, 0.5)
 }
 tracks/1/type = "bezier"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("playerBody/hitBox/Sprite2D:self_modulate:g")
+tracks/1/path = NodePath("playerBody/hitBox/playerSprite:self_modulate:g")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"handle_modes": PackedInt32Array(0, 2, 2, 2),
-"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 0.5, -0.003547174, -0.022963107, 0, 0, 0.8, -0.065179326, 0.022963107, 0, 0, 1, -0.014606839, 0, 0, 0),
-"times": PackedFloat32Array(0, 0.021283044, 0.41235897, 0.5)
+"handle_modes": PackedInt32Array(0, 0, 0, 0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 0.8, -0.065179326, 0.022963107, 0, 0, 0.8, -0.065179326, 0.022963107, 0, 0, 1, -0.014606839, 0, 0, 0),
+"times": PackedFloat32Array(0, 0.05, 0.4, 0.5)
 }
 tracks/2/type = "bezier"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("playerBody/hitBox/Sprite2D:self_modulate:b")
+tracks/2/path = NodePath("playerBody/hitBox/playerSprite:self_modulate:b")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"handle_modes": PackedInt32Array(0, 0, 2, 2),
-"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 1, -0.003547174, 0.16666666, 0, 0, 1, -0.065179326, -0.08649132, 0, 0, 1, -0.014606839, -0.080175355, 0, 0),
-"times": PackedFloat32Array(0, 0.033333335, 0.41235897, 0.5)
+"handle_modes": PackedInt32Array(0, 0, 0, 0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 1, -0.065179326, -0.08649132, 0, 0, 1, -0.065179326, -0.08649132, 0, 0, 1, -0.014606839, -0.080175355, 0, 0),
+"times": PackedFloat32Array(0, 0.05, 0.4, 0.5)
 }
 tracks/3/type = "bezier"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("playerBody/hitBox/Sprite2D:self_modulate:a")
+tracks/3/path = NodePath("playerBody/hitBox/playerSprite:self_modulate:a")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"handle_modes": PackedInt32Array(0, 2, 2, 2),
-"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 1, -0.003547174, 0, 0, 0, 1, -0.065179326, 0, 0, 0, 1, -0.014606839, 0, 0, 0),
-"times": PackedFloat32Array(0, 0.021283044, 0.41235897, 0.5)
+"handle_modes": PackedInt32Array(0, 0, 0, 0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 1, -0.065179326, 0, 0, 0, 1, -0.065179326, 0, 0, 0, 1, -0.014606839, 0, 0, 0),
+"times": PackedFloat32Array(0, 0.05, 0.4, 0.5)
 }
-
-[sub_resource type="Animation" id="Animation_w4nnb"]
-resource_name = "deathAnimation"
 
 [sub_resource type="Animation" id="Animation_y3gru"]
 resource_name = "specialAttack"
@@ -246,11 +301,10 @@ position = Vector2(0.5, -30)
 shape = SubResource("RectangleShape2D_opa1r")
 debug_color = Color(0, 0.5930971, 0.73992854, 0.41960785)
 
-[node name="Sprite2D" type="Sprite2D" parent="playerBody/hitBox"]
-z_index = 1
-texture_filter = 1
-position = Vector2(0, -32)
-texture = ExtResource("3_cbej2")
+[node name="playerSprite" type="AnimatedSprite2D" parent="playerBody/hitBox"]
+position = Vector2(1, -33)
+sprite_frames = SubResource("SpriteFrames_qyj71")
+animation = &"idle"
 
 [node name="soundTrack1" type="AudioStreamPlayer2D" parent="playerBody"]
 stream = SubResource("AudioStreamPolyphonic_6sxll")

@@ -5,7 +5,7 @@ class_name player   # the tutorial doesnt talk about this(because technically th
 # which is a mouthful, but I think its vital for good code
 
 @onready var playerBody: CharacterBody2D = %playerBody # this grabs a reference to the Player Body, so you can move the player around
-@onready var sprite_2d: Sprite2D = $playerBody/hitBox/Sprite2D
+@onready var player_sprite: AnimatedSprite2D = $playerBody/hitBox/playerSprite
 @onready var rich_text_label: RichTextLabel = $playerBody/RichTextLabel
 @onready var shadow: Sprite2D = $playerBody/shadow
 @onready var hit_box: Node2D = $playerBody/hitBox
@@ -35,7 +35,7 @@ var player_alive = true
 var stun_timer := 0.0
 
 var facingDir = 1
-var maxSpeed = 200
+var maxSpeed = 250
 var accelaration = 20
 var airAccelaration = 1
 var groundFriction = 15   # these set up basic ground movement
@@ -59,6 +59,7 @@ var parryCooldownTimer := 0.0
 const parryCooldownAmount := parryWindow + 1.0  # you have to add parryWindow, because parry cooldown starts the moment you parry
 
 var specialMeter := 0.0
+var currentAnim = ""
 
 func _ready() -> void:
 	sound_track_1.play() # this is so we can use Playback (in the play sound function) to utilize polyphony
@@ -97,13 +98,15 @@ func _physics_process(delta: float) -> void:     # _physics_process runs in fixe
 	
 #	basic movement across the plane
 	if Input.is_action_pressed("left") and canMove():
+		changeAnimation("walk")
 		flipToDirection(false)
 		if playerBody.velocity.x > -maxSpeed:    # Checks if the player's speed to the left is below the max speed, before accelarating in that direction
 			if !grounded:
 				playerBody.velocity.x -= airAccelaration
 			else:
 				playerBody.velocity.x -= accelaration
-	elif Input.is_action_pressed("right") and canMove():       
+	elif Input.is_action_pressed("right") and canMove():
+		changeAnimation("walk")       
 		flipToDirection(true)
 		if playerBody.velocity.x < maxSpeed:     # Checks if the player's speed to the right is below the max speed, before accelarating in that direction
 			if !grounded:
@@ -111,18 +114,25 @@ func _physics_process(delta: float) -> void:     # _physics_process runs in fixe
 			else:
 				playerBody.velocity.x += accelaration
 	if Input.is_action_pressed("up") and canMove():
+		changeAnimation("walk")
 		if playerBody.velocity.y > (-maxSpeed * yReductionPercent):
 			if !grounded:
 				playerBody.velocity.y -= airAccelaration * yReductionPercent
 			else:
 				playerBody.velocity.y -= accelaration * yReductionPercent
 	elif Input.is_action_pressed("down") and canMove():
+		changeAnimation("walk")
 		if playerBody.velocity.y < maxSpeed * yReductionPercent:
 			if !grounded:
 				playerBody.velocity.y += airAccelaration * yReductionPercent
 			else:
 				playerBody.velocity.y += accelaration * yReductionPercent
-		
+	
+	if playerBody.velocity.length() <=1:
+		changeAnimation("idle")
+	else:
+		player_sprite.speed_scale = (playerBody.velocity.length() + 150) / (maxSpeed * 0.8)
+	
 		
 #	jump shit
 	if Input.is_action_just_pressed("jump") and canMove():
@@ -154,7 +164,7 @@ func _physics_process(delta: float) -> void:     # _physics_process runs in fixe
 	
 #	Z ordering bs to make it LOOK like the player is moving all 3D-like
 	if (playerBody.global_position.y < RenderingServer.CANVAS_ITEM_Z_MAX and playerBody.global_position.y > RenderingServer.CANVAS_ITEM_Z_MIN):
-		sprite_2d.z_index = int(playerBody.global_position.y)
+		player_sprite.z_index = int(playerBody.global_position.y)
 		
 	
 	hit_box.position.y = -(playerYPosition / 100)
@@ -336,25 +346,25 @@ func applyFrictionY():
 	else:
 		playerBody.velocity.y = 0 
 func flipToDirection(flipToRight : bool):
-	if flipToRight and  sprite_2d.flip_h:
+	if flipToRight and  player_sprite.flip_h:
 		#playerBody.rotation_degrees = 0
 		#playerBody.scale.y = 1
-		sprite_2d.flip_h = false
+		player_sprite.flip_h = false
 		facingDir = 1
-	elif !flipToRight and not sprite_2d.flip_h:
+	elif !flipToRight and not player_sprite.flip_h:
 		#playerBody.rotation_degrees = 180
 		#playerBody.scale.y = -1
-		sprite_2d.flip_h = true
+		player_sprite.flip_h = true
 		facingDir = -1
 func flipDirection():
 	if Input.is_action_pressed("left") or Input.is_action_pressed("right"):
 		return
 	
 	if facingDir == 1:
-		sprite_2d.flip_h = true
+		player_sprite.flip_h = true
 		facingDir = -1
 	else:
-		sprite_2d.flip_h = false
+		player_sprite.flip_h = false
 		facingDir = 1
 
 func jump():
@@ -392,6 +402,9 @@ func resetSoundPlayer():
 	sound_track_1.volume_db = 0.0
 	sound_track_1.pitch_scale = 1.0
 
+func changeAnimation(animationName : String):
+	if animationName != currentAnim:
+		player_sprite.play(animationName)
 
 
 func _on_sound_player_finished() -> void:

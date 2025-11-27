@@ -1,6 +1,6 @@
 [gd_scene load_steps=28 format=3 uid="uid://bto47b1qeehvq"]
 
-[ext_resource type="Texture2D" uid="uid://b3lxef86dfk7y" path="res://playerFolder/playerSprites/placeholder for enemy sprite.png" id="1_7p1mj"]
+[ext_resource type="Texture2D" uid="uid://b3lxef86dfk7y" path="res://sprites/placeholder for enemy sprite.png" id="1_7p1mj"]
 [ext_resource type="Script" uid="uid://lbc87ih2wosb" path="res://Level1/level1Enemies/parentEnemy/enemy.gd" id="1_md0e3"]
 [ext_resource type="Texture2D" uid="uid://co68u3rv5nek7" path="res://Level1/level1Enemies/parentEnemy/stunPlaceholder.png" id="3_o4rfy"]
 [ext_resource type="Texture2D" uid="uid://dnadcguif2xdk" path="res://playerFolder/playerSprites/shadowPixel.png" id="4_fhhpo"]

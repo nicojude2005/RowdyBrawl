@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://d3g686l1tme5q"]
 
 [ext_resource type="PackedScene" uid="uid://b0v72xws7qv7b" path="res://playerFolder/playerAttacks/hit_box.tscn" id="1_dnu1l"]
-[ext_resource type="Texture2D" uid="uid://b3lxef86dfk7y" path="res://playerFolder/playerSprites/placeholder for enemy sprite.png" id="2_p52im"]
+[ext_resource type="Texture2D" uid="uid://b3lxef86dfk7y" path="res://sprites/placeholder for enemy sprite.png" id="2_p52im"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_tw2mt"]
 radius = 20.0

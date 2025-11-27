@@ -39,6 +39,7 @@ var targetPos = Vector2.ZERO
 var playerRef: player = null
 enum aiStates {IDLE, CHASE, ATTACK}
 var ai = aiStates.IDLE
+var goRight := randi_range(0,1)
 
 # getting attacked
 var knockback_velocity: Vector2 = Vector2.ZERO
@@ -46,6 +47,8 @@ var stun_timer: float = 0.0
 var health = 100
 var enemy_alive = true
 var removeTimer := 3.0
+
+var armorTimer := 0.0
 
 # attacking
 var attackBusyTimer : float = 0.0
@@ -146,10 +149,12 @@ func take_hit(damage: int, knockback_dir: Vector2, knockback_strength: float, st
 	health -= damage
 	#animation_player.play("hitFlash")
 	# Apply knockback and stun
-	applyKnockback(knockback_dir,knockback_strength)
+	if armorTimer <= 0:
+		applyKnockback(knockback_dir,knockback_strength)
 	
 	if stun_duration > stun_timer:
 		ai = aiStates.CHASE
+		goRight = randi_range(0,1)
 		stun_indicator.visible = true
 		stun_timer = stun_duration
 	
@@ -211,7 +216,7 @@ func canAttack() -> bool:
 	else:
 		return false
 func canMove() -> bool:
-	if stun_timer <= 0:
+	if stun_timer <= 0 and attackBusyTimer <= 0:
 		return true
 	else:
 		return false
@@ -232,7 +237,7 @@ func aiIdleFunction():
 func aiChaseFunction():
 	if playerRef != null:
 		targetPos.y = playerRef.playerBody.global_position.y
-		if global_position.x < playerRef.playerBody.global_position.x:
+		if !goRight:
 			targetPos.x = playerRef.playerBody.global_position.x - 50 # offset so that they can hit the player easier
 		else:
 			targetPos.x = playerRef.playerBody.global_position.x + 50
@@ -247,9 +252,11 @@ func aiAttackFunction(delta :float):
 			spawnAttack(ENEMY_EXAMPLE_ATTACK, 10, 0.4, 0.5, 1.2)
 			hitTimer = hitRate
 			ai = aiStates.CHASE
+			goRight = randi_range(0,1)
 	if (playerRef.playerBody.global_position - global_position).length() > 300:
 		ai = aiStates.CHASE
 		hitTimer = hitRate
+		goRight = randi_range(0,1)
 
 func isCloseToTarget(range : float = 15) -> bool:
 	var dist : float = (targetPos - global_position).length()
