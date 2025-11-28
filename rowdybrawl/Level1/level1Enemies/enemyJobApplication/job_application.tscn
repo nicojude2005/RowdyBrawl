@@ -127,9 +127,13 @@ _data = {
 }
 
 [node name="jobApplication" instance=ExtResource("1_j1xia")]
+collision_layer = 16
 script = ExtResource("2_0gdpn")
 maxSpeed = 115.0
 accelaration = 6.7
+
+[node name="enemyCollision" parent="." index="1"]
+scale = Vector2(1.0385873, 0.8505853)
 
 [node name="CollisionShape2D" parent="enemy_hitbox" index="0"]
 position = Vector2(0, -33.5)
