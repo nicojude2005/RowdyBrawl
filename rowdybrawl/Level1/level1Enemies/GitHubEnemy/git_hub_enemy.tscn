@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=3 uid="uid://cc54cg7gw0j5g"]
+
+[ext_resource type="PackedScene" uid="uid://bto47b1qeehvq" path="res://Level1/level1Enemies/parentEnemy/enemy.tscn" id="1_l1niu"]
+[ext_resource type="Texture2D" uid="uid://c8i0au4qkn7wm" path="res://Level1/level1Enemies/GitHubEnemy/ChatGPT Image Nov 27, 2025, 07_35_19 PM.png" id="2_flkls"]
+[ext_resource type="Script" uid="uid://cnw1qqimbt45f" path="res://Level1/level1Enemies/GitHubEnemy/GitHub_enemy.gd" id="2_ntjwp"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_l1niu"]
+size = Vector2(57, 72)
+
+[node name="GitHub_enemy" instance=ExtResource("1_l1niu")]
+script = ExtResource("2_ntjwp")
+
+[node name="CollisionShape2D" parent="enemy_hitbox" index="0"]
+position = Vector2(-0.5, -37)
+shape = SubResource("RectangleShape2D_l1niu")
+
+[node name="AnimatedSprite2D" parent="enemy_hitbox" index="1"]
+visible = false
+
+[node name="stunIndicator" parent="enemy_hitbox" index="2"]
+visible = true
+position = Vector2(3.625, -82.625)
+scale = Vector2(0.733871, 0.73275864)
+
+[node name="Sprite2D" type="Sprite2D" parent="enemy_hitbox" index="3"]
+position = Vector2(-5, -41)
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("2_flkls")

@@ -146,6 +146,7 @@ scale = Vector2(0.02, 0.02)
 texture = ExtResource("3_s0wr4")
 
 [node name="stunIndicator" parent="enemy_hitbox" index="3"]
+visible = true
 position = Vector2(0, -76)
 
 [node name="Sprite2D" parent="." index="5"]
