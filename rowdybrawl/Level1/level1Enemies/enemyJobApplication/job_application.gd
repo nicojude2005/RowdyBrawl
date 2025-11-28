@@ -31,3 +31,5 @@ func aiAttackFunction(delta :float):
 				job_application_animator.play("jobApplicationSlamLeft")
 			hitTimer = hitRate
 			ai = aiStates.CHASE
+			goRight = randi_range(0,1)
+		

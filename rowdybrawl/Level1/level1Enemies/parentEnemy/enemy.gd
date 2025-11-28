@@ -92,8 +92,8 @@ func _physics_process(delta: float) -> void:
 	
 #	disables ground collision when high enough in the air
 	if yPosition > 500:
-		set_collision_layer_value(1, false)
-		set_collision_layer_value(2, true)
+		#set_collision_layer_value(1, false)
+		#set_collision_layer_value(2, true)
 		
 		set_collision_layer_value(5, false)
 		set_collision_layer_value(2, true)
@@ -104,7 +104,7 @@ func _physics_process(delta: float) -> void:
 	enemy_hitbox.position.y = -(yPosition / 100)
 	
 	if stun_timer <= 0:
-		if isCloseToTarget():
+		if isCloseToTarget() and ai == aiStates.CHASE:
 			ai = aiStates.ATTACK
 			targetPos = Vector2.ZERO
 			# make the enemy enter an attacking state
@@ -205,8 +205,8 @@ func land():
 		airTimer = 0
 		weightIncrease = 0
 	yPosition = 0
-	set_collision_layer_value(1, true)
-	set_collision_layer_value(2, false)
+	#set_collision_layer_value(1, true)
+	#set_collision_layer_value(2, false)
 	set_collision_mask_value(5, true)
 	set_collision_mask_value(1, false)
 
@@ -253,6 +253,7 @@ func aiAttackFunction(delta :float):
 			hitTimer = hitRate
 			ai = aiStates.CHASE
 			goRight = randi_range(0,1)
+
 	if (playerRef.playerBody.global_position - global_position).length() > 300:
 		ai = aiStates.CHASE
 		hitTimer = hitRate
@@ -284,3 +285,5 @@ func _on_detection_area_body_entered(body: Node2D) -> void:
 		playerRef = body.get_parent()
 		playerRef.enterCombat()
 		ai = aiStates.CHASE
+		goRight = randi_range(0,1)
+		print("Hey i changed to " + str(goRight))
