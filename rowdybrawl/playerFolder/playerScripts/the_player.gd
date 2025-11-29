@@ -299,6 +299,7 @@ func specialAttackDone():
 func take_hit(damage: int, knockback_dir: Vector2, knockback_strength: float, stun_duration: float, attacker : Enemy = null) -> void:
 	if attacker != null and parryTimer > 0:
 		parryCooldownTimer = 0
+		specialMeter += damage / 100
 		var normalToAttacker = (attacker.global_position - playerBody.global_position).normalized()
 		if attacker.grounded:
 			attacker.take_hit(10,Vector2(normalToAttacker.x,0),500, 1, self)
@@ -391,8 +392,8 @@ func canAttack() -> bool:
 	else:
 		return false
 
-func enemyWasHit():
-	specialMeter += 0.1
+func enemyWasHit(damage : float):
+	specialMeter += damage / 100
 
 # misc
 func playSound(sound : AudioStream, pitch : float = 1.0, volumedB : float = 0):

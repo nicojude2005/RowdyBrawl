@@ -10,7 +10,7 @@ var attack_cooldown: float = 0.6  # quicker attacks
 func _ready() -> void:
 	# Override base health and speed
 	health = 70
-	#maxSpeed = base_speed
+	maxSpeed = base_speed
 
 func _physics_process(delta: float) -> void:
 	# Custom movement/AI logic can go here if needed

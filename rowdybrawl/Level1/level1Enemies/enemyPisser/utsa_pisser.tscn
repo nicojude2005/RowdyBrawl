@@ -9,6 +9,7 @@ size = Vector2(61, 99)
 
 [node name="UTSA_Pisser" instance=ExtResource("1_547hm")]
 script = ExtResource("2_2jyr6")
+accelaration = 23.0
 
 [node name="CollisionShape2D" parent="enemy_hitbox" index="0"]
 position = Vector2(-2.5, -50.5)

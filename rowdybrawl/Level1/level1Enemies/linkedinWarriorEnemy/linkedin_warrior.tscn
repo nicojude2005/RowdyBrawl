@@ -9,6 +9,7 @@ size = Vector2(72, 87)
 
 [node name="Linkedin_Warrior_Enemy" instance=ExtResource("1_p7ffe")]
 script = ExtResource("2_7sc1u")
+accelaration = 15.0
 
 [node name="CollisionShape2D" parent="enemy_hitbox" index="0"]
 position = Vector2(4, -44.5)

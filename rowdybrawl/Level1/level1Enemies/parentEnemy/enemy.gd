@@ -286,4 +286,3 @@ func _on_detection_area_body_entered(body: Node2D) -> void:
 		playerRef.enterCombat()
 		ai = aiStates.CHASE
 		goRight = randi_range(0,1)
-		print("Hey i changed to " + str(goRight))

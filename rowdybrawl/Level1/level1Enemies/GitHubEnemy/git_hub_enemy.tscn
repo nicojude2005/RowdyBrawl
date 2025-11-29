@@ -9,6 +9,7 @@ size = Vector2(57, 72)
 
 [node name="GitHub_enemy" instance=ExtResource("1_l1niu")]
 script = ExtResource("2_ntjwp")
+accelaration = 20.0
 
 [node name="CollisionShape2D" parent="enemy_hitbox" index="0"]
 position = Vector2(-0.5, -37)
