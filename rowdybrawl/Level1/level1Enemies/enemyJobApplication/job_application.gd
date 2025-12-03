@@ -34,9 +34,12 @@ func aiAttackFunction(delta :float):
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 			goRight = randi_range(0,1)
 		
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 =======
@@ -50,6 +53,9 @@ func take_hit(damage: int, knockback_dir: Vector2, knockback_strength: float, st
 	super(damage, knockback_dir, knockback_strength, stun_duration, attacker)
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes

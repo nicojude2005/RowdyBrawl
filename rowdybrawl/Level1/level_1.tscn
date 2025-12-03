@@ -1,7 +1,11 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 [gd_scene load_steps=16 format=3 uid="uid://cqq8uovueylvg"]
+=======
+[gd_scene load_steps=14 format=3 uid="uid://cqq8uovueylvg"]
+>>>>>>> Stashed changes
 =======
 [gd_scene load_steps=14 format=3 uid="uid://cqq8uovueylvg"]
 >>>>>>> Stashed changes
@@ -18,11 +22,16 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 [ext_resource type="PackedScene" uid="uid://c80ia60x3xwwn" path="res://Level1/level1Enemies/enemyJobApplication/job_application.tscn" id="3_5mv53"]
 [ext_resource type="PackedScene" uid="uid://b21lbpxenujyp" path="res://Level1/level1Enemies/enemyCanvas/canvas_enemy.tscn" id="4_e0h6v"]
 [ext_resource type="PackedScene" uid="uid://jpk8th4wirf5" path="res://Level1/level1Enemies/linkedinWarriorEnemy/linkedin_warrior.tscn" id="5_qtbmi"]
 [ext_resource type="PackedScene" uid="uid://cc54cg7gw0j5g" path="res://Level1/level1Enemies/GitHubEnemy/git_hub_enemy.tscn" id="6_opkmy"]
 [ext_resource type="PackedScene" uid="uid://btxsv0bidxxwy" path="res://Level1/level1Enemies/enemyPisser/utsa_pisser.tscn" id="7_2h3pg"]
+=======
+[ext_resource type="PackedScene" uid="uid://biisl0tjeljhs" path="res://Level1/level1Items/enemyEncounter/enemy_encounter.tscn" id="3_5mv53"]
+[ext_resource type="PackedScene" uid="uid://2p4312ho5jiy" path="res://mainMenu/fadeTransition.tscn" id="5_opkmy"]
+>>>>>>> Stashed changes
 =======
 [ext_resource type="PackedScene" uid="uid://biisl0tjeljhs" path="res://Level1/level1Items/enemyEncounter/enemy_encounter.tscn" id="3_5mv53"]
 [ext_resource type="PackedScene" uid="uid://2p4312ho5jiy" path="res://mainMenu/fadeTransition.tscn" id="5_opkmy"]
@@ -160,6 +169,7 @@ SPECIAL ATTACK: U"
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 [node name="Canvas_Enemy" parent="." instance=ExtResource("4_e0h6v")]
 position = Vector2(626, -69)
 
@@ -176,6 +186,8 @@ position = Vector2(-861, -129)
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
 [node name="enemyEncounter" parent="." instance=ExtResource("3_5mv53")]
 position = Vector2(806, 78)
 
@@ -188,6 +200,9 @@ offset_bottom = -414.00003
 scale = Vector2(48.11133, 25.333044)
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
