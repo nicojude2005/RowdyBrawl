@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://c7lvusf64l3g3"]
+
+[ext_resource type="Script" uid="uid://dgrvx7tjkqguo" path="res://Level1/level1Items/enemyEncounter/enemy_spawnpoint.gd" id="1_4mttx"]
+[ext_resource type="PackedScene" uid="uid://c80ia60x3xwwn" path="res://Level1/level1Enemies/enemyJobApplication/job_application.tscn" id="2_yq60w"]
+
+[node name="enemySpawnpoint" type="Node2D"]
+script = ExtResource("1_4mttx")
+enemyToSpawn = ExtResource("2_yq60w")

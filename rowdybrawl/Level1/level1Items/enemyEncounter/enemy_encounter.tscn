@@ -1,0 +1,38 @@
+[gd_scene load_steps=4 format=3 uid="uid://biisl0tjeljhs"]
+
+[ext_resource type="Script" uid="uid://bknuw0rgw0dx6" path="res://Level1/level1Items/enemyEncounter/enemy_encounter.gd" id="1_4s2jm"]
+[ext_resource type="PackedScene" uid="uid://c7lvusf64l3g3" path="res://Level1/level1Items/enemyEncounter/enemy_spawnpoint.tscn" id="2_rnyjw"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rnyjw"]
+size = Vector2(280, 653)
+
+[node name="enemyEncounter" type="Node2D"]
+script = ExtResource("1_4s2jm")
+
+[node name="enemiesToSpawn" type="Node2D" parent="."]
+
+[node name="enemySpawnpoint" parent="enemiesToSpawn" instance=ExtResource("2_rnyjw")]
+position = Vector2(92, -226)
+
+[node name="enemySpawnpoint2" parent="enemiesToSpawn" instance=ExtResource("2_rnyjw")]
+position = Vector2(-89, 257)
+
+[node name="enemySpawnpoint3" parent="enemiesToSpawn" instance=ExtResource("2_rnyjw")]
+position = Vector2(107, 201)
+
+[node name="enemySpawnpoint4" parent="enemiesToSpawn" instance=ExtResource("2_rnyjw")]
+position = Vector2(-151, -87)
+
+[node name="enemySpawnpoint5" parent="enemiesToSpawn" instance=ExtResource("2_rnyjw")]
+position = Vector2(211, 69)
+
+[node name="enemySpawnpoint6" parent="enemiesToSpawn" instance=ExtResource("2_rnyjw")]
+position = Vector2(-65, -151)
+
+[node name="playerTrigger" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="playerTrigger"]
+position = Vector2(0, -25.5)
+shape = SubResource("RectangleShape2D_rnyjw")
+
+[connection signal="body_entered" from="playerTrigger" to="." method="_on_player_trigger_body_entered"]

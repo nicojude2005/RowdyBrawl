@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://bto47b1qeehvq"]
+[gd_scene load_steps=29 format=3 uid="uid://bto47b1qeehvq"]
 
 [ext_resource type="Texture2D" uid="uid://b3lxef86dfk7y" path="res://sprites/placeholder for enemy sprite.png" id="1_7p1mj"]
 [ext_resource type="Script" uid="uid://lbc87ih2wosb" path="res://Level1/level1Enemies/parentEnemy/enemy.gd" id="1_md0e3"]
@@ -152,6 +152,26 @@ tracks/0/keys = {
 "values": [Color(1, 1, 1, 1)]
 }
 
+[sub_resource type="Animation" id="Animation_7dq3j"]
+resource_name = "enterFromTop"
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [Vector2(200, 0)],
+"method": &"setRelativeTargetPos"
+}, {
+"args": [],
+"method": &"jump"
+}]
+}
+
 [sub_resource type="Animation" id="Animation_md0e3"]
 resource_name = "hitFlash"
 length = 0.2
@@ -171,6 +191,7 @@ tracks/0/keys = {
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_5uy6h"]
 _data = {
 &"RESET": SubResource("Animation_4ra3w"),
+&"enterFromTop": SubResource("Animation_7dq3j"),
 &"hitFlash": SubResource("Animation_md0e3")
 }
 
