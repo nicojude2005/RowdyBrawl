@@ -54,7 +54,7 @@ var comboTimer : float = 0
 const comboChainTime : float = 1
 
 var parryTimer := 0.0
-const parryWindow := 0.5
+const parryWindow := 0.3
 var parryCooldownTimer := 0.0
 const parryCooldownAmount := parryWindow + 1.0  # you have to add parryWindow, because parry cooldown starts the moment you parry
 
@@ -63,6 +63,7 @@ var currentAnim = ""
 
 func _ready() -> void:
 	sound_track_1.play() # this is so we can use Playback (in the play sound function) to utilize polyphony
+	spawnIn()
 
 func _physics_process(delta: float) -> void:     # _physics_process runs in fixed(very tiny) intervals, regardless of the framerate
 												 # This makes it good for movement and physics-based code
@@ -325,7 +326,7 @@ func applyKnockback(direction : Vector2, strength : float):
 		playerYVelocity = -direction.y * strength
 	if direction.y < 0:
 		grounded = false
-func enterCombat(enemyInitiated : Enemy = null):
+func enterCombat(_enemyInitiated : Enemy = null):
 	music_manager.setCombatTrack(true)
 func parry():
 	if parryCooldownTimer <= 0:
@@ -392,8 +393,13 @@ func canAttack() -> bool:
 	else:
 		return false
 
+<<<<<<< Updated upstream
 func enemyWasHit(damage : float):
 	specialMeter += damage / 100
+=======
+func enemyWasHit(successHitbox : hitBox):
+	specialMeter += successHitbox.damage / 100
+>>>>>>> Stashed changes
 
 # misc
 func playSound(sound : AudioStream, pitch : float = 1.0, volumedB : float = 0):
@@ -403,10 +409,17 @@ func resetSoundPlayer():
 	sound_track_1.volume_db = 0.0
 	sound_track_1.pitch_scale = 1.0
 
+<<<<<<< Updated upstream
 func changeAnimation(animationName : String):
 	if animationName != currentAnim:
 		player_sprite.play(animationName)
 
+=======
+func spawnIn():
+	sprite_2d.self_modulate.a = 0
+	player_action_animator.play("spawnIn")
+	show()
+>>>>>>> Stashed changes
 
 func _on_sound_player_finished() -> void:
 	resetSoundPlayer()

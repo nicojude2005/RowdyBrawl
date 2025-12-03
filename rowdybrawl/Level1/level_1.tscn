@@ -1,12 +1,22 @@
+<<<<<<< Updated upstream
 [gd_scene load_steps=16 format=3 uid="uid://cqq8uovueylvg"]
+=======
+[gd_scene load_steps=14 format=3 uid="uid://cqq8uovueylvg"]
+>>>>>>> Stashed changes
 
 [ext_resource type="PackedScene" uid="uid://b5c8708romg66" path="res://playerFolder/the_player.tscn" id="1_dgsmt"]
+[ext_resource type="Script" uid="uid://b16sfvefc1rxk" path="res://Level1/level_1.gd" id="1_qtbmi"]
 [ext_resource type="Texture2D" uid="uid://byohiugj7t85y" path="res://Level1/levelSprites/level1Screen1Larger.png" id="2_im851"]
+<<<<<<< Updated upstream
 [ext_resource type="PackedScene" uid="uid://c80ia60x3xwwn" path="res://Level1/level1Enemies/enemyJobApplication/job_application.tscn" id="3_5mv53"]
 [ext_resource type="PackedScene" uid="uid://b21lbpxenujyp" path="res://Level1/level1Enemies/enemyCanvas/canvas_enemy.tscn" id="4_e0h6v"]
 [ext_resource type="PackedScene" uid="uid://jpk8th4wirf5" path="res://Level1/level1Enemies/linkedinWarriorEnemy/linkedin_warrior.tscn" id="5_qtbmi"]
 [ext_resource type="PackedScene" uid="uid://cc54cg7gw0j5g" path="res://Level1/level1Enemies/GitHubEnemy/git_hub_enemy.tscn" id="6_opkmy"]
 [ext_resource type="PackedScene" uid="uid://btxsv0bidxxwy" path="res://Level1/level1Enemies/enemyPisser/utsa_pisser.tscn" id="7_2h3pg"]
+=======
+[ext_resource type="PackedScene" uid="uid://biisl0tjeljhs" path="res://Level1/level1Items/enemyEncounter/enemy_encounter.tscn" id="3_5mv53"]
+[ext_resource type="PackedScene" uid="uid://2p4312ho5jiy" path="res://mainMenu/fadeTransition.tscn" id="5_opkmy"]
+>>>>>>> Stashed changes
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_im851"]
 size = Vector2(867, 85)
@@ -33,6 +43,7 @@ size = Vector2(4324, 72)
 size = Vector2(777.48883, 278.24)
 
 [node name="Level1" type="Node2D"]
+script = ExtResource("1_qtbmi")
 
 [node name="RichTextLabel2" type="RichTextLabel" parent="."]
 offset_left = 54.0
@@ -118,15 +129,6 @@ text = "Can perhaps add cars? could be silly
 fit_content = true
 autowrap_mode = 0
 
-[node name="jobApplication" parent="." instance=ExtResource("3_5mv53")]
-position = Vector2(1017, 125)
-
-[node name="jobApplication2" parent="." instance=ExtResource("3_5mv53")]
-position = Vector2(995, -94)
-
-[node name="jobApplication3" parent="." instance=ExtResource("3_5mv53")]
-position = Vector2(1379, 141)
-
 [node name="RichTextLabel4" type="RichTextLabel" parent="."]
 offset_left = -281.0
 offset_top = 83.0
@@ -137,6 +139,7 @@ ATTACK: J light attack/ K heavy attack
 PARRY: i (i)
 SPECIAL ATTACK: U"
 
+<<<<<<< Updated upstream
 [node name="Canvas_Enemy" parent="." instance=ExtResource("4_e0h6v")]
 position = Vector2(626, -69)
 
@@ -148,3 +151,15 @@ position = Vector2(595, 151)
 
 [node name="UTSA_Pisser" parent="GitHub_enemy" instance=ExtResource("7_2h3pg")]
 position = Vector2(-861, -129)
+=======
+[node name="enemyEncounter" parent="." instance=ExtResource("3_5mv53")]
+position = Vector2(806, 78)
+
+[node name="fadeTransition" parent="." instance=ExtResource("5_opkmy")]
+visible = false
+offset_left = -607.0
+offset_top = -454.00003
+offset_right = -567.0
+offset_bottom = -414.00003
+scale = Vector2(48.11133, 25.333044)
+>>>>>>> Stashed changes
