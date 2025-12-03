@@ -1,7 +1,7 @@
 extends Node2D
 class_name musicManager
 
-@export var level1HeavyTheme = preload("uid://c6cqa3s400iv3")
+@export var level1HeavyTheme = preload("uid://cwghue4p251pi")
 @export var level1CalmTheme =  preload("uid://cmmdbtwmwvq7x")
 
 @export var isMenu = false #THIS IS A WORKAROUND, KINDA SLOPPY BUT IT WORKS
