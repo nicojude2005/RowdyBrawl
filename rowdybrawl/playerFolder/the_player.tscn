@@ -1,5 +1,9 @@
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 [gd_scene load_steps=22 format=3 uid="uid://b5c8708romg66"]
+=======
+[gd_scene load_steps=16 format=3 uid="uid://b5c8708romg66"]
+>>>>>>> Stashed changes
 =======
 [gd_scene load_steps=16 format=3 uid="uid://b5c8708romg66"]
 >>>>>>> Stashed changes
@@ -174,7 +178,10 @@ tracks/3/keys = {
 }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
 [sub_resource type="Animation" id="Animation_a8wlk"]
 resource_name = "spawnIn"
 tracks/0/type = "bezier"

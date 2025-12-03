@@ -394,8 +394,13 @@ func canAttack() -> bool:
 		return false
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 func enemyWasHit(damage : float):
 	specialMeter += damage / 100
+=======
+func enemyWasHit(successHitbox : hitBox):
+	specialMeter += successHitbox.damage / 100
+>>>>>>> Stashed changes
 =======
 func enemyWasHit(successHitbox : hitBox):
 	specialMeter += successHitbox.damage / 100
@@ -410,15 +415,21 @@ func resetSoundPlayer():
 	sound_track_1.pitch_scale = 1.0
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 func changeAnimation(animationName : String):
 	if animationName != currentAnim:
 		player_sprite.play(animationName)
 
 =======
+=======
+>>>>>>> Stashed changes
 func spawnIn():
 	sprite_2d.self_modulate.a = 0
 	player_action_animator.play("spawnIn")
 	show()
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
 func _on_sound_player_finished() -> void:

@@ -70,7 +70,11 @@ func attemptToDamageBodyFromArea(area : Area2D):
 				userRef.applyKnockback(userKnockbackOnHitDir, userKnockbackOnHitStrength)
 			if userRef.has_method("enemyWasHit"):
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 				userRef.enemyWasHit(damage)
+=======
+				userRef.enemyWasHit(self)
+>>>>>>> Stashed changes
 =======
 				userRef.enemyWasHit(self)
 >>>>>>> Stashed changes
