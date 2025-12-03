@@ -8,3 +8,6 @@ func _ready() -> void:
 	
 func fadeIn():
 	color_rect.play("fadeOut")
+
+func fadeOut():
+	color_rect.play("fadeIn")

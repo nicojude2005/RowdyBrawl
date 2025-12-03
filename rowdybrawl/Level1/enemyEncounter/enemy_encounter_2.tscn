@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://b21lbpxenujyp" path="res://Level1/level1Enemies/enemyCanvas/canvas_enemy.tscn" id="5_2csqf"]
 
 [node name="enemyEncounter2" instance=ExtResource("1_tyj7f")]
+ragTag = 1
 
 [node name="enemySpawn" parent="enemiesToSpawn" index="0" instance=ExtResource("2_d61r1")]
 position = Vector2(106, -187)

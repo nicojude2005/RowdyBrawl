@@ -7,7 +7,7 @@ var attack_cooldown: float = 0.6  # quicker attacks
 
 func _ready() -> void:
 	# Override base health and speed
-	health = 140
+	health = 125
 	super()
 
 func _physics_process(delta: float) -> void:

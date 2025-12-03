@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://btxsv0bidxxwy"]
+[gd_scene load_steps=7 format=3 uid="uid://btxsv0bidxxwy"]
 
 [ext_resource type="PackedScene" uid="uid://bto47b1qeehvq" path="res://Level1/level1Enemies/parentEnemy/enemy.tscn" id="1_547hm"]
 [ext_resource type="Script" uid="uid://bdv5wd0h0islj" path="res://Level1/level1Enemies/enemyPisser/utsa_pisser.gd" id="2_2jyr6"]
@@ -6,6 +6,21 @@
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2jyr6"]
 size = Vector2(61, 99)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qfmjl"]
+atlas = ExtResource("2_7gkdu")
+region = Rect2(0, 0, 1024, 1536)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_6fc3v"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qfmjl")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
 
 [node name="UTSA_Pisser" instance=ExtResource("1_547hm")]
 script = ExtResource("2_2jyr6")
@@ -16,13 +31,11 @@ position = Vector2(-2.5, -50.5)
 shape = SubResource("RectangleShape2D_2jyr6")
 
 [node name="AnimatedSprite2D" parent="enemy_hitbox" index="1"]
-visible = false
+position = Vector2(-4.9999995, -50.999996)
+scale = Vector2(0.1, 0.1)
+sprite_frames = SubResource("SpriteFrames_6fc3v")
+animation = &"default"
 
 [node name="stunIndicator" parent="enemy_hitbox" index="2"]
 visible = true
 position = Vector2(-4, -115)
-
-[node name="Sprite2D" type="Sprite2D" parent="enemy_hitbox" index="3"]
-position = Vector2(-3.9999998, -51.000004)
-scale = Vector2(0.1, 0.1)
-texture = ExtResource("2_7gkdu")

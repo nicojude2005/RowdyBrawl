@@ -173,6 +173,8 @@ func applyKnockback(direction : Vector2, strength : float):
 	if direction.y < 0:
 		grounded = false
 func die():
+	if !enemy_alive:
+		return
 	enemy_alive = false
 	health = 0
 	if get_parent() is enemyEncounter:

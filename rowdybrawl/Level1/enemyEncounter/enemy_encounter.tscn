@@ -1,10 +1,13 @@
-[gd_scene load_steps=4 format=3 uid="uid://biisl0tjeljhs"]
+[gd_scene load_steps=5 format=3 uid="uid://biisl0tjeljhs"]
 
 [ext_resource type="Script" uid="uid://v5ksi3antmkq" path="res://enemy_encounter.gd" id="1_5ly4a"]
 [ext_resource type="PackedScene" uid="uid://c6sx1igpnncyc" path="res://Level1/level1Items/camera_stop_point.tscn" id="2_86flb"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5ly4a"]
 size = Vector2(224, 660)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_86flb"]
+size = Vector2(83, 647)
 
 [node name="enemyEncounter" type="Node2D"]
 script = ExtResource("1_5ly4a")
@@ -20,5 +23,17 @@ shape = SubResource("RectangleShape2D_5ly4a")
 [node name="CameraStopPoint" parent="." instance=ExtResource("2_86flb")]
 position = Vector2(-4, -2)
 scale = Vector2(10.935386, 32.84815)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+collision_layer = 0
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(-667, 0)
+shape = SubResource("RectangleShape2D_86flb")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(661, 17)
+shape = SubResource("RectangleShape2D_86flb")
 
 [connection signal="body_entered" from="playerTrigger" to="." method="_on_player_trigger_body_entered"]

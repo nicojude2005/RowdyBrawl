@@ -120,20 +120,28 @@ fit_content = true
 autowrap_mode = 0
 
 [node name="RichTextLabel4" type="RichTextLabel" parent="."]
-offset_left = -281.0
-offset_top = 83.0
-offset_right = 66.0
-offset_bottom = 330.0
+offset_left = -286.0
+offset_top = 34.0
+offset_right = 61.0
+offset_bottom = 281.0
 text = "MOVE : WASD or Arrows
 ATTACK: J light attack/ K heavy attack
 PARRY: i (i)
-SPECIAL ATTACK: U"
+SPECIAL ATTACK: U
+
+COMBOS (L for light, H for heavy):
+LLH
+LLL
+LH(air)LH
+LLL(ait)LLH
+"
 
 [node name="ColorRect" parent="." instance=ExtResource("5_opkmy")]
+visible = false
 offset_left = -503.0
-offset_top = -397.0
-offset_right = -463.0
-offset_bottom = -357.0
+offset_top = -854.0
+offset_right = -384.3266
+offset_bottom = -800.2106
 scale = Vector2(48.334335, 33.141342)
 
 [node name="enemyEncounter1" parent="." instance=ExtResource("5_2h3pg")]

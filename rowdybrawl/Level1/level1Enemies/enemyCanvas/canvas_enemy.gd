@@ -12,7 +12,7 @@ var waitTimer = 0.0
 func _ready() -> void:
 	# Override base health and speed
 	
-	health = 225
+	health = 160
 	super()
 
 func _physics_process(delta: float) -> void:

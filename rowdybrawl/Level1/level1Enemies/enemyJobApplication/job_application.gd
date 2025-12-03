@@ -7,7 +7,7 @@ var JOB_APPLICATION_SLAM = load("uid://5e4q3284mm0e")
 
 func _ready() -> void:
 	hitRate = 1
-	health = 200
+	health = 140
 	super()
 
 #func _process(delta: float) -> void:
