@@ -54,7 +54,7 @@ var comboTimer : float = 0
 const comboChainTime : float = 1
 
 var parryTimer := 0.0
-const parryWindow := 0.5
+const parryWindow := 0.2
 var parryCooldownTimer := 0.0
 const parryCooldownAmount := parryWindow + 1.0  # you have to add parryWindow, because parry cooldown starts the moment you parry
 
@@ -63,6 +63,7 @@ var currentAnim = ""
 
 func _ready() -> void:
 	sound_track_1.play() # this is so we can use Playback (in the play sound function) to utilize polyphony
+	spawnPlayerAnim()
 
 func _physics_process(delta: float) -> void:     # _physics_process runs in fixed(very tiny) intervals, regardless of the framerate
 												 # This makes it good for movement and physics-based code
@@ -248,7 +249,7 @@ func doAttackCheckCombos(attack : String):
 				playSound(LIGHT_PUNCH_SOUND, 2.3)
 			"LLLAAS":
 				currentAttack = spawnAttack(AIR_HEAVY_ATTACK, 0, 0,0)
-				applyKnockback(Vector2(facingDir,.2), 1000)
+				applyKnockback(Vector2(facingDir,-.4), 375)
 				playSound(LIGHT_PUNCH_SOUND, 3)
 #			Classic Combo
 			"LLH":
@@ -284,6 +285,7 @@ func doAttackCheckCombos(attack : String):
 		comboString = attack
 		letterToAttack(attack)
 func specialAttack():
+	player_action_animator.stop()
 	player_action_animator.play("specialAttack")
 	stun_timer = 0.4
 	specialMeter = 0
@@ -299,7 +301,7 @@ func specialAttackDone():
 func take_hit(damage: int, knockback_dir: Vector2, knockback_strength: float, stun_duration: float, attacker : Enemy = null) -> void:
 	if attacker != null and parryTimer > 0:
 		parryCooldownTimer = 0
-		specialMeter += damage / 100
+		specialMeter += float(damage)/ 100
 		var normalToAttacker = (attacker.global_position - playerBody.global_position).normalized()
 		if attacker.grounded:
 			attacker.take_hit(10,Vector2(normalToAttacker.x,0),500, 1, self)
@@ -308,6 +310,9 @@ func take_hit(damage: int, knockback_dir: Vector2, knockback_strength: float, st
 		return
 	
 	health -= damage
+	if player_action_animator.current_animation != "specialAttack":
+		player_action_animator.stop()
+		player_action_animator.play("hurtAnim")
 	#animation_player.play("hitFlash")
 	# Apply knockback and stun
 	applyKnockback(knockback_dir,knockback_strength)
@@ -393,7 +398,7 @@ func canAttack() -> bool:
 		return false
 
 func enemyWasHit(damage : float):
-	specialMeter += damage / 100
+	specialMeter += damage / 200
 
 # misc
 func playSound(sound : AudioStream, pitch : float = 1.0, volumedB : float = 0):
@@ -407,6 +412,10 @@ func changeAnimation(animationName : String):
 	if animationName != currentAnim:
 		player_sprite.play(animationName)
 
+
+func spawnPlayerAnim():
+	player_sprite.show()
+	player_action_animator.play("spawnIn")
 
 func _on_sound_player_finished() -> void:
 	resetSoundPlayer()

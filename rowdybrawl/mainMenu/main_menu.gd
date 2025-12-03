@@ -1,10 +1,13 @@
 extends Node2D
 
 @onready var timer: Timer = $Timer
+@onready var color_rect: AnimationPlayer = $ColorRect/AnimationPlayer
 
 
 func _on_start_pressed() -> void:
 	timer.start()
+	color_rect.get_parent().show()
+	color_rect.play("fadeIn")
 
 func _on_options_pressed() -> void:
 	pass # Replace with function body.

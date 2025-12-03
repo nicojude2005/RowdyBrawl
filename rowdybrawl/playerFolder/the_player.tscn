@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://b5c8708romg66"]
+[gd_scene load_steps=24 format=3 uid="uid://b5c8708romg66"]
 
 [ext_resource type="Script" uid="uid://d1lb2i55l1d4y" path="res://playerFolder/playerScripts/the_player.gd" id="1_qsbax"]
 [ext_resource type="PackedScene" uid="uid://b0py0r48mo2wi" path="res://playerFolder/camera_manager.tscn" id="3_olns3"]
@@ -251,11 +251,109 @@ tracks/2/keys = {
 }]
 }
 
+[sub_resource type="Animation" id="Animation_a8wlk"]
+resource_name = "hurtAnim"
+length = 0.5
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("playerBody/hitBox/playerSprite:self_modulate:r")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 2, 0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 1, -0.005, 0, 0, 0, 1, -0.028333334, 0, 0, 0),
+"times": PackedFloat32Array(0, 0.03, 0.5)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("playerBody/hitBox/playerSprite:self_modulate:g")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 2, 0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 0.019607844, -0.005, 0.1633987, 0, 0, 1, -0.028333334, -0.1633987, 0, 0),
+"times": PackedFloat32Array(0, 0.03, 0.5)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("playerBody/hitBox/playerSprite:self_modulate:b")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0, 2, 0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 0.02745098, -0.005, 0.1620915, 0, 0, 1, -0.028333334, -0.16209151, 0, 0),
+"times": PackedFloat32Array(0, 0.03, 0.5)
+}
+tracks/3/type = "bezier"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("playerBody/hitBox/playerSprite:self_modulate:a")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"handle_modes": PackedInt32Array(0, 2, 2),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 0.54509807, -0.005, 0.07581699, 0, 0, 1, -0.028333334, -0.075817, 0, 0),
+"times": PackedFloat32Array(0, 0.03, 0.2)
+}
+
+[sub_resource type="Animation" id="Animation_sxhot"]
+resource_name = "spawnIn"
+length = 0.5
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("playerBody/hitBox/playerSprite:self_modulate:r")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 2),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 1, -0.083333336, 0, 0, 0),
+"times": PackedFloat32Array(0, 0.5)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("playerBody/hitBox/playerSprite:self_modulate:g")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 2),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 1, -0.083333336, 0, 0, 0),
+"times": PackedFloat32Array(0, 0.5)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("playerBody/hitBox/playerSprite:self_modulate:b")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0, 2),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 1, -0.083333336, 0, 0, 0),
+"times": PackedFloat32Array(0, 0.5)
+}
+tracks/3/type = "bezier"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("playerBody/hitBox/playerSprite:self_modulate:a")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"handle_modes": PackedInt32Array(0, 2),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 1, -0.083333336, -0.16666667, 0, 0),
+"times": PackedFloat32Array(0, 0.5)
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_y3gru"]
 _data = {
 &"RESET": SubResource("Animation_cbnsr"),
 &"deathAnimation": SubResource("Animation_w4nnb"),
+&"hurtAnim": SubResource("Animation_a8wlk"),
 &"parry": SubResource("Animation_6sxll"),
+&"spawnIn": SubResource("Animation_sxhot"),
 &"specialAttack": SubResource("Animation_y3gru")
 }
 
@@ -302,6 +400,7 @@ shape = SubResource("RectangleShape2D_opa1r")
 debug_color = Color(0, 0.5930971, 0.73992854, 0.41960785)
 
 [node name="playerSprite" type="AnimatedSprite2D" parent="playerBody/hitBox"]
+visible = false
 position = Vector2(1, -33)
 sprite_frames = SubResource("SpriteFrames_qyj71")
 animation = &"idle"

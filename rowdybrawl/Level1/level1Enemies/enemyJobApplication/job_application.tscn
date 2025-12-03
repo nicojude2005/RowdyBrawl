@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://c80ia60x3xwwn"]
+[gd_scene load_steps=11 format=3 uid="uid://c80ia60x3xwwn"]
 
 [ext_resource type="PackedScene" uid="uid://bto47b1qeehvq" path="res://Level1/level1Enemies/parentEnemy/enemy.tscn" id="1_j1xia"]
 [ext_resource type="Script" uid="uid://cgwq0jdqqux6a" path="res://Level1/level1Enemies/enemyJobApplication/job_application.gd" id="2_0gdpn"]
@@ -7,7 +7,20 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_s0wr4"]
 size = Vector2(52, 67)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_s0wr4"]
+atlas = ExtResource("3_s0wr4")
+region = Rect2(0, 0, 2550, 3301)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_cr6rf"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s0wr4")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
 
 [sub_resource type="Animation" id="Animation_cr6rf"]
 length = 0.001
@@ -127,9 +140,8 @@ _data = {
 }
 
 [node name="jobApplication" instance=ExtResource("1_j1xia")]
-collision_layer = 16
 script = ExtResource("2_0gdpn")
-maxSpeed = 115.0
+maxSpeed = 145.0
 accelaration = 6.7
 
 [node name="enemyCollision" parent="." index="1"]
@@ -140,16 +152,12 @@ position = Vector2(0, -33.5)
 shape = SubResource("RectangleShape2D_s0wr4")
 
 [node name="AnimatedSprite2D" parent="enemy_hitbox" index="1"]
+position = Vector2(0, -33)
+scale = Vector2(0.02, 0.02)
 sprite_frames = SubResource("SpriteFrames_cr6rf")
 animation = &"default"
 
-[node name="Sprite2D" type="Sprite2D" parent="enemy_hitbox" index="2"]
-texture_filter = 2
-position = Vector2(0, -33)
-scale = Vector2(0.02, 0.02)
-texture = ExtResource("3_s0wr4")
-
-[node name="stunIndicator" parent="enemy_hitbox" index="3"]
+[node name="stunIndicator" parent="enemy_hitbox" index="2"]
 visible = true
 position = Vector2(0, -76)
 

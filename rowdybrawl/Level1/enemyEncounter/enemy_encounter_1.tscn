@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://big3b2x1lv5lx"]
+
+[ext_resource type="PackedScene" uid="uid://biisl0tjeljhs" path="res://Level1/enemyEncounter/enemy_encounter.tscn" id="1_sbnrr"]
+[ext_resource type="PackedScene" uid="uid://nay3qxpuonfj" path="res://Level1/enemyEncounter/enemy_spawn.tscn" id="2_kutit"]
+[ext_resource type="PackedScene" uid="uid://c80ia60x3xwwn" path="res://Level1/level1Enemies/enemyJobApplication/job_application.tscn" id="3_rx520"]
+
+[node name="enemyEncounter1" instance=ExtResource("1_sbnrr")]
+
+[node name="enemySpawn" parent="enemiesToSpawn" index="0" instance=ExtResource("2_kutit")]
+position = Vector2(-91, -317)
+enemyToSpawn = ExtResource("3_rx520")
+
+[node name="enemySpawn2" parent="enemiesToSpawn" index="1" instance=ExtResource("2_kutit")]
+position = Vector2(34, -173)
+enemyToSpawn = ExtResource("3_rx520")
+
+[node name="enemySpawn3" parent="enemiesToSpawn" index="2" instance=ExtResource("2_kutit")]
+position = Vector2(-68, 213)
+enemyToSpawn = ExtResource("3_rx520")
+
+[node name="enemySpawn4" parent="enemiesToSpawn" index="3" instance=ExtResource("2_kutit")]
+position = Vector2(57, 279)
+enemyToSpawn = ExtResource("3_rx520")

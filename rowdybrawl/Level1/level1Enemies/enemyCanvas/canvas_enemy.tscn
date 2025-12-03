@@ -1,33 +1,43 @@
-[gd_scene load_steps=6 format=3 uid="uid://b21lbpxenujyp"]
+[gd_scene load_steps=7 format=3 uid="uid://b21lbpxenujyp"]
 
 [ext_resource type="PackedScene" uid="uid://bto47b1qeehvq" path="res://Level1/level1Enemies/parentEnemy/enemy.tscn" id="1_qekfq"]
 [ext_resource type="Texture2D" uid="uid://6gbrl3f8p3k7" path="res://Level1/level1Enemies/enemyCanvas/canvas.png" id="2_r52p2"]
 [ext_resource type="Script" uid="uid://djwo32tq326f" path="res://Level1/level1Enemies/enemyCanvas/canvas_enemy.gd" id="2_smvkj"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_smvkj"]
-size = Vector2(56, 56)
+size = Vector2(95, 56)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r52p2"]
+atlas = ExtResource("2_r52p2")
+region = Rect2(0, 0, 225, 224)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_r52p2"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r52p2")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
 
 [node name="Canvas_Enemy" instance=ExtResource("1_qekfq")]
 script = ExtResource("2_smvkj")
-maxSpeed = 150.0
-accelaration = 10.0
+maxSpeed = 90.0
+accelaration = 30.0
 
 [node name="CollisionShape2D" parent="enemy_hitbox" index="0"]
-position = Vector2(0.125, -29)
+position = Vector2(0.5, -29)
 shape = SubResource("RectangleShape2D_smvkj")
 
 [node name="AnimatedSprite2D" parent="enemy_hitbox" index="1"]
+position = Vector2(0, -29)
+scale = Vector2(0.43254128, 0.25509566)
 sprite_frames = SubResource("SpriteFrames_r52p2")
 animation = &"default"
 
-[node name="Sprite2D" type="Sprite2D" parent="enemy_hitbox" index="2"]
-position = Vector2(0.125, -29)
-scale = Vector2(0.25, 0.25)
-texture = ExtResource("2_r52p2")
-
-[node name="stunIndicator" parent="enemy_hitbox" index="3"]
+[node name="stunIndicator" parent="enemy_hitbox" index="2"]
 visible = true
 position = Vector2(-1, -67)
 

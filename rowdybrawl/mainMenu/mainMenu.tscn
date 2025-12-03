@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://bcti40hb4yo1n"]
+[gd_scene load_steps=8 format=3 uid="uid://bcti40hb4yo1n"]
 
 [ext_resource type="Script" uid="uid://bleb0ug6ax6p8" path="res://mainMenu/main_menu.gd" id="1_kpht7"]
 [ext_resource type="Texture2D" uid="uid://3kcv6ktd1ks0" path="res://mainMenu/rowdyBrawlPlayButtonNonSelected.png" id="2_0o04g"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://cctml1qqkt11b" path="res://mainMenu/rowdyBrawlPlayButtonHighlight.png" id="3_1dglg"]
 [ext_resource type="AudioStream" uid="uid://b1am57kn1nric" path="res://mainMenu/RowdyBrawlMainMenuGenny.wav" id="3_b4frg"]
 [ext_resource type="Texture2D" uid="uid://bmgrhc3yosuum" path="res://mainMenu/rowdyBrawlPlayButtonClicked.png" id="3_lgs6n"]
+[ext_resource type="PackedScene" uid="uid://revtuuauqf2c" path="res://mainMenu/color_rect.tscn" id="7_lgs6n"]
 
 [node name="MainMenu" type="Node2D"]
 script = ExtResource("1_kpht7")
@@ -53,7 +54,14 @@ level1CalmTheme = ExtResource("3_b4frg")
 isMenu = true
 
 [node name="Timer" type="Timer" parent="."]
-wait_time = 0.61
+wait_time = 1.2999999999999998
+
+[node name="ColorRect" parent="." instance=ExtResource("7_lgs6n")]
+visible = false
+offset_left = -85.0
+offset_top = -52.0
+offset_right = -45.0
+offset_bottom = -12.0
 
 [connection signal="pressed" from="buttonManager/start" to="." method="_on_start_pressed"]
 [connection signal="pressed" from="buttonManager/options" to="." method="_on_options_pressed"]

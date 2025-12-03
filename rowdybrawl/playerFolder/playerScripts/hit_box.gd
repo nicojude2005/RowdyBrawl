@@ -4,7 +4,7 @@ class_name hitBox
 @onready var hurt_area: Area2D = $hurtArea
 
 var myZIndex
-var zReach = 18
+var zReach = 12
 @export var damage : float
 var duration : float = 10000
 var activeAfter : float = 0
@@ -14,6 +14,7 @@ var lifeTimer : float = 0
 @export var stunDuration := 0.5
 
 var hitEnemies : Array
+var teamAttack = true
 
 var userKnockbackOnHitDir : Vector2 = Vector2.ZERO
 var userKnockbackOnHitStrength : float = 0.0
@@ -62,6 +63,8 @@ func _on_hurt_area_area_entered(area: Area2D) -> void:
 func attemptToDamageBodyFromArea(area : Area2D):
 	var body : Node2D
 	if area.name == "enemy_hitbox":
+		if !teamAttack:
+			damage /= 3
 		body = area.get_parent()
 		if zPosCheck(body) and hitEnemies.find(body) == -1:
 			damageEnemy(body)

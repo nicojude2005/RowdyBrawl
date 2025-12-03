@@ -1,0 +1,23 @@
+[gd_scene load_steps=5 format=3 uid="uid://dogk62sgnigq"]
+
+[ext_resource type="PackedScene" uid="uid://biisl0tjeljhs" path="res://Level1/enemyEncounter/enemy_encounter.tscn" id="1_daefk"]
+[ext_resource type="PackedScene" uid="uid://nay3qxpuonfj" path="res://Level1/enemyEncounter/enemy_spawn.tscn" id="2_aucdd"]
+[ext_resource type="PackedScene" uid="uid://btxsv0bidxxwy" path="res://Level1/level1Enemies/enemyPisser/utsa_pisser.tscn" id="3_g2v4f"]
+[ext_resource type="PackedScene" uid="uid://jpk8th4wirf5" path="res://Level1/level1Enemies/linkedinWarriorEnemy/linkedin_warrior.tscn" id="4_svrgy"]
+
+[node name="enemyEncounter3" instance=ExtResource("1_daefk")]
+
+[node name="enemySpawn2" parent="enemiesToSpawn" index="0" instance=ExtResource("2_aucdd")]
+position = Vector2(312, 1)
+enemyToSpawn = ExtResource("3_g2v4f")
+
+[node name="enemySpawn3" parent="enemiesToSpawn" index="1" instance=ExtResource("2_aucdd")]
+position = Vector2(138, 284)
+enemyToSpawn = ExtResource("4_svrgy")
+
+[node name="enemySpawn" parent="enemiesToSpawn" index="2" instance=ExtResource("2_aucdd")]
+position = Vector2(98, -163)
+enemyToSpawn = ExtResource("4_svrgy")
+
+[node name="CollisionShape2D" parent="playerTrigger" index="0"]
+scale = Vector2(1.3999997, 1)

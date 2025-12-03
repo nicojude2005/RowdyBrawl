@@ -17,7 +17,7 @@ var rightOfStage := 3700.0
 var leftSideStop := 100.0
 var rightSideStop := 3700.0
 
-var trackPos : Vector2
+var trackPos : Vector2 
 
 var stop = false
 
@@ -34,3 +34,4 @@ func _process(_delta: float) -> void:
 	if trackPos.y > topOfStage and trackPos.y < bottomOfStage:
 		camera2d.position.y = lerpf(topLimit, bottomLimit, (trackPos.y - topOfStage) / (bottomOfStage - topOfStage))
 		#camera2d.position.y = trackPos.y
+		

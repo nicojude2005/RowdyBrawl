@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://jpk8th4wirf5"]
+[gd_scene load_steps=7 format=3 uid="uid://jpk8th4wirf5"]
 
 [ext_resource type="PackedScene" uid="uid://bto47b1qeehvq" path="res://Level1/level1Enemies/parentEnemy/enemy.tscn" id="1_p7ffe"]
 [ext_resource type="Script" uid="uid://csimp8lf8tbcj" path="res://Level1/level1Enemies/linkedinWarriorEnemy/linkedinWarrior.gd" id="2_7sc1u"]
@@ -7,8 +7,24 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7sc1u"]
 size = Vector2(72, 87)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_w0xof"]
+atlas = ExtResource("2_w0xof")
+region = Rect2(0, 0, 1024, 1024)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_7sc1u"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w0xof")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
 [node name="Linkedin_Warrior_Enemy" instance=ExtResource("1_p7ffe")]
 script = ExtResource("2_7sc1u")
+maxSpeed = 200.0
 accelaration = 15.0
 
 [node name="CollisionShape2D" parent="enemy_hitbox" index="0"]
@@ -16,14 +32,12 @@ position = Vector2(4, -44.5)
 shape = SubResource("RectangleShape2D_7sc1u")
 
 [node name="AnimatedSprite2D" parent="enemy_hitbox" index="1"]
-visible = false
-
-[node name="Sprite2D" type="Sprite2D" parent="enemy_hitbox" index="2"]
-position = Vector2(1.9999999, -43.999996)
+position = Vector2(2.9999998, -44)
 scale = Vector2(0.1, 0.1)
-texture = ExtResource("2_w0xof")
+sprite_frames = SubResource("SpriteFrames_7sc1u")
+animation = &"default"
 
-[node name="stunIndicator" parent="enemy_hitbox" index="3"]
+[node name="stunIndicator" parent="enemy_hitbox" index="2"]
 visible = true
 position = Vector2(1.0000002, -101)
 scale = Vector2(0.6048387, 0.6637931)

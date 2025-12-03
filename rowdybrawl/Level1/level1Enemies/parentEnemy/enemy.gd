@@ -8,6 +8,7 @@ class_name Enemy
 @onready var enemy_collision: CollisionShape2D = $enemyCollision
 @onready var stun_indicator: Sprite2D = $enemy_hitbox/stunIndicator
 @onready var sound_track_1: AudioStreamPlayer2D = $soundTrack1
+@onready var sprite_2d: Sprite2D = $Sprite2D
 
 # load some hitboxes for use
 @onready var ENEMY_EXAMPLE_ATTACK = load("uid://d3g686l1tme5q")
@@ -57,6 +58,8 @@ var hitTimer : float = hitRate
 
 func _ready() -> void:
 	sound_track_1.play()
+	animation_player.play("spawnIN")
+	stun_timer = 1
 
 func _physics_process(delta: float) -> void:
 	# stun countdown
@@ -100,6 +103,7 @@ func _physics_process(delta: float) -> void:
 	
 	if (global_position.y < RenderingServer.CANVAS_ITEM_Z_MAX and global_position.y > RenderingServer.CANVAS_ITEM_Z_MIN):
 		animated_sprite_2d.z_index = int(global_position.y)
+		sprite_2d.z_index =  int(global_position.y) - 1
 	
 	enemy_hitbox.position.y = -(yPosition / 100)
 	
@@ -129,10 +133,10 @@ func _physics_process(delta: float) -> void:
 
 
 # Combat attacking stuff
-func spawnAttack(hitboxToUse : PackedScene, attackDamage : float, attackStartup : float, attackDuration: float, attackEndlag : float = 0.0) -> hitBox:
+func spawnAttack(hitboxToUse : PackedScene, attackDamage : float, attackStartup : float, attackDuration: float, attackEndlag : float = 0.0, customAttachSlot = enemy_hitbox) -> hitBox:
 	var attackHitbox : hitBox = hitboxToUse.instantiate();
 	attackHitbox.myZIndex = self.global_position.y
-	enemy_hitbox.add_child(attackHitbox)
+	customAttachSlot.add_child(attackHitbox)
 	attackHitbox.activeAfter = attackStartup
 	attackHitbox.damage = attackDamage
 	attackHitbox.dir = facingDir
@@ -147,7 +151,7 @@ func spawnAttack(hitboxToUse : PackedScene, attackDamage : float, attackStartup 
 	return attackHitbox
 func take_hit(damage: int, knockback_dir: Vector2, knockback_strength: float, stun_duration: float, attacker : Node2D = null) -> void:
 	health -= damage
-	#animation_player.play("hitFlash")
+	animation_player.play("hurt")
 	# Apply knockback and stun
 	if armorTimer <= 0:
 		applyKnockback(knockback_dir,knockback_strength)
@@ -171,6 +175,14 @@ func applyKnockback(direction : Vector2, strength : float):
 func die():
 	enemy_alive = false
 	health = 0
+	if get_parent() is enemyEncounter:
+		get_parent().deadCount += 1
+	elif get_parent().get_parent() is enemyEncounter:
+		get_parent().get_parent().deadCount += 1
+	elif get_parent().get_parent().get_parent() is enemyEncounter:
+		get_parent().get_parent().get_parent().deadCount += 1
+	else:
+		print("i failed....")
 	applyKnockback(Vector2(.3,-1), 5000)
 	playSound(ENEMY_DIE_SOUND_EFFECT_DEFAULT, 0.3, 1)
 	enemy_collision.set_deferred("disabled", true)		

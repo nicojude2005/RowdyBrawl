@@ -1,0 +1,40 @@
+[gd_scene load_steps=6 format=3 uid="uid://boarn0aagqgfp"]
+
+[ext_resource type="PackedScene" uid="uid://biisl0tjeljhs" path="res://Level1/enemyEncounter/enemy_encounter.tscn" id="1_tyj7f"]
+[ext_resource type="PackedScene" uid="uid://nay3qxpuonfj" path="res://Level1/enemyEncounter/enemy_spawn.tscn" id="2_d61r1"]
+[ext_resource type="PackedScene" uid="uid://c80ia60x3xwwn" path="res://Level1/level1Enemies/enemyJobApplication/job_application.tscn" id="3_a2mxs"]
+[ext_resource type="PackedScene" uid="uid://jpk8th4wirf5" path="res://Level1/level1Enemies/linkedinWarriorEnemy/linkedin_warrior.tscn" id="4_qaaan"]
+[ext_resource type="PackedScene" uid="uid://b21lbpxenujyp" path="res://Level1/level1Enemies/enemyCanvas/canvas_enemy.tscn" id="5_2csqf"]
+
+[node name="enemyEncounter2" instance=ExtResource("1_tyj7f")]
+
+[node name="enemySpawn" parent="enemiesToSpawn" index="0" instance=ExtResource("2_d61r1")]
+position = Vector2(106, -187)
+enemyToSpawn = ExtResource("3_a2mxs")
+
+[node name="enemySpawn2" parent="enemiesToSpawn" index="1" instance=ExtResource("2_d61r1")]
+position = Vector2(160, -118)
+enemyToSpawn = ExtResource("4_qaaan")
+
+[node name="enemySpawn3" parent="enemiesToSpawn" index="2" instance=ExtResource("2_d61r1")]
+position = Vector2(85, 3)
+enemyToSpawn = ExtResource("3_a2mxs")
+
+[node name="enemySpawn4" parent="enemiesToSpawn" index="3" instance=ExtResource("2_d61r1")]
+position = Vector2(172, 111)
+enemyToSpawn = ExtResource("4_qaaan")
+
+[node name="enemySpawn5" parent="enemiesToSpawn" index="4" instance=ExtResource("2_d61r1")]
+position = Vector2(73, 235)
+enemyToSpawn = ExtResource("3_a2mxs")
+
+[node name="enemySpawn6" parent="enemiesToSpawn" index="5" instance=ExtResource("2_d61r1")]
+position = Vector2(132, 279)
+enemyToSpawn = ExtResource("4_qaaan")
+
+[node name="enemySpawn7" parent="enemiesToSpawn" index="6" instance=ExtResource("2_d61r1")]
+position = Vector2(366, 8)
+enemyToSpawn = ExtResource("5_2csqf")
+
+[node name="CollisionShape2D" parent="playerTrigger" index="0"]
+position = Vector2(89.5, 0)
