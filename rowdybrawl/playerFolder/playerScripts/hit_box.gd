@@ -71,7 +71,11 @@ func attemptToDamageBodyFromArea(area : Area2D):
 			if userRef.has_method("enemyWasHit"):
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 				userRef.enemyWasHit(damage)
+=======
+				userRef.enemyWasHit(self)
+>>>>>>> Stashed changes
 =======
 				userRef.enemyWasHit(self)
 >>>>>>> Stashed changes
